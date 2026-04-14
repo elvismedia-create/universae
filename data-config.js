@@ -31,9 +31,14 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana3",
-    titulo_boton: "3. Próximamente...",
+    titulo_boton: "3. Itinerario Personal para la Empleabilidad",
     asignaturas: [
-      { nombre: "En desarrollo", data: [] }
+      { nombre: "U1: Economía y administración nociones básicas", data: TEMA_EMPLEABILIDAD_U1_DATA },
+      { nombre: "U2: El sistema fiscal", data: TEMA_EMPLEABILIDAD_U2_DATA },
+      { nombre: "U3: Concepto de marketing y análisis de mercado", data: TEMA_EMPLEABILIDAD_U3_DATA },
+      { nombre: "U4: Plan de marketing", data: TEMA_EMPLEABILIDAD_U4_DATA },
+      { nombre: "U5: Los RRHH en la empresa", data: TEMA_EMPLEABILIDAD_U5_DATA },
+      { nombre: "U6: La importancia de las habilidades interpersonales", data: TEMA_EMPLEABILIDAD_U6_DATA }
     ]
   },
   {
