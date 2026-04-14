@@ -19,7 +19,7 @@ const CONFIGURACION_CURSO = [
     bloque: "pestana2",
     titulo_boton: "2. Instalaciones solares fotovoltaicas",
     asignaturas: [
-      { nombre: "U1: Fundamentos de energía solar fotovoltaica", data: [] },
+      { nombre: "U1: Componentes de una instalación solar fotovoltaica", data: TEMA_FV_U1_DATA },
       { nombre: "U2: Componentes y equipamiento de instalaciones FV", data: [] },
       { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: [] },
       { nombre: "U4: Normativa y seguridad en FV", data: [] },

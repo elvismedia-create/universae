@@ -1,6 +1,6 @@
-// CONSOLIDACIÓN FINAL v67.26 - 10 Temas en una pestaña (670 preguntas)
-const BUILD_TIMESTAMP = '20260414070600'; // Todos los 10 temas en pestana1
-const CACHE_NAME = `mastertest-v67.26-${BUILD_TIMESTAMP}`;
+// CONSOLIDACIÓN FINAL v67.27 - 10 Temas + FV U1 (680 preguntas)
+const BUILD_TIMESTAMP = '20260414070700'; // 10 temas en pestana1 + TEMA_FV_U1
+const CACHE_NAME = `mastertest-v67.27-${BUILD_TIMESTAMP}`;
 
 const ASSETS_TO_CACHE = [
   './',
@@ -8,6 +8,7 @@ const ASSETS_TO_CACHE = [
   './motor.js',
   './data-temas.js',
   './data-especial.js',
+  './data-fv-u1.js',
   './data-config.js',
   './fotometria.js',
   './caida-tension.js',
