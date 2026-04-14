@@ -20,8 +20,8 @@ const CONFIGURACION_CURSO = [
     titulo_boton: "2. Instalaciones solares fotovoltaicas",
     asignaturas: [
       { nombre: "U1: Componentes de una instalación solar fotovoltaica", data: TEMA_FV_U1_DATA },
-      { nombre: "U2: Componentes y equipamiento de instalaciones FV", data: [] },
-      { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: [] },
+      { nombre: "U2: Fundamentos de energía solar fotovoltaica", data: TEMA_FV_U2_DATA },
+      { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: TEMA_FV_U3_DATA },
       { nombre: "U4: Normativa y seguridad en FV", data: [] },
       { nombre: "U5: Monitoreo y mantenimiento de plantas solares", data: [] },
       { nombre: "U6: Conexión a red e inversores", data: [] },
