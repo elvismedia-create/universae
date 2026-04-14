@@ -161,5 +161,245 @@ const TEMA_FV_U6_DATA = [
     opciones: ["Capacidad reaccionar rápido a cambios luz → máxima energía aprovechada", "Cambio de color", "Velocidad rotación", "No existe"],
     correctaTexto: "Capacidad reaccionar rápido a cambios luz → máxima energía aprovechada",
     explicacion: "Respuesta dinámica: inversor rastrea MPP ante variaciones irradiancia (nubes pasando). Rápida respuesta = pérdidas mínimas. MPPT mejora respuesta vs PWM."
+  },
+  {
+    id: 16021,
+    tema: 16,
+    texto: "¿Cuál es la función principal del 'Filtro EMI' en inversor?",
+    opciones: ["Cambiar color salida", "Reducir interferencias electromagnéticas (ruido armónico) hacia red", "Aumentar potencia", "No necesario"],
+    correctaTexto: "Reducir interferencias electromagnéticas (ruido armónico) hacia red",
+    explicacion: "Filtro EMI: capacitores/inductores atenúan armónicos alta frecuencia. Obligatorio cumplir normativa emisiones (EN 61800-3). Previene interferencias radio/TV."
+  },
+  {
+    id: 16022,
+    tema: 16,
+    texto: "¿Qué es la 'Distorsión Armónica Total' (THD) en inversor?",
+    opciones: ["Temperatura", "Porcentaje de armónicos vs fundamental (THD < 5% normativa)", "Tensión solamente", "No existe"],
+    correctaTexto: "Porcentaje de armónicos vs fundamental (THD < 5% normativa)",
+    explicacion: "THD: armónicos = distorsión onda senoidal. < 5%: aceptable. Inversores híbridos/onda modificada pueden llegar 10-15% (aceptable para OFF-GRID)."
+  },
+  {
+    id: 16023,
+    tema: 16,
+    texto: "¿Cuál es el riesgo de conectar en paralelo dos inversores sin sincronización?",
+    opciones: ["Mejora eficiencia", "Corrientes circulantes destructivas, daño equipos, incendio", "Sin riesgo", "Recomendado"],
+    correctaTexto: "Corrientes circulantes destructivas, daño equipos, incendio",
+    explicacion: "Paralelo sin sincronismo: inversores con fase diferente generan corriente diferencial alta (destruye transformadores). Obligatorio: droop inverters o comunicación esclavo/maestro."
+  },
+  {
+    id: 16024,
+    tema: 16,
+    texto: "¿Qué es 'seamless switching' en inversores híbridos?",
+    opciones: ["Sin función", "Cambio red ↔ batería sin corte de cargas (transición < 20 ms)", "Cambio manual", "Lento"],
+    correctaTexto: "Cambio red ↔ batería sin corte de cargas (transición < 20 ms)",
+    explicacion: "Seamless: transición imperceptible inversor ↔ red. Sincronización de fase/frecuencia crítica. Evita reset dispositivos sensibles. Requerimiento en UPS/backup."
+  },
+  {
+    id: 16025,
+    tema: 16,
+    texto: "¿Cuál es la 'Potencia de Salida Máxima' de un inversor típico?",
+    opciones: ["Exactamente potencia nominal", "1.2-1.5× potencia nominal por corto tiempo (picos)", "Infinita teóricamente", "Variable sin límite"],
+    correctaTexto: "1.2-1.5× potencia nominal por corto tiempo (picos)",
+    explicacion: "Sobrecarga inversor: 20-50% arriba nominal por 30 segundos (arranque motores). Limitador interno protege. Especificación 'Potencia Pico' vs 'Potencia Continua'."
+  },
+  {
+    id: 16026,
+    tema: 16,
+    texto: "¿Qué es la 'Reconexión Automática' en inversores conectados red?",
+    opciones: ["No existe", "Lógica reintenta conexión tras corte red (típicamente 3 minutos espera)", "Cambio manual", "Conexión instantánea"],
+    correctaTexto: "Lógica reintenta conexión tras corte red (típicamente 3 minutos espera)",
+    explicacion: "Reconexión: espera 3 min para confirmar red estable antes reintentar. Evita inyección en red caída (seguridad personal). Requisito anti-islanding normativa."
+  },
+  {
+    id: 16027,
+    tema: 16,
+    texto: "¿Cuál es el 'Rango de Temperatura de Funcionamiento' típico?",
+    opciones: ["-50 a +70°C", "-10 a +60°C (derating > 50°C)", "+25°C fijo", "Sin límites"],
+    correctaTexto: "-10 a +60°C (derating > 50°C)",
+    explicacion: "Temperatura operación: -10/+50°C nominal. Sobre 50°C: reduce potencia salida (-1% por °C). Especificación derating esencial para climas cálidos."
+  },
+  {
+    id: 16028,
+    tema: 16,
+    texto: "¿Qué monitorea un 'Watt-hora meter' (contador inteligente)?",
+    opciones: ["Solo voltaje", "Energía consumida/producida (kWh), potencia instantánea (kW), facturas", "Frecuencia", "Nada importante"],
+    correctaTexto: "Energía consumida/producida (kWh), potencia instantánea (kW), facturas",
+    explicacion: "Contador inteligente: integra energía en tiempo (kWh), discrimina por hora, registra picos. Base cálculo facturación y análisis eficiencia."
+  },
+  {
+    id: 16029,
+    tema: 16,
+    texto: "¿Cuál es la 'Constante de Tiempo' del inversor ante cambios carga?",
+    opciones: ["Milisegundos (respuesta instantánea)", "< 1 segundo (control rápido frecuencia/voltaje)", "Minutos", "Horas"],
+    correctaTexto: "< 1 segundo (control rápido frecuencia/voltaje)",
+    explicacion: "Tiempo respuesta inversor: < 100 ms ajuste frecuencia/voltaje ante cambio carga. Crítico para estabilidad red (variaciones rápidas máquinas)."
+  },
+  {
+    id: 16030,
+    tema: 16,
+    texto: "¿Qué es 'Power Factor Correction' (PFC) en inversor?",
+    opciones: ["No existe", "Compensación cargas inductivas para mejorar factor potencia (cos φ = 1)", "Aumento potencia", "Reducción costo"],
+    correctaTexto: "Compensación cargas inductivas para mejorar factor potencia (cos φ = 1)",
+    explicacion: "PFC: inversor inyecta reactivos (capacitivos) para compensar cargas inductivas. Mejora cos φ → reduce pérdidas línea, penalizaciones distribuidora."
+  },
+  {
+    id: 16031,
+    tema: 16,
+    texto: "¿Cuál es el riesgo de cables subdimensionados en lado AC?",
+    opciones: ["Ninguno", "Caída voltaje > 3%, pérdidas I²R, riesgo incendio por sobrecalentamiento", "Mejora eficiencia", "Mayor conducción"],
+    correctaTexto: "Caída voltaje > 3%, pérdidas I²R, riesgo incendio por sobrecalentamiento",
+    explicacion: "Cableado AC: sección mínima de forma caída tensión < 3% inversor-consumo. Ejemplo 5kW a 50m: cable mínimo 6mm² (Cu) o 10mm² (Al)."
+  },
+  {
+    id: 16032,
+    tema: 16,
+    texto: "¿Qué es 'Load Sharing' en sistemas con múltiples inversores?",
+    opciones: ["Inversor único", "Distribución automática de carga entre inversores (droop o comunicación)", "Fallo sistema", "Sin utilidad"],
+    correctaTexto: "Distribución automática de carga entre inversores (droop o comunicación)",
+    explicacion: "Load sharing: máquinas paralelas comparten carga proporcionalmente. Control droop (R/X) o comunicación digital. Evita sobrecarga un inversor mientras otros ociosos."
+  },
+  {
+    id: 16033,
+    tema: 16,
+    texto: "¿Cuál es la 'Capacidad Cortocircuito' máxima de un interruptor?",
+    opciones: ["10A", "Dato especificado (típico 6kA, 10kA en instalación)", "Ilimitada", "1A"],
+    correctaTexto: "Dato especificado (típico 6kA, 10kA en instalación)",
+    explicacion: "Capacidad cortocircuito: máxima corriente que disyuntor puede interrumpir sin dañarse. Instalación solar DC: calcular Isc máximo → seleccionar disjuntor > Isc."
+  },
+  {
+    id: 16034,
+    tema: 16,
+    texto: "¿Qué indica un 'Código de Error' parpadeante en inversor?",
+    opciones: ["Funcionamiento normal", "Fallo específico (consultar manual): voltaje bajo, temperatura, comms, etc.", "Batería llena", "Excelente estado"],
+    correctaTexto: "Fallo específico (consultar manual): voltaje bajo, temperatura, comms, etc.",
+    explicacion: "Códigos fallo: patrones LED/display indican problema. Ejemplo: 3 parpadeos = voltaje bajo, 5 parpadeos = temperatura alta. Manual técnico = decodificador."
+  },
+  {
+    id: 16035,
+    tema: 16,
+    texto: "¿Cuál es la 'Eficiencia Nocturna' (consumo propio) de inversor?",
+    opciones: ["0%", "0.5-2% potencia nominal por hora (standby activo)", "50%", "100% como generación"],
+    correctaTexto: "0.5-2% potencia nominal por hora (standby activo)",
+    explicacion: "Standby inversor: consume 10-50W continuos (circuitos control, display, comunicaciones). En 12 horas noche = 120-600 Wh descargas batería. Importante OFF-GRID."
+  },
+  {
+    id: 16036,
+    tema: 16,
+    texto: "¿Qué es 'Voltage Droop Control'?",
+    opciones: ["Sin función", "Regulación voltaje salida inversores inversores para load sharing automático (↓ V si ↑ I)", "Control manual", "Innecesario"],
+    correctaTexto: "Regulación voltaje salida inversores inversores para load sharing automático (↓ V si ↑ I)",
+    explicacion: "Droop: máquina X genera menos voltaje si carga aumenta. Esto señaliza a máquina Y inyectar más. Control descentralizado sin comunicación."
+  },
+  {
+    id: 16037,
+    tema: 16,
+    texto: "¿Cuál es el 'Rizado de Voltaje' (ripple) máximo permitido?",
+    opciones: ["Sin límite", "< 2% en DC, < 5% en AC (normativa)", "50%", "10% mínimo"],
+    correctaTexto: "< 2% en DC, < 5% en AC (normativa)",
+    explicacion: "Rizado: ondulaciones voltaje. Nivel alto causa calentamiento componentes, fallos. Filtros LC atenúan rizado. Especificación crítica electrónica sensible."
+  },
+  {
+    id: 16038,
+    tema: 16,
+    texto: "¿Qué es 'Frequency Response' en inversor?",
+    opciones: ["Música reproducida", "Capacidad seguir variaciones frecuencia red rápidamente (típicamente > 1 kHz ancho banda)", "Número de inversores", "Color salida"],
+    correctaTexto: "Capacidad seguir variaciones frecuencia red rápidamente (típicamente > 1 kHz ancho banda)",
+    explicacion: "Frequency response: ancho banda control determina velocidad reacción a cambios red. Bajo ancho banda = estabilidad, alto = precisión rápida."
+  },
+  {
+    id: 16039,
+    tema: 16,
+    texto: "¿Cuál es la 'Garantía Típica' de un inversor?",
+    opciones: ["1 año", "5-10 años (componentes principales), 2-3 años (baterías)", "Indefinida", "Sin garantía"],
+    correctaTexto: "5-10 años (componentes principales), 2-3 años (baterías)",
+    explicacion: "Garantía inversor: 5-10 años componentes electrónica. Baterías: 3-5 años (limitadas ciclos). Extensiones comerciales disponibles (costo adicional)."
+  },
+  {
+    id: 16040,
+    tema: 16,
+    texto: "¿Qué registra un 'Event Logger' en inversor?",
+    opciones: ["Solo potencia", "Historial fallos: fecha, hora, tipo error, voltajes, corrientes al momento fallo", "Fotos usuarios", "Ningún registro"],
+    correctaTexto: "Historial fallos: fecha, hora, tipo error, voltajes, corrientes al momento fallo",
+    explicacion: "Event logger: almacena últimos 100-1000 eventos. Descargable por USB/Ethernet. Diagnóstico técnico remoto posible. Invaluable troubleshooting."
+  },
+  {
+    id: 16041,
+    tema: 16,
+    texto: "¿Cuál es el 'Tiempo de Respuesta' ante fallo red (anti-islanding)?",
+    opciones: ["Instantáneo", "< 2 segundos obligatorio (normativa europea)", "Minutos", "Sin límite"],
+    correctaTexto: "< 2 segundos obligatorio (normativa europea)",
+    explicacion: "Anti-islanding: norma EN 50160 exige desconexión < 2s. Protege personas (línea energizada) y red eléctrica. Prueba periódica obligatoria."
+  },
+  {
+    id: 16042,
+    tema: 16,
+    texto: "¿Qué es 'Reactive Power Capability' en inversor conectado red?",
+    opciones: ["No existe", "Capacidad inyectar potencia reactiva (VAR) para control voltaje red", "Mismo que potencia activa", "Función secundaria"],
+    correctaTexto: "Capacidad inyectar potencia reactiva (VAR) para control voltaje red",
+    explicacion: "Potencia reactiva: inversores modernos inyectan Q (adelantado/retrasado). Requisito regulatorio nuevo: soporte voltaje red en bajos voltajes."
+  },
+  {
+    id: 16043,
+    tema: 16,
+    texto: "¿Cuál es el 'Rendimiento Ponderado' (WEIGHTED EFFICIENCY)?",
+    opciones: ["Eficiencia a potencia nominal", "Promedio eficiencia a múltiples cargas ponderado según distribución real (20%, 50%, 100%)", "Solo mínimo", "Sin calcular"],
+    correctaTexto: "Promedio eficiencia a múltiples cargas ponderado según distribución real (20%, 50%, 100%)",
+    explicacion: "Eficiencia ponderada: refleja mejor comportamiento real (inversor típicamente no corre a 100% todo tiempo). Estándar CEC/EU para comparación."
+  },
+  {
+    id: 16044,
+    tema: 16,
+    texto: "¿Qué es 'Grid Code Compliance'?",
+    opciones: ["Código personal", "Cumplimiento regulaciones distribuidora: frecuencia, voltaje, armónicos, anti-islanding", "Sin requisito", "Opcional"],
+    correctaTexto: "Cumplimiento regulaciones distribuidora: frecuencia, voltaje, armónicos, anti-islanding",
+    explicacion: "Grid code: cada distribuidora especifica límites. Inversor debe certificación cumplimiento (típicamente EN 50438 o equivalente). Requisito conexión red."
+  },
+  {
+    id: 16045,
+    tema: 16,
+    texto: "¿Cuál es la 'Impedancia de Salida' típica de un inversor?",
+    opciones: ["0 Ω (ideal)", "0.5-2 Ω (proporciona estabilidad ante cargas transitorias)", "Infinita", "Variable sin control"],
+    correctaTexto: "0.5-2 Ω (proporciona estabilidad ante cargas transitorias)",
+    explicacion: "Impedancia: pequeña pero no nula permite control voltaje bajo carga dinámica. Control feedback mantiene voltaje constante V = Eg - I×Z."
+  },
+  {
+    id: 16046,
+    tema: 16,
+    texto: "¿Qué es 'Peak Shaving'?",
+    opciones: ["Corte cabello", "Estrategia reducir pico demanda usando batería (cargar pico off-peak)", "Aumentar picos", "Sin utilidad"],
+    correctaTexto: "Estrategia reducir pico demanda usando batería (cargar pico off-peak)",
+    explicacion: "Peak shaving: batería descarga en punta horaria (17-21h) cuando precio alto. Reduce demanda máxima, ahorra penalizaciones potencia. Beneficio económico 10-30%."
+  },
+  {
+    id: 16047,
+    tema: 16,
+    texto: "¿Cuál es la 'Vida Útil Esperada' de componentes electrolíticos?",
+    opciones: ["Indefinida", "10-15 años (condensadores electrolíticos son limitantes vida inversor)", "30 años", "Solo 2 años"],
+    correctaTexto: "10-15 años (condensadores electrolíticos son limitantes vida inversor)",
+    explicacion: "Vida útil inversor limitada por capacitores (degradación exponencial vs temperatura). Doble vida cada -10°C. > 50°C reduce vida 50%. Crítico enfriamiento."
+  },
+  {
+    id: 16048,
+    tema: 16,
+    texto: "¿Qué es 'UPS (Uninterruptible Power Supply) Mode'?",
+    opciones: ["Sin función", "Inversor entra batería automáticamente si red cae (conmutación < 20ms)", "Generador diésel", "Control manual"],
+    correctaTexto: "Inversor entra batería automáticamente si red cae (conmutación < 20ms)",
+    explicacion: "Modo UPS: batería respaldo siempre lista. Transición imperceptible para cargas críticas. Requiere inversores de clase A (baja latencia conmutación)."
+  },
+  {
+    id: 16049,
+    tema: 16,
+    texto: "¿Cuál es la 'Clase de Aislamiento' recomendada para inversor?",
+    opciones: ["Clase F (155°C máx)", "Clase H (180°C máx) para mayor durabilidad térmica", "Clase B (130°C)", "Sin especificar"],
+    correctaTexto: "Clase H (180°C máx) para mayor durabilidad térmica",
+    explicacion: "Clase aislamiento: F = 155°C, H = 180°C. Inversor clase H: mejor longevidad en climas cálidos. Costo ligeramente mayor, vida +30-50%."
+  },
+  {
+    id: 16050,
+    tema: 16,
+    texto: "¿Qué parámetros son críticos en selección de inversor?",
+    opciones: ["Solo potencia nominal", "Potencia, voltaje entrada/salida, eficiencia, certificaciones, garantía, disponibilidad repuestos", "Precio únicamente", "Color equipo"],
+    correctaTexto: "Potencia, voltaje entrada/salida, eficiencia, certificaciones, garantía, disponibilidad repuestos",
+    explicacion: "Selección inversor: 1) Potencia 1.2× carga pico, 2) Voltaje DC rango paneles, 3) Eficiencia > 95%, 4) Certificaciones (EN 62109-1, EN 50438), 5) Garantía mínimo 5 años, 6) Repuestos locales."
   }
 ];

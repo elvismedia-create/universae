@@ -161,5 +161,245 @@ const TEMA_FV_U5_DATA = [
     opciones: ["Nada, se mantiene de memoria", "Registro histórico: fecha, operaciones, observaciones, anomalías, persona responsable", "Solo fotos", "Sin documentar"],
     correctaTexto: "Registro histórico: fecha, operaciones, observaciones, anomalías, persona responsable",
     explicacion: "Documentación esencial: parte mantenimiento con fecha/hora, qué se revisó, hallazgos, acciones tomadas, firma técnico. Base para análisis tendencias y garantía."
+  },
+  {
+    id: 15021,
+    tema: 15,
+    texto: "¿Cuál es la sección mínima recomendada del conductor de tierra en una instalación FV?",
+    opciones: ["0.5 mm²", "1.5 mm²", "2.5 mm² (mínimo con cobre)", "4 mm²"],
+    correctaTexto: "2.5 mm² (mínimo con cobre)",
+    explicacion: "Conductor tierra/PE: mínimo 2.5mm² cobre (normativa REBT). Debe tener continuidad desde panel hasta electrodo dispersor sin empalmes."
+  },
+  {
+    id: 15022,
+    tema: 15,
+    texto: "¿Qué tipo de protección es más efectivo contra sobrevolatjes por rayo?",
+    opciones: ["Fusibles solamente", "Descargadores de sobretensión (SPD) coordinados en cascada", "Diodos comunes", "Ninguna protección funciona"],
+    correctaTexto: "Descargadores de sobretensión (SPD) coordinados en cascada",
+    explicacion: "SPD tipo 1 (entrada), tipo 2 (distribución), tipo 3 (cargas) coordinados. Derivación a tierra sobretensiones > 6kV en < 1 microsegundo."
+  },
+  {
+    id: 15023,
+    tema: 15,
+    texto: "¿Cada cuánto tiempo se debe verificar la resistencia de puesta a tierra?",
+    opciones: ["Una sola vez en instalación", "Anualmente (obligatorio)", "Cada 5 años", "Cada 10 años"],
+    correctaTexto: "Anualmente (obligatorio)",
+    explicacion: "Medición anual de resistencia tierra con telurómetro. Debe estar < 100Ω. Si sube por sequedad (verano) o erosión, requiere electrodo adicional."
+  },
+  {
+    id: 15024,
+    tema: 15,
+    texto: "¿Cuál es el principal problema con cables sin cubierta/desnudos en instalación FV?",
+    opciones: ["Generan mejor conducción", "Corrosión por exposición UV/humedad, riesgo contacto directo", "Pesan menos", "No hay problema"],
+    correctaTexto: "Corrosión por exposición UV/humedad, riesgo contacto directo",
+    explicacion: "Cables desnudos: oxidación rápida (6 meses), pérdida conductividad, riesgo electrocución. Obligatorio usar cable con aislamiento UV (H07Z1-U o RZ1-K)."
+  },
+  {
+    id: 15025,
+    tema: 15,
+    texto: "¿Qué indica un 'flashing' repetitivo en el inversor?",
+    opciones: ["Funcionamiento normal", "Fallo de comunicación o sobrecarga temporal", "Batería llena", "Sistema perfecto"],
+    correctaTexto: "Fallo de comunicación o sobrecarga temporal",
+    explicacion: "LED parpadeante: advertencia inversor (voltaje bajo/alto, temperatura, fallos comms). Revisar voltajes DC/AC, temperatura armario, conexión datos."
+  },
+  {
+    id: 15026,
+    tema: 15,
+    texto: "¿Cómo se debe proteger el cableado DC en techos/fachadas?",
+    opciones: ["Sin protección, directamente fijo", "Tubo rígido o canaleta protectora contra UV/mecánica", "Solo cinta aislante", "Enterrado siempre"],
+    correctaTexto: "Tubo rígido o canaleta protectora contra UV/mecánica",
+    explicacion: "Cableado DC aéreo: tubo Policarbonato (UV resistant) o canaleta PVDF en fachada. Protege de rayos UV, roedores, daño mecánico (3-5 años durabilidad)."
+  },
+  {
+    id: 15027,
+    tema: 15,
+    texto: "¿Qué significa 'derating' en baterías?",
+    opciones: ["No tiene significado", "Reducción capacidad por temperatura alta (>40°C: -1% por °C)", "Mayor carga", "Error de fabricante"],
+    correctaTexto: "Reducción capacidad por temperatura alta (>40°C: -1% por °C)",
+    explicacion: "Batería a 50°C: capacidad = 100% - 10% = 90%. Sobre 55°C riesgo explosión/incendio. Requisito: ventilación y/o refrigeración activa."
+  },
+  {
+    id: 15028,
+    tema: 15,
+    texto: "¿Cuál es el protocolo de desconexión antes de mantenimiento?",
+    opciones: ["Desconectar solo inversor", "1) Desconectar AC/red, 2) Desconectar DC paneles, 3) Esperar descarga capacitores, 4) Bloquear disyuntores", "Sin protocolo", "Solo apagar"],
+    correctaTexto: "1) Desconectar AC/red, 2) Desconectar DC paneles, 3) Esperar descarga capacitores, 4) Bloquear disyuntores",
+    explicacion: "Orden seguro: AC-ON/OFF, DC-OFF, espera 5 min (capacitores), bloqueo candado/cartel. Verificar voltaje con multímetro antes de tocar."
+  },
+  {
+    id: 15029,
+    tema: 15,
+    texto: "¿Qué herramientas son esenciales para diagnóstico en campo?",
+    opciones: ["Solo destornillador", "Multímetro, pinza amperimétrica, telurómetro, cámara termográfica", "Solo martillo", "Ninguna herramienta"],
+    correctaTexto: "Multímetro, pinza amperimétrica, telurómetro, cámara termográfica",
+    explicacion: "Kit diagnóstico: multímetro (voltaje/resistencia), pinza (corriente AC), telurómetro (tierra), termografía (células defectuosas). Opcional: datalogger irradiancia."
+  },
+  {
+    id: 15030,
+    tema: 15,
+    texto: "¿Cuál es la forma correcta de almacenar una batería sin usar?",
+    opciones: ["Sin carga, en lugar seco, temperatura 15-25°C", "Completamente cargada, en calor extremo", "Sumergida en agua", "Al sol directo"],
+    correctaTexto: "Sin carga, en lugar seco, temperatura 15-25°C",
+    explicacion: "Almacenamiento batería: 20-50% carga, lugar ventilado, temp óptima. Verificar voltaje cada 2 meses. Baterías Pb-ácido: descarga controlada, nunca vaciadas."
+  },
+  {
+    id: 15031,
+    tema: 15,
+    texto: "¿Qué mide un 'insulation resistance tester' (megohmetro)?",
+    opciones: ["Voltaje solamente", "Resistencia aislamiento (>1 MΩ típico, alerta < 100 kΩ)", "Corriente CA", "Temperatura"],
+    correctaTexto: "Resistencia aislamiento (>1 MΩ típico, alerta < 100 kΩ)",
+    explicacion: "Megohmetro: 500V/1000V DC. Mide aislamiento cable/componentes. Lectura < 100kΩ = fallo inminente (defecto aislamiento/humedad). Medir antes de energizar."
+  },
+  {
+    id: 15032,
+    tema: 15,
+    texto: "¿Cuál es el mejor sitio para instalar el armario de control?",
+    opciones: ["A pleno sol", "Sombra, protegido lluvia, ventilado, acceso fácil, temperatura 15-35°C", "En el sótano húmedo", "En azotea sin protección"],
+    correctaTexto: "Sombra, protegido lluvia, ventilado, acceso fácil, temperatura 15-35°C",
+    explicacion: "Ubicación óptima: norte/sombra, ventilación cruzada (evita > 45°C), acceso mantenimiento, protegido intemperie. Rebajar temp = mejorar inversor/regulador vida."
+  },
+  {
+    id: 15033,
+    tema: 15,
+    texto: "¿Qué es corrosión galvánica y cómo se previene?",
+    opciones: ["No existe", "Corrosión por contacto Cu-Al; prevenir con arandelas aislantes/pasta dieléctrica", "Beneficioso para instalación", "Solo cosmético"],
+    correctaTexto: "Corrosión por contacto Cu-Al; prevenir con arandelas aislantes/pasta dieléctrica",
+    explicacion: "Cu-Al en contacto + humedad: ion migration. Prevención: lubricante dieléctrico en conectores, arandelas nylon, no mezclar metales sin aislamiento."
+  },
+  {
+    id: 15034,
+    tema: 15,
+    texto: "¿Cuándo se considera que falla una batería?",
+    opciones: ["Cuando tiene 30 años", "Cuando cae a 50% capacidad nominal (fin de vida útil ~3000-5000 ciclos)", "Cuando se ve sucia", "Nunca falla"],
+    correctaTexto: "Cuando cae a 50% capacidad nominal (fin de vida útil ~3000-5000 ciclos)",
+    explicacion: "Batería EOL (End of Life): 50% capacidad original. Pb-ácido: 5-10 años, Li-ion: 10-15 años. Monitoreo voltaje/resistencia interna detecta degradación."
+  },
+  {
+    id: 15035,
+    tema: 15,
+    texto: "¿Qué provoca 'phantom loading' (consumo fantasma)?",
+    opciones: ["Inexistente", "Dispositivos en standby drenan batería sin control regulador", "Mayor eficiencia", "Inversores mejores"],
+    correctaTexto: "Dispositivos en standby drenan batería sin control regulador",
+    explicacion: "Phantom load: TV standby (5-10W), router (2W), cargadores (0.5W). En OFF-GRID = descarga significativa. Solución: apagar regletas, regulador con salida LVD."
+  },
+  {
+    id: 15036,
+    tema: 15,
+    texto: "¿Cuál es la causa más común de fallo prematuro en reguladores?",
+    opciones: ["Defecto fabricación", "Sobrecalentamiento (> 50°C continuo) → degradación componentes", "Uso normal", "Envejecimiento solo"],
+    correctaTexto: "Sobrecalentamiento (> 50°C continuo) → degradación componentes",
+    explicacion: "Regulador temperatura: ideal < 40°C. > 50°C acorta vida (condensadores). Solución: radiador adicional, ventilador, ubicación ventilada."
+  },
+  {
+    id: 15037,
+    tema: 15,
+    texto: "¿Qué registra un 'data logger' en tiempo real?",
+    opciones: ["Nada útil", "Voltaje DC/AC, corriente, potencia, temperatura, irradiancia en intervalos (cada 5-15 min)", "Solo fotos", "Datos privados"],
+    correctaTexto: "Voltaje DC/AC, corriente, potencia, temperatura, irradiancia en intervalos (cada 5-15 min)",
+    explicacion: "Data logger: registra contínuo parámetros clave. Análisis posterior detecta tendencias (degradación gradual), comportamiento climatizado, fallos transitorios."
+  },
+  {
+    id: 15038,
+    tema: 15,
+    texto: "¿Cuándo es necesario reemplazar la grasa en conectores?",
+    opciones: ["Nunca", "Cada 2-3 años o si hay corrosión/sequedad aparente", "Cada 6 meses", "Cada 10 años"],
+    correctaTexto: "Cada 2-3 años o si hay corrosión/sequedad aparente",
+    explicacion: "Grasa dieléctrica en conectores MC4: degradación UV/oxidación cada 3-5 años. Recambio previene corrosión, mantiene contacto óptimo."
+  },
+  {
+    id: 15039,
+    tema: 15,
+    texto: "¿Qué es 'stratification' en baterías de plomo?",
+    opciones: ["Separación de capas de electrólito (ácido concentrado abajo, diluido arriba)", "Aumento capacidad", "Mejor conductividad", "No existe"],
+    correctaTexto: "Separación de capas de electrólito (ácido concentrado abajo, diluido arriba)",
+    explicacion: "Estratificación: reduce área electrodo-electrólito, baja capacidad. Prevención: flotación regular (riego), carga ecualizadora periódica, mezcla manual."
+  },
+  {
+    id: 15040,
+    tema: 15,
+    texto: "¿Cuál es la temperatura óptima para funcionamiento de inversor?",
+    opciones: ["0°C", "15-35°C (máximo 45°C, reduce potencia)", "50°C o más", "Indiferente"],
+    correctaTexto: "15-35°C (máximo 45°C, reduce potencia)",
+    explicacion: "Inversor: cada 10°C arriba de 35°C = -5% potencia (derating). > 55°C parada automática. Requisito: ventilación, ubicación sombreada, radiador si necesario."
+  },
+  {
+    id: 15041,
+    tema: 15,
+    texto: "¿Qué indica voltaje bajo persistente en banco de baterías?",
+    opciones: ["Funcionamiento normal", "Batería sulfatada, regulador descalibrando, conector suelto, fuga corriente", "Batería nueva perfecta", "Nada importante"],
+    correctaTexto: "Batería sulfatada, regulador descalibrando, conector suelto, fuga corriente",
+    explicacion: "Voltaje bajo: revisar 1) Conexiones/apriete, 2) Resistencia aislamiento, 3) Consumo parasitario, 4) Estado batería (voltaje flotación vs. nominal)."
+  },
+  {
+    id: 15042,
+    tema: 15,
+    texto: "¿Cuál es el protocolo para cambio de batería en sistema operativo?",
+    opciones: ["Cambiar sin desconectar", "1) Desconectar cargas, 2) Desconectar paneles, 3) Desbloquear regulador, 4) Cambiar batería, 5) Reconectar secuencia inversa", "Cambiar y listo", "Imposible cambiar"],
+    correctaTexto: "1) Desconectar cargas, 2) Desconectar paneles, 3) Desbloquear regulador, 4) Cambiar batería, 5) Reconectar secuencia inversa",
+    explicacion: "Secuencia: OFF cargas → OFF paneles → regul. INIT → cambio batería → reconectar paneles → regul. sync → cargas ON. Evita transientes, arcos."
+  },
+  {
+    id: 15043,
+    tema: 15,
+    texto: "¿Qué es 'memory effect' en baterías?",
+    opciones: ["Batería recuerda ciclos anteriores", "Degradación por ciclos parciales repetidos (descarga/carga incompleta)", "Función útil", "Solo en Li-ion"],
+    correctaTexto: "Degradación por ciclos parciales repetidos (descarga/carga incompleta)",
+    explicacion: "Memory effect: principalmente Pb-ácido con carga incompleta. Solución: ciclos profundos ocasionales (descarga > 50% anual), ecualizador activo."
+  },
+  {
+    id: 15044,
+    tema: 15,
+    texto: "¿Cuál es la vida útil típica de un regulador PWM?",
+    opciones: ["1-2 años", "10-20 años si temperatura controlada", "30 años garantía", "Indefinida"],
+    correctaTexto: "10-20 años si temperatura controlada",
+    explicacion: "Regulador PWM vida: limitada por condensadores (10-15 años nominal). Factores: temperatura (doble vida por cada -10°C), ciclos ON/OFF, carga/descarga."
+  },
+  {
+    id: 15045,
+    tema: 15,
+    texto: "¿Cómo se detecta fuga de corriente en instalación?",
+    opciones: ["A ojo", "Megohmetro (aislamiento), pinza amperimétrica (consumo parasitario), multímetro (voltaje)", "Sin detectar", "Imposible"],
+    correctaTexto: "Megohmetro (aislamiento), pinza amperimétrica (consumo parasitario), multímetro (voltaje)",
+    explicacion: "Diagnóstico fuga: 1) Megohmetro > 100kΩ = OK, 2) Pinza en fuentes DC = consumo parásito < 100mA, 3) Voltaje entre carcasa/tierra < 5V."
+  },
+  {
+    id: 15046,
+    tema: 15,
+    texto: "¿Qué es 'bypass string' y cuándo se usa?",
+    opciones: ["No existe", "Camino alternativo alrededor de strings sombreados; usado en campos grandes", "Componente principal", "Solo en diseño"],
+    correctaTexto: "Camino alternativo alrededor de strings sombreados; usado en campos grandes",
+    explicacion: "Bypass: en plantas solares conexión paralela alterna string sombrado. Evita punto caliente. Diodos bidireccionales permitir flujo alternativo sin pérdida."
+  },
+  {
+    id: 15047,
+    tema: 15,
+    texto: "¿Cuál es el riesgo de no tener protección contra inversión de polaridad?",
+    opciones: ["Ninguno", "Destrucción diodos, inversores, reguladores; incendio batería", "Menor eficiencia solo", "Beneficio seguridad"],
+    correctaTexto: "Destrucción diodos, inversores, reguladores; incendio batería",
+    explicacion: "Inversión polaridad (conectar batería al revés): corriente inversa funde diodos, daña regulador/inversor. Fusible protege pero caro. Mejor: diodo blocking."
+  },
+  {
+    id: 15048,
+    tema: 15,
+    texto: "¿Qué registra un 'voltmeter gauge' en tiempo real?",
+    opciones: ["Nada", "Voltaje instantáneo batería; útil para monitoreo básico carga/descarga", "Temperatura solo", "Irrelevante"],
+    correctaTexto: "Voltaje instantáneo batería; útil para monitoreo básico carga/descarga",
+    explicacion: "Voltímetro analógico/digital: indicador rápido estado batería. Rango: 48V nominal (40-60V operación). Integrado en paneles de control básicos."
+  },
+  {
+    id: 15049,
+    tema: 15,
+    texto: "¿Cuándo es necesario hacer 'equalization' en baterías?",
+    opciones: ["Nunca", "Mensual o cuando estratificación detectada (voltaje celdas desigual)", "Anualmente solo", "Cada semana"],
+    correctaTexto: "Mensual o cuando estratificación detectada (voltaje celdas desigual)",
+    explicacion: "Ecualizador: sobrecarga controlada (~115-130% nominal 1-4 horas) que mezcla ácido estratificado. Regulador automático realiza si programado."
+  },
+  {
+    id: 15050,
+    tema: 15,
+    texto: "¿Qué medidas preventivas reducen fallos en instalación fotovoltaica?",
+    opciones: ["Sin medidas preventivas", "Limpieza anual, inspección visual, termografía, apriete conexiones, medición aislamiento, cambio lubricantes", "Solo reactiva", "Costoso sin beneficio"],
+    correctaTexto: "Limpieza anual, inspección visual, termografía, apriete conexiones, medición aislamiento, cambio lubricantes",
+    explicacion: "Mantenimiento preventivo: plan anual con calendario. ROI: 1 hora mantenimiento previene 10 horas reparación. Extend vida útil equipo 20-30%."
   }
 ];
