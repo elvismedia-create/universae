@@ -1,5 +1,12 @@
 const CONFIGURACION_CURSO = [
   {
+    bloque: "pestana0",
+    titulo_boton: "⭐ EXÁMENES SEMESTRALES (75% del examen oficial)",
+    asignaturas: [
+      { nombre: "Examen Semestral: Instalaciones Eléctricas Interiores (40 preguntas)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA }
+    ]
+  },
+  {
     bloque: "pestana1",
     titulo_boton: "1. Formación Técnica Integral (10 Unidades)",
     asignaturas: [

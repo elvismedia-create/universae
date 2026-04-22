@@ -22,6 +22,7 @@ const ASSETS_TO_CACHE = [
   './data-empleabilidad-u4.js',
   './data-empleabilidad-u5.js',
   './data-empleabilidad-u6.js',
+  './data-examen-semestral-instalaciones-electricas-interiores.js',
   './data-config.js',
   './fotometria.js',
   './caida-tension.js',
