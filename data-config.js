@@ -1,15 +1,9 @@
 const CONFIGURACION_CURSO = [
   {
-    bloque: "pestana0",
-    titulo_boton: "⭐ EXÁMENES SEMESTRALES (75% del examen oficial)",
-    asignaturas: [
-      { nombre: "Examen Semestral: Instalaciones Eléctricas Interiores (40 preguntas)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA }
-    ]
-  },
-  {
     bloque: "pestana1",
     titulo_boton: "1. Formación Técnica Integral (10 Unidades)",
     asignaturas: [
+      { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Eléctricas Interiores (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA },
       { nombre: "U1: Conductores y herramientas eléctricas", data: TEMA_1_DATA },
       { nombre: "U2: Circuitos eléctricos básicos en interiores", data: TEMA_2_DATA },
       { nombre: "U3: Protección de las instalaciones eléctricas", data: TEMA_3_DATA },
