@@ -899,7 +899,7 @@ svg, svg * {
 <script src="caida-tension.js"></script>
 <script src="simbolo-master.js"></script>
 <!-- MOTOR PRINCIPAL -->
-<script src="motor.js"></script>
+<script src="motor.js?v=20260504230000"></script>
 
 <!-- Auto-actualización NUCLEAR v67.24 -->
 <script>
@@ -1205,6 +1205,27 @@ function filtrarBloque(bid) {
       </div>
     `;
     grid.appendChild(cardSemestralEmpleabilidad);
+  }
+
+  // ZONA NARANJA: SIMULACRO SEMESTRAL INGLÉS PROFESIONAL
+  if (bid === "pestana4" && typeof EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA !== 'undefined') {
+    const cardSemestralIngles = document.createElement("div");
+    cardSemestralIngles.className = "asig-card card-simulacros";
+    cardSemestralIngles.style.backgroundColor = "#ffe8cc";
+    cardSemestralIngles.style.borderLeft = "4px solid #f97316";
+    cardSemestralIngles.innerHTML = `
+      <div class="simulacro-header">
+        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Inglés Profesional</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+        <div style="font-size: 2.5rem; opacity: 0.1;">🇬🇧</div>
+      </div>
+      <div class="simulacro-grid">
+        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(10)">10</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(20)">20</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(30)">30</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
+      </div>
+    `;
+    grid.appendChild(cardSemestralIngles);
   }
 
   // 1. ZONA DE SIMULACROS

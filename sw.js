@@ -1,6 +1,6 @@
-// CONSOLIDACIÓN FINAL v67.41 - 10 Temas + FV U1-U8 + Empleabilidad REAL (40 Qs) + Inglés Profesional REAL (40 Qs) + Semestral REAL (40 IEI + 40 FV + 40 Inglés Qs)
-const BUILD_TIMESTAMP = '20260504145000'; // FORZAR ACTUALIZACIÓN - Fotovoltaica + Instalaciones Eléctricas Interiores + INGLÉS PROFESIONAL con 40 preguntas REALES
-const CACHE_NAME = `mastertest-v67.41-${BUILD_TIMESTAMP}`;
+// v67.42 - Simulacros semestrales con opciones en orden fijo (igual que la academia) + Simulacro Inglés Profesional añadido
+const BUILD_TIMESTAMP = '20260504230000'; // Opciones fijas en simulacros semestrales + card Inglés
+const CACHE_NAME = `mastertest-v67.42-${BUILD_TIMESTAMP}`;
 
 const ASSETS_TO_CACHE = [
   './',

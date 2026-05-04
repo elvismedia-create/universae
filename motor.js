@@ -843,19 +843,25 @@ function iniciarTestPersonalizado(n) {
 }
 function iniciarTestSemestral(n) {
     preguntasJuego = [...EXAMEN_SEMESTRAL_INSTALACIONES_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
+    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
     modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
     iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
 }
 function iniciarTestSemestralFotovoltaica(n) {
     preguntasJuego = [...EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
+    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
     modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
     iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
 }
 function iniciarTestSemestralEmpleabilidad(n) {
     preguntasJuego = [...EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
+    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
+    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
+    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
+}
+function iniciarTestSemestralIngles(n) {
+    preguntasJuego = [...EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA].slice(0, n);
+    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
     modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
     iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
 }
