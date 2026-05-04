@@ -1,0 +1,882 @@
+const TEMA_1_DATA = [
+  { 
+    id:1001, 
+    tema:"Electricidad básica", 
+    texto:"¿Qué se entiende por electricidad?", 
+    opciones:["El conjunto de fenómenos físicos originados por la presencia y movimiento de cargas eléctricas.","La energía mecánica.","El consumo eléctrico.","La potencia contratada."], 
+    correctaTexto:"El conjunto de fenómenos físicos originados por la presencia y movimiento de cargas eléctricas.",
+    explicacion: "No es solo la luz o el enchufe. Es el fenómeno físico global que abarca desde un rayo hasta la corriente de una pila, causado por electrones en movimiento o reposo."
+  },
+  { 
+    id:1002, 
+    tema:"Magnitudes eléctricas", 
+    texto:"¿Qué es la intensidad de corriente eléctrica?", 
+    opciones:["La cantidad de carga eléctrica que atraviesa un conductor por unidad de tiempo.","La diferencia de potencial.","La oposición al paso de la corriente.","La energía consumida."], 
+    correctaTexto:"La cantidad de carga eléctrica que atraviesa un conductor por unidad de tiempo.",
+    explicacion: "Es el 'caudal' de electricidad. Imagina una tubería de agua: la intensidad sería la cantidad de litros que pasan por segundo. Se mide en Amperios (A)."
+  },
+  { 
+    id:1003, 
+    tema:"Magnitudes eléctricas", 
+    texto:"¿Qué es la tensión eléctrica?", 
+    opciones:["La diferencia de potencial eléctrico entre dos puntos.","La intensidad de corriente.","La resistencia.","La potencia."], 
+    correctaTexto:"La diferencia de potencial eléctrico entre dos puntos.",
+    explicacion: "Es la 'fuerza' que empuja a los electrones. Sin diferencia de potencial (voltaje) entre dos puntos, la corriente no se mueve. Se mide en Voltios (V)."
+  },
+  { 
+    id:1004, 
+    tema:"Magnitudes eléctricas", 
+    texto:"¿Qué es la resistencia eléctrica?", 
+    opciones:["La oposición que presenta un material al paso de la corriente.","La capacidad de producir energía.","La tensión.","La intensidad máxima."], 
+    correctaTexto:"La oposición que presenta un material al paso de la corriente.",
+    explicacion: "Es el freno que pone el material al paso de los electrones. Cuanta más resistencia, más difícil le resulta pasar a la corriente y más calor se genera. Se mide en Ohmios (Ω)."
+  },
+  { 
+    id:1005, 
+    tema:"Unidades", 
+    texto:"¿En qué unidad se mide la intensidad?", 
+    opciones:["Amperios (A).","Voltios (V).","Ohmios (Ω).","Vatios (W)."], 
+    correctaTexto:"Amperios (A).",
+    explicacion: "En honor a André-Marie Ampère. Un Amperio equivale al paso de un Culombio de carga por segundo."
+  },
+  { 
+    id:1006, 
+    tema:"Unidades", 
+    texto:"¿En qué unidad se mide la tensión?", 
+    opciones:["Voltios (V).","Amperios (A).","Ohmios (Ω).","Julios (J)."], 
+    correctaTexto:"Voltios (V).",
+    explicacion: "En honor a Alessandro Volta. En las viviendas de España la tensión estándar es de 230 Voltios."
+  },
+  { 
+    id:1007, 
+    tema:"Unidades", 
+    texto:"¿En qué unidad se mide la resistencia?", 
+    opciones:["Ohmios (Ω).","Amperios (A).","Voltios (V).","Vatios (W)."], 
+    correctaTexto:"Ohmios (Ω).",
+    explicacion: "En honor a Georg Simon Ohm. Se representa con la letra griega Omega (Ω)."
+  },
+  { 
+    id:1008, 
+    tema:"Potencia", 
+    texto:"¿Qué es la potencia eléctrica?", 
+    opciones:["La energía consumida o generada por unidad de tiempo.","La tensión.","La intensidad.","La resistencia."], 
+    correctaTexto:"La energía consumida o generada por unidad de tiempo.",
+    explicacion: "Es la velocidad a la que se consume la energía. Se mide en Vatios (W). Si la energía es el trabajo total, la potencia es lo rápido que lo haces."
+  },
+  { 
+    id:1009, 
+    tema:"Seguridad", 
+    texto:"¿Qué riesgo puede producir la corriente en el cuerpo humano?", 
+    opciones:["Riesgos graves para la salud.","Solo calentamiento.","Daños materiales.","Ningún riesgo."], 
+    correctaTexto:"Riesgos graves para la salud.",
+    explicacion: "Desde calambres (tetanización muscular) hasta paradas cardíacas o quemaduras internas graves, dependiendo de la intensidad y el tiempo de contacto."
+  },
+  { 
+    id:1010, 
+    tema:"Normativa", 
+    texto:"¿Qué reglamento regula la baja tensión en España?", 
+    opciones:["El Reglamento Electrotécnico para Baja Tensión (REBT).","El Reglamento de Alta Tensión.","El CTE.","Las normas ISO."], 
+    correctaTexto:"El Reglamento Electrotécnico para Baja Tensión (REBT).",
+    explicacion: "Aprobado por el Real Decreto 842/2002. Es la norma de obligado cumplimiento para garantizar la seguridad de las instalaciones y personas."
+  },
+  { 
+    id:1011, 
+    tema:"Electricidad", 
+    texto:"¿Qué es la corriente continua?", 
+    opciones:["La que circula siempre en el mismo sentido.","La que cambia de sentido.","La doméstica.","La trifásica."], 
+    correctaTexto:"La que circula siempre en el mismo sentido.",
+    explicacion: "Los electrones viajan siempre del polo negativo al positivo. Es la típica de baterías, pilas y electrónica (móviles, ordenadores)."
+  },
+  { 
+    id:1012, 
+    tema:"Electricidad", 
+    texto:"¿Qué es la corriente alterna?", 
+    opciones:["La que cambia periódicamente de sentido.","La continua.","La de baterías.","La estática."], 
+    correctaTexto:"La que cambia periódicamente de sentido.",
+    explicacion: "Los electrones oscilan adelante y atrás. En España cambian de sentido 50 veces por segundo (50 Hz). Es la más eficiente para transportar energía lejos."
+  },
+  { 
+    id:1013, 
+    tema:"Suministro", 
+    texto:"¿Qué corriente se usa en viviendas?", 
+    opciones:["Corriente alterna.","Corriente continua.","Corriente pulsante.","Corriente estática."], 
+    correctaTexto:"Corriente alterna.",
+    explicacion: "La red de distribución nos entrega corriente alterna a 230V. Aunque luego muchos aparatos (TV, PC) la transforman a continua internamente para funcionar."
+  },
+  { 
+    id:1014, 
+    tema:"Tensión", 
+    texto:"¿Qué tensión es habitual en viviendas?", 
+    opciones:["230 V.","220 V.","400 V.","125 V."], 
+    correctaTexto:"230 V.",
+    explicacion: "Según el REBT actual, la tensión nominal monofásica en España se normalizó a 230 V (antes era 220 V)."
+  },
+  { 
+    id:1015, 
+    tema:"Potencia", 
+    texto:"Relación entre potencia, tensión e intensidad.", 
+    opciones:["P = V × I","P = V + I","P = V / I","P = I / V"], 
+    correctaTexto:"P = V × I",
+    explicacion: "Fórmula fundamental: Potencia (Vatios) = Tensión (Voltios) x Intensidad (Amperios). Truco: P = V·I ('Pavi')."
+  },
+  { 
+    id:1016, 
+    tema:"Conductores", 
+    texto:"¿Material conductor más usado?", 
+    opciones:["Cobre.","Hierro.","Plomo.","Acero."], 
+    correctaTexto:"Cobre.",
+    explicacion: "El cobre ofrece una excelente conductividad y flexibilidad a un precio razonable. El aluminio también se usa, pero principalmente en líneas de distribución."
+  },
+  { 
+    id:1017, 
+    tema:"Instalaciones", 
+    texto:"Función del aislamiento.", 
+    opciones:["Evitar contactos y derivaciones.","Aumentar intensidad.","Reducir tensión.","Mejorar potencia."], 
+    correctaTexto:"Evitar contactos y derivaciones.",
+    explicacion: "El plástico que recubre el cable evita que la corriente se escape (cortocircuitos) o que nos electrocutemos al tocarlo."
+  },
+  { 
+    id:1018, 
+    tema:"Seguridad", 
+    texto:"¿Qué es un contacto directo?", 
+    opciones:["Contacto con partes activas.","Contacto con masas.","Contacto con tierra.","Contacto aislado."], 
+    correctaTexto:"Contacto con partes activas.",
+    explicacion: "Es tocar directamente un cable pelado, un borne o cualquier parte que DEBE tener tensión normalmente."
+  },
+  { 
+    id:1019, 
+    tema:"Seguridad", 
+    texto:"¿Qué es un contacto indirecto?", 
+    opciones:["Contacto con masas en tensión.","Contacto directo.","Contacto aislado.","Contacto con neutro."], 
+    correctaTexto:"Contacto con masas en tensión.",
+    explicacion: "Es tocar la carcasa metálica de un aparato (lavadora, nevera) que NO debería tener tensión, pero la tiene por un fallo de aislamiento interno."
+  },
+  { 
+    id:1020, 
+    tema:"Protecciones", 
+    texto:"Finalidad de las protecciones.", 
+    opciones:["Proteger personas e instalación.","Reducir consumo.","Aumentar potencia.","Mejorar eficiencia."], 
+    correctaTexto:"Proteger personas e instalación.",
+    explicacion: "Los automáticos y diferenciales no están para ahorrar luz, sino para evitar incendios (instalación) y electrocuciones (personas)."
+  },
+  { 
+    id:1021, 
+    tema:"Ley Ohm", 
+    texto:"Si aumentamos la intensidad que circula por un conductor (a igualdad de resistencia), ¿qué ocurre con la tensión?", 
+    opciones:["Aumenta (son directamente proporcionales).","Disminuye.","Se mantiene igual.","Se hace cero."], 
+    correctaTexto:"Aumenta (son directamente proporcionales).",
+    explicacion: "Según la Ley de Ohm (V = I · R), si la resistencia es fija y sube la intensidad (I), el voltaje (V) tiene que subir obligatoriamente."
+  },
+  { 
+    id:1022, 
+    tema:"Instalación", 
+    texto:"Según el temario, ¿cuál es el 'cuarto paso' en el montaje de una instalación?", 
+    opciones:["Conectar protecciones y mecanismos y comprobar.","Marcar ubicaciones.","Meter cables.","Realizar conexiones en cajas."], 
+    correctaTexto:"Conectar protecciones y mecanismos y comprobar.",
+    explicacion: "El orden lógico es: 1. Marcar/Rozas -> 2. Meter cables -> 3. Empalmar en cajas -> 4. Conectar mecanismos y protecciones finales."
+  },
+  { 
+    id:1023, 
+    tema:"Corriente", 
+    texto:"En corriente continua, ¿cuál es el color normalizado para el polo positivo?", 
+    opciones:["Rojo.","Negro.","Azul.","Amarillo."], 
+    correctaTexto:"Rojo.",
+    explicacion: "Estándar universal: Rojo para Positivo (+), Negro para Negativo (-). En fotovoltaica a veces se usan ambos negros con marcas, pero el rojo es la referencia."
+  },
+  { 
+    id:1024, 
+    tema:"Componentes", 
+    texto:"¿Qué elemento protege contra sobretensiones transitorias (ej. rayos)?", 
+    opciones:["Protector contra sobretensiones.","Diferencial.","Magnetotérmico.","Fusible."], 
+    correctaTexto:"Protector contra sobretensiones.",
+    explicacion: "Es un dispositivo específico que deriva los picos de voltaje muy altos y rápidos (como un rayo) a tierra para que no quemen los electrodomésticos."
+  },
+  { 
+    id:1025, 
+    tema:"Magnitudes", 
+    texto:"¿Qué fórmula relaciona Potencia, Tensión e Intensidad?", 
+    opciones:["P = V x I","P = V / I","P = I / V","P = V + I"], 
+    correctaTexto:"P = V x I",
+    explicacion: "Recuerda: Potencia (W) = Voltaje (V) x Intensidad (A). Es la base para calcular cuánto consume cualquier aparato."
+  },
+  { 
+    id:1026, 
+    tema:"Sist. Trifásico", 
+    texto:"¿Cuántos cables activos (fases) tiene un sistema trifásico?", 
+    opciones:["Tres fases (más neutro opcional).","Dos fases.","Una fase.","Cuatro fases."], 
+    correctaTexto:"Tres fases (más neutro opcional).",
+    explicacion: "Como su nombre indica, lleva 3 fases (L1, L2, L3) desfasadas 120º entre sí. Puede llevar Neutro (4 hilos) o no (3 hilos), pero las fases son siempre 3."
+  },
+  { 
+    id:1027, 
+    tema:"Esquemas", 
+    texto:"En un esquema multifilar:", 
+    opciones:["Aparecen todos los cables y dónde van conectados.","Se representa todo con una sola línea.","No aparecen los receptores.","Es un plano de situación."], 
+    correctaTexto:"Aparecen todos los cables y dónde van conectados.",
+    explicacion: "Es el esquema detallado. A diferencia del unifilar (una raya = un tubo), aquí dibujas cada cable individualmente. Es más lioso pero más preciso para montar."
+  },
+  { 
+    id:1028, 
+    tema:"Protección", 
+    texto:"¿Qué diferencia principal tiene un fusible respecto a un PIA?", 
+    opciones:["El fusible hay que sustituirlo al fundirse, el PIA se rearma.","El fusible es para personas, el PIA para equipos.","El fusible es rearmable.","Ninguna."], 
+    correctaTexto:"El fusible hay que sustituirlo al fundirse, el PIA se rearma.",
+    explicacion: "El fusible se quema físicamente (se rompe el hilo) y hay que tirarlo. El PIA (automático) es un interruptor que salta y se puede volver a subir."
+  },
+  { 
+    id:1029, 
+    tema:"Instalación", 
+    texto:"¿Para qué sirve una guía pasacables?", 
+    opciones:["Para meter los cables por el interior de los tubos.","Para medir la longitud del tubo.","Para pelar cables.","Para conectar regletas."], 
+    correctaTexto:"Para meter los cables por el interior de los tubos.",
+    explicacion: "Es una varilla flexible (nylon o acero) que se mete primero por el tubo vacío, se enganchan los cables en la punta y se tira de ella para pasarlos."
+  },
+  { 
+    id:1030, 
+    tema:"Conceptos", 
+    texto:"La frase 'la electricidad ni se crea ni se destruye...' termina con:", 
+    opciones:["Se transforma.","Se pierde.","Se almacena.","Se gasta."], 
+    correctaTexto:"Se transforma.",
+    explicacion: "Principio de conservación de la energía. La energía eléctrica se transforma en luz, calor o movimiento, pero no desaparece."
+  },
+  { 
+    id: 1031, 
+    tema: "Magnitudes", 
+    texto: "¿Qué instrumento se usa para medir la frecuencia?", 
+    opciones: ["Frecuencímetro.", "Vatímetro.", "Amperímetro.", "Ohmímetro."], 
+    correctaTexto: "Frecuencímetro.",
+    explicacion: "Su nombre lo dice todo. Mide los Hercios (Hz). En España la red eléctrica trabaja a 50 Hz clavados."
+  },
+  { 
+    id: 1032, 
+    tema: "Conceptos", 
+    texto: "¿Qué es un circuito abierto?", 
+    opciones: ["Un circuito interrumpido por el que no circula corriente.", "Un circuito funcionando.", "Un cortocircuito.", "Un circuito sin resistencia."], 
+    correctaTexto: "Un circuito interrumpido por el que no circula corriente.",
+    explicacion: "Es como un puente levadizo levantado: los coches (electrones) no pueden pasar. Si apagas el interruptor, abres el circuito."
+  },
+  { 
+    id: 1033, 
+    tema: "Seguridad", 
+    texto: "El contacto de una persona con dos fases activas simultáneamente se considera:", 
+    opciones: ["Contacto directo.", "Contacto indirecto.", "Cortocircuito.", "Defecto de aislamiento."], 
+    correctaTexto: "Contacto directo.",
+    explicacion: "Estás tocando directamente las partes que tienen tensión. Es el accidente más peligroso porque recibes la descarga completa entre fases (400V)."
+  },
+  { 
+    id: 1034, 
+    tema: "Componentes", 
+    texto: "¿Cuál es la función principal de un condensador?", 
+    opciones: ["Almacenar energía eléctrica.", "Disipar calor.", "Generar luz.", "Proteger contra sobrecargas."], 
+    correctaTexto: "Almacenar energía eléctrica.",
+    explicacion: "Actúa como un pequeño depósito de energía temporal (campo eléctrico). Se usa para arrancar motores, filtrar señales o compensar reactiva."
+  },
+  { 
+    id: 1035, 
+    tema: "Unidades", 
+    texto: "¿En qué unidad se mide la capacidad de una batería?", 
+    opciones: ["Amperios-hora (Ah).", "Voltios (V).", "Vatios (W).", "Ohmios (Ω)."], 
+    correctaTexto: "Amperios-hora (Ah).",
+    explicacion: "Indica cuántos amperios puede dar durante una hora. Una batería de 50Ah podría dar 50 amperios durante 1 hora, o 1 amperio durante 50 horas."
+  },
+  { 
+    id: 1036, 
+    tema: "Transporte", 
+    texto: "Para transportar electricidad a largas distancias, ¿por qué se eleva la tensión a miles de voltios (kV)?", 
+    opciones: ["Para reducir la intensidad y evitar pérdidas.", "Para que vaya más rápido.", "Para aumentar la resistencia.", "Para convertirla en continua."], 
+    correctaTexto: "Para reducir la intensidad y evitar pérdidas.",
+    explicacion: "Al subir el voltaje, baja la intensidad (para la misma potencia). Como el calor que se pierde en el cable depende de la intensidad (Efecto Joule), interesa que la 'I' sea mínima."
+  },
+  { 
+    id: 1037, 
+    tema: "Circuitos", 
+    texto: "En un circuito en paralelo (como el de la imagen), ¿qué característica tiene la tensión?", 
+    imagen: "https://www.ieslosalbares.es/tecnologia/Electricidad%20II/circuito_mixto_con_bombillas.jpg", 
+    opciones: ["Es la misma en todos los puntos.", "Se divide entre los receptores.", "Es nula.", "Depende de la intensidad."], 
+    correctaTexto: "Es la misma en todos los puntos.",
+    explicacion: "En paralelo, todos los receptores están conectados directamente a la fuente. Por eso todos los enchufes de tu casa tienen 230V, porque están en paralelo."
+  },
+  { 
+    id: 1038, 
+    tema: "Corriente Alterna", 
+    texto: "Según el temario, ¿cuántas veces por segundo cambia de sentido la corriente alterna (ciclos)?", 
+    opciones: ["50 veces por segundo (50 Hz).", "60 veces por segundo.", "100 veces por segundo.", "No cambia de sentido."], 
+    correctaTexto: "50 veces por segundo (50 Hz).",
+    explicacion: "Es la frecuencia estándar europea: 50 Hz. Significa que la polaridad cambia 50 ciclos completos cada segundo."
+  },
+  { 
+    id: 1039, 
+    tema: "Herramientas", 
+    texto: "¿Qué instrumento se utiliza específicamente para medir la resistencia de la toma de tierra?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Digital_Earth_resistance_tester.jpg", 
+    opciones: ["Telurómetro.", "Amperímetro.", "Vatímetro.", "Buscapolos."], 
+    correctaTexto: "Telurómetro.",
+    explicacion: "Viene de 'Tellus' (Tierra). Es el aparato específico para comprobar que la pica de tierra hace buen contacto con el suelo."
+  },
+  { 
+    id: 1040, 
+    tema: "Instalación", 
+    texto: "En el montaje de una instalación, ¿para qué se utiliza esta herramienta (guía)?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Fish_tape.jpg", 
+    opciones: ["Para meter los cables por el interior de los tubos.", "Para medir la longitud del tubo.", "Para pelar los cables.", "Para conectar las regletas."], 
+    correctaTexto: "Para meter los cables por el interior de los tubos.",
+    explicacion: "Sin la guía es imposible empujar un cable flexible por un tubo corrugado largo. La guía entra primero porque es rígida y luego arrastra el cable."
+  },
+  { 
+    id: 1041, 
+    tema: "Componentes", 
+    texto: "Según el temario, ¿qué función realizan los 'elementos de maniobra' (como un interruptor)?", 
+    opciones: ["Permiten accionar o controlar los receptores a voluntad.", "Consumen energía eléctrica.", "Protegen contra cortocircuitos.", "Generan electricidad."], 
+    correctaTexto: "Permiten accionar o controlar los receptores a voluntad.",
+    explicacion: "Maniobra = Control. Son los elementos que nos permiten decidir cuándo encendemos o apagamos una luz o motor."
+  },
+  { 
+    id: 1042, 
+    tema: "Instalación", 
+    texto: "¿Cómo se llama este elemento utilizado para realizar conexiones en las cajas de registro?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Luster_terminals.JPG", 
+    opciones: ["Fichas de empalme o regletas.", "Cinta aislante.", "Soldadura de estaño.", "Bornas de tierra."], 
+    correctaTexto: "Fichas de empalme o regletas.",
+    explicacion: "Es la forma correcta y segura de unir cables. Los empalmes hechos solo retorciendo cables y poniendo cinta aislante están prohibidos (chapuza)."
+  },
+  { 
+    id: 1043, 
+    tema: "Identificación", 
+    texto: "En un sistema de corriente alterna monofásico, ¿cuál es el color normalizado para el cable Neutro?", 
+    opciones: ["Azul.", "Negro.", "Marrón.", "Amarillo-Verde."], 
+    correctaTexto: "Azul.",
+    explicacion: "El REBT es estricto: Neutro SIEMPRE Azul claro. Tierra SIEMPRE Amarillo-Verde. La Fase puede ser Negro, Marrón o Gris."
+  },
+  { 
+    id: 1044, 
+    tema: "Protección", 
+    texto: "¿Qué es el 'poder de corte' de un interruptor magnetotérmico como el de la foto?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Micro_Circuit_Breaker.jpg", 
+    opciones: ["La intensidad máxima que es capaz de interrumpir sin destruirse.", "La rapidez con la que dispara.", "El voltaje máximo que soporta.", "La temperatura a la que se funde."], 
+    correctaTexto: "La intensidad máxima que es capaz de interrumpir sin destruirse.",
+    explicacion: "Ante un cortocircuito brutal (miles de amperios), el interruptor debe ser capaz de abrirse sin explotar o soldarse. Eso es el poder de corte (ej: 6000A)."
+  },
+  { 
+    id: 1045, 
+    tema: "Mantenimiento", 
+    texto: "Según el documento, ¿cuál es el primer paso fundamental para localizar una avería eléctrica?", 
+    opciones: ["Conocer las partes de la instalación interpretando los esquemas.", "Cambiar todos los fusibles.", "Desmontar el cuadro general.", "Aumentar la potencia contratada."], 
+    correctaTexto: "Conocer las partes de la instalación interpretando los esquemas.",
+    explicacion: "No puedes arreglar lo que no entiendes. Antes de tocar nada, debes mirar el esquema para saber cómo está montado el circuito."
+  },
+  { 
+    id: 1046, 
+    tema: "Circuitos", 
+    texto: "¿Qué tipo de conexión representa este esquema?", 
+    imagen: "https://ambientech.org/wp-content/uploads/2024/04/circuito-serie.jpg",
+    opciones: ["Serie", "Paralelo", "Mixto", "Estrella"], 
+    correctaTexto: "Serie",
+    explicacion: "En serie, los componentes van uno detrás de otro en fila india. Si quitas uno, se corta el circuito entero (como las luces de navidad antiguas)."
+  },
+  { 
+    id: 1046, // Nota: Cuidado con IDs duplicados en tu código original, este debería ser único
+    tema: "Ley de Ohm", 
+    texto: "Según el triángulo de la Ley de Ohm de la imagen, ¿cuál es la fórmula para calcular la Tensión (V)?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Ohm's_law_triangle.svg", 
+    opciones: ["V = I · R", "V = I / R", "V = R / I", "V = P · I"], 
+    correctaTexto: "V = I · R",
+    explicacion: "El triángulo es un truco visual. Si tapas la V (arriba), te quedan la I y la R abajo juntas, lo que indica multiplicación."
+  },
+  { 
+    id: 1047, 
+    tema: "Corriente", 
+    texto: "La imagen muestra una señal que varía en el tiempo. ¿A qué tipo de corriente corresponde?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Sine_wave_2.svg", 
+    opciones: ["Corriente Alterna (CA).", "Corriente Continua (CC).", "Corriente Pulsatoria.", "Corriente Estática."], 
+    correctaTexto: "Corriente Alterna (CA).",
+    explicacion: "La onda senoidal que sube y baja cruzando el cero representa que la corriente va y viene, cambiando de polaridad."
+  },
+  {
+    id: 1048,
+    tema: "Código de Colores",
+    texto: "En un cable de alimentación estándar (como el de la foto), ¿qué indica el cable de color amarillo y verde?",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/7/7d/HomeEarthRodAustralia1.jpg",
+    opciones: [ "Toma de tierra (Protección).", "Fase.", "Neutro.", "Retorno." ],
+    correctaTexto: "Toma de tierra (Protección).",
+    explicacion: "Es el código de color internacional para la protección (PE). Es bicolor (amarillo-verde) para que no se confunda con ningún otro cable, ni siquiera por daltónicos."
+  },
+  { 
+    id: 1049, 
+    tema: "Simbología", 
+    texto: "¿Qué componente eléctrico se representa con este símbolo en zig-zag?", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Resistor_symbol_America.svg", 
+    opciones: ["Una resistencia.", "Una bobina.", "Un condensador.", "Un interruptor."], 
+    correctaTexto: "Una resistencia.",
+    explicacion: "El zig-zag representa la dificultad que tiene la corriente para pasar (como un camino de obstáculos). Es el símbolo americano (el europeo es un rectángulo)."
+  },
+  { 
+    id: 1050, 
+    tema: "Herramientas", 
+    texto: "Para medir Tensión, Intensidad y Resistencia con un solo aparato (foto), usamos un...", 
+    imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Digital_Multimeter_Aka.jpg", 
+    opciones: ["Polímetro o Multímetro.", "Telurómetro.", "Vatímetro.", "Luxómetro."], 
+    correctaTexto: "Polímetro o Multímetro.",
+    explicacion: "Es la navaja suiza del electricista. Combina Voltímetro, Amperímetro y Ohmímetro en un solo dispositivo."
+  },
+  { 
+    id: 1051, 
+    tema: "Identificación", 
+    texto: "¿Con qué color identificamos el cable de toma tierra?", 
+    opciones: ["Amarillo y verde.", "Negro y verde.", "Marrón y verde.", "Gris y verde."], 
+    correctaTexto: "Amarillo y verde.",
+    explicacion: "Exclusivo para conductores de protección. Está prohibido usar este color para cualquier otra cosa."
+  },
+  { 
+    id: 1052, 
+    tema: "Esquemas", 
+    texto: "Podemos decir que un esquema unifilar son...", 
+    opciones: ["Esquemas sencillos y fáciles de entender, cada circuito se representa por una única línea.", "Esquemas complicados y difíciles de entender.", "Cada circuito se representa en diferentes líneas y secciones.", "Los esquemas son para pequeñas instalaciones."], 
+    correctaTexto: "Esquemas sencillos y fáciles de entender, cada circuito se representa por una única línea.",
+    explicacion: "Unifilar = Un hilo. Aunque el cable real tenga 3 conductores (Fase, Neutro, Tierra), en el dibujo se pintan como una sola raya para simplificar."
+  },
+  { 
+    id: 1053, 
+    tema: "Normativa", 
+    texto: "Las normas técnicas sobre cómo y de qué manera debemos realizar la puesta a tierra las encontramos en...", 
+    opciones: ["El REBT (Reglamento Electrotécnico de Baja Tensión).", "En las normas UNE.", "En las normas del buen instalador.", "No existen tales normas, sigues tú criterio profesional."], 
+    correctaTexto: "El REBT (Reglamento Electrotécnico de Baja Tensión).",
+    explicacion: "Concretamente en la ITC-BT-18. Ahí se define cómo deben ser las picas, los conductores y los valores de resistencia."
+  },
+  { 
+    id: 1054, 
+    tema: "Protecciones", 
+    texto: "¿Qué diferencia encontramos entre un PIA y un fusible?", 
+    opciones: ["El PIA lo rearmamos y en el fusible no podemos hacer esto, sino que debemos sustituirlo.", "Son los elementos que protegen a los circuitos eléctricos y, por tanto, a los receptores eléctricos.", "Los dos dispositivos hay que sustituirlos.", "Los dos dispositivos nos protegen sobre contactos indirectos."], 
+    correctaTexto: "El PIA lo rearmamos y en el fusible no podemos hacer esto, sino que debemos sustituirlo.",
+    explicacion: "El fusible es de 'un solo uso' (se funde). El PIA es electromecánico y rearmable, lo que es mucho más cómodo en viviendas."
+  },
+  { 
+    id: 1055, 
+    tema: "Potencia", 
+    texto: "Si decimos que la tarifa eléctrica contratada en un domicilio es de menos de 8 kW, estamos hablando de:", 
+    opciones: ["Potencia.", "Intensidad.", "Voltaje.", "Ohmios."], 
+    correctaTexto: "Potencia.",
+    explicacion: "Los Kilovatios (kW) son unidad de potencia. Es la capacidad máxima que tienes contratada antes de que salte el ICP."
+  },
+  { 
+    id: 1056, 
+    tema: "Circuitos", 
+    texto: "¿Qué tipos de circuitos encontramos en las instalaciones eléctricas?", 
+    opciones: ["Circuitos serie, paralelo y mixto.", "Circuitos serie.", "Circuitos paralelos y mixtos.", "Circuitos series y paralelos."], 
+    correctaTexto: "Circuitos serie, paralelo y mixto.",
+    explicacion: "Son las tres configuraciones topológicas básicas. En vivienda casi todo es paralelo, pero en electrónica se usa mucho el mixto."
+  },
+  { 
+    id: 1057, 
+    tema: "Ley de Ohm", 
+    texto: "¿Se puede afirmar que la tensión es igual a la potencia dividido por la intensidad que circula en un circuito eléctrico?", 
+    opciones: ["Sí se puede afirmar, despejando la fórmula de la potencia (P=V·I -> V=P/I).", "Según la intensidad que circule.", "Según los voltios que circulen.", "Todas son falsas."], 
+    correctaTexto: "Sí se puede afirmar, despejando la fórmula de la potencia (P=V·I -> V=P/I).",
+    explicacion: "Es matemáticas pura: Si P = V · I, entonces V = P / I. Si tienes 2200W y 10A, la tensión son 220V."
+  },
+  { 
+    id: 1058, 
+    tema: "Circuitos", 
+    texto: "En circuitos en serie, la intensidad es la misma en todos los puntos del circuito.", 
+    opciones: ["Es cierta la afirmación.", "Es falsa la afirmación.", "Dependen de los dispositivos conectados.", "No es la intensidad es la tensión."], 
+    correctaTexto: "Es cierta la afirmación.",
+    explicacion: "En serie solo hay un camino posible. Todos los electrones que salen de la pila tienen que pasar por todos los componentes, no hay atajos."
+  },
+  { 
+    id: 1059, 
+    tema: "Sistemas", 
+    texto: "En un sistema monofásico, cada circuito eléctrico consta de...", 
+    opciones: ["Tres cables (cable de fase, neutro y toma de tierra).", "30 receptores máximo.", "Dos cables (cable de fase y cable neutro).", "Tres seccionadores uno por cada conductor."], 
+    correctaTexto: "Tres cables (cable de fase, neutro y toma de tierra).",
+    explicacion: "Aunque funcionalmente bastarían dos (Fase y Neutro), la normativa exige el tercero (Tierra) por seguridad obligatoria."
+  },
+  { 
+    id: 1060, 
+    tema: "Puesta a Tierra", 
+    texto: "Las picas o electrodos de las instalaciones de toma tierra se enterrarán a una profundidad mínima de...", 
+    opciones: ["Medio metro (0,5 m).", "Un metro.", "Dos metros.", "No hay profundidad mínima."], 
+    correctaTexto: "Medio metro (0,5 m).",
+    explicacion: "Para asegurar que hacen buen contacto con terreno húmedo y estable, y para protegerlas de obras superficiales."
+  },
+  { 
+    id: 1061, 
+    tema: "Ley de Ohm", 
+    texto: "¿Qué magnitudes eléctricas relaciona la Ley de Ohm?", 
+    opciones: ["Tensión, resistencia e intensidad.", "Tensión, potencia.", "Tensión, intensidad y potencia.", "Intensidad y potencia."], 
+    correctaTexto: "Tensión, resistencia e intensidad.",
+    explicacion: "V = I · R. Relaciona la fuerza (V), el flujo (I) y la oposición (R)."
+  },
+  { 
+    id: 1062, 
+    tema: "Circuitos", 
+    texto: "En circuitos en paralelo, la tensión es la misma en todos los puntos, y la intensidad resultante será...", 
+    opciones: ["La suma de todas ellas (suma de las intensidades de cada rama).", "Depende de la potencia del circuito.", "Depende de las cargas asignadas.", "Todas son falsas."], 
+    correctaTexto: "La suma de todas ellas (suma de las intensidades de cada rama).",
+    explicacion: "Ley de nodos de Kirchhoff: La corriente total que entra se reparte por los caminos (ramas) y luego se vuelve a juntar."
+  },
+  { 
+    id: 1063, 
+    tema: "Suministro", 
+    texto: "¿Quién es el encargado de hacer llegar o suministrar la electricidad hasta las viviendas?", 
+    opciones: ["La empresa distribuidora.", "La empresa instaladora.", "La empresa productora.", "Las empresas dedicadas a la energía eléctrica."], 
+    correctaTexto: "La empresa distribuidora.",
+    explicacion: "La Productora la fabrica, la Transportista la lleva lejos en Alta Tensión, y la Distribuidora te la lleva a la puerta de casa en Baja Tensión."
+  },
+  { 
+    id: 1064, 
+    tema: "Identificación", 
+    texto: "¿Con qué color identificamos el cable neutro?", 
+    opciones: ["Azul.", "Negro.", "Marrón.", "Gris."], 
+    correctaTexto: "Azul.",
+    explicacion: "Azul claro. Es el color frío por excelencia, contraparte de la Fase (colores oscuros/cálidos)."
+  },
+  { 
+    id: 1065, 
+    tema: "Corriente", 
+    texto: "¿Qué tipos de corriente existen fundamentalmente en una instalación eléctrica?", 
+    opciones: ["Alterna y continua.", "Monofásica y alterna.", "Trifásica y continua.", "Monofásica y trifásica."], 
+    correctaTexto: "Alterna y continua.",
+    explicacion: "Son los dos grandes tipos físicos. Alterna para la red y potencia; Continua para electrónica y baterías."
+  },
+  { 
+    id: 1066, 
+    tema: "Identificación", 
+    texto: "Los colores que determinan las fases en un sistema trifásico son...", 
+    opciones: ["Fase 1: negro, Fase 2: marrón, Fase 3: gris.", "Fase 1: negro, Fase 2: marrón, Fase 3: azul.", "Fase 1: negro, Fase 2: marrón, Fase 3: verde.", "Fase 1: Rojo, Fase 2: marrón, Fase 3: azul."], 
+    correctaTexto: "Fase 1: negro, Fase 2: marrón, Fase 3: gris.",
+    explicacion: "Mnemotecnia: Los colores oscuros y sobrios (Marrón, Negro, Gris) son siempre FASES. Azul es neutro y Bicolor es tierra."
+  },
+  { 
+    id: 1067, 
+    tema: "Seguridad", 
+    texto: "Entre los objetivos del cable de toma tierra está la de:", 
+    opciones: ["Limitar la tensión o voltaje con respecto a tierra en caso de un fallo de aislamiento.", "Limitar la intensidad con respecto a tierra.", "Tener un color llamativo para ser identificado.", "Reducir el consumo de los receptores."], 
+    correctaTexto: "Limitar la tensión o voltaje con respecto a tierra en caso de un fallo de aislamiento.",
+    explicacion: "Al conectar las carcasas a tierra, evitamos que se pongan a 230V si hay un fallo. La tensión se deriva al suelo y salta el diferencial."
+  },
+  { 
+    id: 1068, 
+    tema: "Esquemas", 
+    texto: "En un esquema multifilar se representan...", 
+    opciones: ["Todos los cables y dónde van a ir conectados.", "Algunos de los cables y dónde van a ir conectados.", "Aparecen todos los cables, pero no dónde van a ir conectados.", "Los cables solo activos del circuito."], 
+    correctaTexto: "Todos los cables y dónde van a ir conectados.",
+    explicacion: "Es la representación completa 'hilo a hilo'. Permite seguir el recorrido exacto de la corriente por cada conductor."
+  },
+  { 
+    id: 1069, 
+    tema: "Definiciones", 
+    texto: "La potencia máxima capaz de suministrar una instalación a los equipos conectados (diseño/ejecución) se define como:", 
+    opciones: ["Potencia prevista o instalada.", "Potencia activa.", "Potencia nominal.", "Potencia mecánica."], 
+    correctaTexto: "Potencia prevista o instalada.",
+    explicacion: "Es la potencia para la que se ha calculado y diseñado la instalación (sección de cables, fusibles). No puedes contratar más de lo que está 'previsto' o 'instalado'."
+  },
+  { 
+    id: 1070, 
+    tema: "Esquemas", 
+    texto: "El esquema de distribución eléctrica TT se caracteriza porque:", 
+    opciones: ["El neutro está conectado a tierra y las masas de la instalación a una toma de tierra separada.", "Neutro y protección son el mismo cable.", "No tiene tierra.", "Las masas se conectan al neutro."], 
+    correctaTexto: "El neutro está conectado a tierra y las masas de la instalación a una toma de tierra separada.",
+    explicacion: "TT = Tierra-Tierra. La primera T es del transformador (Neutro a tierra) y la segunda T es del usuario (sus masas a SU propia tierra)."
+  },
+  { 
+    id: 1071, 
+    tema: "Definiciones", 
+    texto: "El intervalo entre los límites de tensión previstas para alimentar el aparato se define como:", 
+    opciones: ["Gama nominal de tensiones.", "Tensión asignada.", "Tensión nominal.", "Tensión tolerable."], 
+    correctaTexto: "Gama nominal de tensiones.",
+    explicacion: "Ej: Un aparato que funciona de 110V a 240V. Esa franja es su 'gama nominal' de funcionamiento."
+  },
+  { 
+    id: 1072, 
+    tema: "Seguridad", 
+    texto: "La tensión que aparece entre partes accesibles simultáneamente al ocurrir un fallo de aislamiento se llama:", 
+    opciones: ["Tensión de contacto.", "Tensión de defecto.", "Tensión nominal.", "Tensión asignada."], 
+    correctaTexto: "Tensión de contacto.",
+    explicacion: "Es el voltaje real que recibiría una persona si tocara la máquina averiada en ese momento. Si la tierra es buena, esta tensión será baja y segura."
+  },
+  { 
+    id: 1073, 
+    tema: "Seguridad", 
+    texto: "¿Cómo se define el 'Contacto Indirecto'?", 
+    opciones: ["Contacto con partes que se han puesto bajo tensión por un fallo de aislamiento.", "Contacto con partes activas.", "Contacto con partes reactivas.", "Contacto directo con la fase."], 
+    correctaTexto: "Contacto con partes que se han puesto bajo tensión por un fallo de aislamiento.",
+    explicacion: "Es 'indirecto' porque tocas algo que NO debería tener corriente (la chapa de la lavadora), pero la tiene por culpa de una avería interna."
+  },
+  { 
+    id: 1074, 
+    tema: "Seguridad", 
+    texto: "¿Cómo se define el 'Contacto Directo'?", 
+    opciones: ["Contacto de personas o animales con partes activas de los materiales y equipos.", "Contacto por fallo de aislamiento.", "Contacto con la carcasa.", "Contacto accidental con tierra."], 
+    correctaTexto: "Contacto de personas o animales con partes activas de los materiales y equipos.",
+    explicacion: "Es 'directo' porque tocas directamente la parte peligrosa (el cobre pelado, el borne del enchufe)."
+  },
+  { 
+    id: 1075, 
+    tema: "Normativa", 
+    texto: "Todas las normas descritas en el Reglamento Electrotécnico de Baja Tensión (REBT) son de carácter...", 
+    opciones: ["De obligado cumplimiento.", "Voluntario.", "Orientativo.", "Informativo."], 
+    correctaTexto: "De obligado cumplimiento.",
+    explicacion: "El REBT es Ley (Real Decreto). No es una sugerencia; si no lo cumples, la instalación es ilegal y peligrosa."
+  },
+  { 
+    id: 1076, 
+    tema: "Materiales", 
+    texto: "La conductividad del Cobre (Cu) a 20ºC es de:", 
+    opciones: ["56 m/(Ω·mm²).", "35 m/(Ω·mm²).", "45 m/(Ω·mm²).", "65 m/(Ω·mm²)."], 
+    correctaTexto: "56 m/(Ω·mm²).",
+    explicacion: "Es una constante física fundamental para los cálculos eléctricos. El Aluminio tiene 35."
+  },
+  { 
+    id: 1080, 
+    tema: "Identificación", 
+    texto: "¿Qué colores determinan los cables de fase en un sistema trifásico?", 
+    opciones: ["Negro, Marrón y Gris.", "Negro, Marrón y Azul.", "Negro y Azul.", "Rojo, Marrón y Azul."], 
+    correctaTexto: "Negro, Marrón y Gris.",
+    explicacion: "Son los tres colores oscuros permitidos. El orden habitual recomendado es Marrón (L1), Negro (L2), Gris (L3), aunque puede variar."
+  },
+  { 
+    id: 1081, 
+    tema: "Física", 
+    texto: "En la corriente continua los electrones circulan siempre en la misma dirección, que es:", 
+    opciones: ["Del polo negativo al polo positivo (sentido real).", "Del polo positivo al negativo.", "En dirección contraria.", "No circulan electrones."], 
+    correctaTexto: "Del polo negativo al polo positivo (sentido real).",
+    explicacion: "Ojo: El sentido 'convencional' (histórico) se dibuja de + a -. Pero el sentido 'real' físico de los electrones (que tienen carga negativa) es de - a +."
+  },
+  { 
+    id: 1082, 
+    tema: "Seguridad", 
+    texto: "La instalación de un pararrayos interesa que descargue en un terreno que:", 
+    opciones: ["Sea de poca resistencia (buena conductividad).", "Sea de mucha resistencia.", "Sea pedregoso.", "Sea aislante."], 
+    correctaTexto: "Sea de poca resistencia (buena conductividad).",
+    explicacion: "Queremos que el rayo se vaya a tierra lo más rápido posible. Si el terreno tiene mucha resistencia, el rayo podría buscar otro camino (la casa)."
+  },
+  { 
+    id: 1083, 
+    tema: "Esquemas", 
+    texto: "¿Podemos afirmar que un esquema unifilar son...?", 
+    opciones: ["Esquemas sencillos y fáciles de entender, cada circuito se representa por una única línea.", "Esquemas complicados.", "Para pequeñas instalaciones solo.", "Donde se dibujan todos los cables."], 
+    correctaTexto: "Esquemas sencillos y fáciles de entender, cada circuito se representa por una única línea.",
+    explicacion: "Su virtud es la simplicidad. Permiten ver la arquitectura de la instalación de un vistazo sin perderse en una maraña de cables."
+  },
+  { 
+    id: 1084, 
+    tema: "Normativa", 
+    texto: "Todas las normas descritas en el REBT son de carácter:", 
+    opciones: ["De obligado cumplimiento.", "Voluntario.", "Orientativo.", "Informativo."], 
+    correctaTexto: "De obligado cumplimiento.",
+    explicacion: "Es redundante pero vital recordarlo: El REBT es la ley suprema de las instalaciones eléctricas en España."
+  },
+  { 
+    id: 1085, 
+    tema: "Instalación", 
+    texto: "Según el orden de montaje descrito en el temario, ¿qué acción corresponde al 'Segundo paso', una vez ubicados los tubos y cajas?", 
+    opciones: ["Meter los cables por los tubos hasta las cajas de conexión.", "Conectar los mecanismos.", "Realizar los empalmes con regletas.", "Montar las protecciones en el cuadro."], 
+    correctaTexto: "Meter los cables por los tubos hasta las cajas de conexión.", 
+    explicacion: "El proceso lógico es: 1º Marcar y colocar tubos/cajas. 2º Introducir el cableado (con guía). 3º Realizar conexiones (empalmes) en cajas. 4º Conectar mecanismos y protecciones."
+  },
+  { 
+    id: 1086, 
+    tema: "Transporte", 
+    texto: "El documento menciona que, además de la Alta Tensión en alterna, existe otro sistema de transporte denominado HVDC. ¿Qué es?", 
+    opciones: ["Alta Tensión en Corriente Continua.", "Alta Velocidad de Distribución.", "Hidráulica Variable de Corriente.", "Herramienta de Verificación de Conductores."], 
+    correctaTexto: "Alta Tensión en Corriente Continua.", 
+    explicacion: "HVDC (High Voltage Direct Current) permite transportar electricidad a distancias enormes o por cables submarinos con menos pérdidas que la corriente alterna convencional."
+  },
+  { 
+    id: 1087, 
+    tema: "Magnitudes", 
+    texto: "Utilizando el símil hidráulico del temario: si dos puntos eléctricos tienen el mismo potencial (mismo voltaje), ¿qué ocurre?", 
+    opciones: ["No puede circular corriente entre ellos.", "Circula la máxima intensidad posible.", "Se produce un cortocircuito franco.", "La resistencia se vuelve infinita."], 
+    correctaTexto: "No puede circular corriente entre ellos.", 
+    explicacion: "Para que fluya la corriente (como el agua) es imprescindible que haya un 'desnivel' o diferencia de potencial. Si la tensión es idéntica en ambos puntos, los electrones no se mueven."
+  },
+  { 
+    id: 1088, 
+    tema: "Seguridad", 
+    texto: "¿Por qué es fundamental que el cable y el sistema de toma de tierra tengan una resistencia eléctrica muy baja?", 
+    opciones: ["Para que las corrientes de fuga encuentren un camino fácil de evacuación al terreno.", "Para que consuma menos energía.", "Para aumentar la tensión de la vivienda.", "Para que los fusibles no se fundan."], 
+    correctaTexto: "Para que las corrientes de fuga encuentren un camino fácil de evacuación al terreno.", 
+    explicacion: "La electricidad busca el camino de menor resistencia. Si la tierra tiene poca resistencia (es muy conductora), la corriente peligrosa se irá por ella antes que atravesar el cuerpo de una persona."
+  },
+  { 
+    id: 1089, 
+    tema: "Protección", 
+    texto: "¿Cuál es la función específica de un pararrayos en un edificio según el texto?", 
+    opciones: ["Captar el rayo y derivar su corriente directamente a la pica de tierra.", "Almacenar la energía de la tormenta para usarla luego.", "Evitar que caigan rayos en la zona (repelerlos).", "Convertir el rayo en corriente alterna de 230V."], 
+    correctaTexto: "Captar el rayo y derivar su corriente directamente a la pica de tierra.", 
+    explicacion: "Actúa como un 'escudo', atrayendo la descarga atmosférica para conducirla de forma segura al terreno, evitando que esa sobretensión destructiva entre en la instalación interior de la vivienda."
+  }
+
+
+,
+
+
+// --- AMPLIACIÓN TEMA 1: DETALLES Y EJEMPLOS (IDs 1090-1109) ---
+  {
+    id: 1090,
+    tema: "Fundamentos",
+    texto: "¿Qué partículas componen el átomo y son las responsables de producir la electricidad?",
+    opciones: ["Electrones, protones y neutrones.", "Solo electrones.", "Neutrones y fotones.", "Cationes y aniones."],
+    correctaTexto: "Electrones, protones y neutrones.",
+    explicacion: "El texto especifica que estas tres partículas, en diversa proporción, componen el átomo y se manifiestan en forma de electricidad."
+  },
+  {
+    id: 1091,
+    tema: "Generación",
+    texto: "¿Por qué se dice que la electricidad debe ser consumida 'instantáneamente'?",
+    opciones: ["Porque actualmente no es muy rentable almacenarla en grandes cantidades.", "Porque caduca.", "Porque se evapora.", "Porque daña las redes si se guarda."],
+    correctaTexto: "Porque actualmente no es muy rentable almacenarla en grandes cantidades.",
+    explicacion: "Aunque existen baterías experimentales, la regla general es que la electricidad se genera en el mismo momento que se demanda."
+  },
+  {
+    id: 1092,
+    tema: "Analogías",
+    texto: "En el símil de la autopista para explicar el transporte eléctrico, ¿qué representa el 'número de carriles'?",
+    opciones: ["La Tensión (Voltaje).", "La Intensidad.", "La Resistencia.", "La Potencia."],
+    correctaTexto: "La Tensión (Voltaje).",
+    explicacion: "El texto usa esta analogía: La Tensión es el ancho de la carretera (carriles) y la Intensidad es la cantidad de coches que pasan."
+  },
+  {
+    id: 1093,
+    tema: "Previsión",
+    texto: "¿Cuáles son los dos grados de electrificación que determinan la previsión de potencia de una vivienda?",
+    opciones: ["Básico y Elevado.", "Bajo y Alto.", "Monofásico y Trifásico.", "Doméstico e Industrial."],
+    correctaTexto: "Básico y Elevado.",
+    explicacion: "Son los dos niveles estándar que define el REBT según la superficie de la casa y los aparatos que se vayan a instalar (aire acondicionado, etc.)."
+  },
+  {
+    id: 1094,
+    tema: "Analogías",
+    texto: "En el símil hidráulico, ¿a qué equivale que dos puntos estén a la misma altura?",
+    opciones: ["A que están al mismo potencial eléctrico (no circula corriente).", "A que hay un cortocircuito.", "A que hay mucha intensidad.", "A que la resistencia es nula."],
+    correctaTexto: "A que están al mismo potencial eléctrico (no circula corriente).",
+    explicacion: "Si no hay desnivel (diferencia de potencial/voltaje), el líquido (electrones) no se mueve. Hacen falta voltios para empujar la corriente."
+  },
+  {
+    id: 1095,
+    tema: "Cálculos",
+    texto: "Según el ejemplo del texto, ¿cuántos amperios consume aproximadamente un microondas de 900 W a 230 V?",
+    opciones: ["Unos 4 amperios (3,91 A).", "Unos 2 amperios.", "Unos 10 amperios.", "Menos de 1 amperio."],
+    correctaTexto: "Unos 4 amperios (3,91 A).",
+    explicacion: "Aplicando I = P / V -> 900 / 230 = 3,91 A. Es un dato útil para dimensionar los cables de la cocina."
+  },
+  {
+    id: 1096,
+    tema: "Puesta a Tierra",
+    texto: "¿Cómo debe ser la resistencia del cable de toma de tierra para ser efectiva?",
+    opciones: ["Muy baja (poca resistencia).", "Muy alta.", "Infinita.", "Igual que la de fase."],
+    correctaTexto: "Muy baja (poca resistencia).",
+    explicacion: "Cuanto menos resistencia tenga el camino a tierra, más fácil le será a la corriente de fuga irse por ahí en vez de atravesar a una persona."
+  },
+  {
+    id: 1097,
+    tema: "Circuitos",
+    texto: "¿Qué ocurre en una guirnalda de luces antigua conectada en serie si se funde una sola bombilla?",
+    opciones: ["Dejan de lucir todas las demás.", "Solo se apaga esa.", "Las demás lucen más fuerte.", "Salta el diferencial."],
+    correctaTexto: "Dejan de lucir todas las demás.",
+    explicacion: "Al estar en serie, si se rompe un eslabón (filamento de la bombilla), se abre el circuito completo y la corriente deja de pasar."
+  },
+  {
+    id: 1098,
+    tema: "Circuitos",
+    texto: "¿Cuál es la principal ventaja de conectar los receptores (bombillas, enchufes) en paralelo?",
+    opciones: ["Si uno falla, el resto sigue funcionando independientemente.", "Gastan menos luz.", "Es más fácil de instalar.", "Aumenta la tensión."],
+    correctaTexto: "Si uno falla, el resto sigue funcionando independientemente.",
+    explicacion: "Es la configuración estándar en viviendas. Si se funde la luz del salón, no te quedas a oscuras en la cocina."
+  },
+  {
+    id: 1099,
+    tema: "Corriente Continua",
+    texto: "¿Cuál de los siguientes grupos de equipos funciona típicamente con corriente continua?",
+    opciones: ["Pilas, baterías y equipos electrónicos (ordenadores).", "Lavadoras y hornos.", "Motores de ascensor.", "Red de distribución eléctrica."],
+    correctaTexto: "Pilas, baterías y equipos electrónicos (ordenadores).",
+    explicacion: "La electrónica interna de los PCs y móviles trabaja en continua. Por eso tienen 'transformadores' o fuentes de alimentación."
+  },
+  {
+    id: 1100,
+    tema: "Documentación",
+    texto: "¿Qué documento técnico es necesario cuando una instalación eléctrica tiene gran potencia o envergadura?",
+    opciones: ["Un Proyecto (visado por Ingeniero).", "Una Memoria Técnica de Diseño (MTD).", "Un esquema unifilar simple.", "Un recibo de la luz."],
+    correctaTexto: "Un Proyecto (visado por Ingeniero).",
+    explicacion: "Para instalaciones pequeñas vale la MTD (Memoria Técnica), pero para las grandes el REBT exige un Proyecto firmado y visado."
+  },
+  {
+    id: 1101,
+    tema: "Instalación",
+    texto: "En el proceso de montaje de una instalación, ¿qué se hace en el 'Primer paso', antes de meter cables?",
+    opciones: ["Marcar la ubicación de elementos y trayectorias de tubos.", "Conectar los enchufes.", "Poner los magnetotérmicos.", "Dar de alta la luz."],
+    correctaTexto: "Marcar la ubicación de elementos y trayectorias de tubos.",
+    explicacion: "Primero se replantea (se pinta en la pared) dónde va todo y se hacen las rozas para los tubos. Luego ya se cablea."
+  },
+  {
+    id: 1102,
+    tema: "Materiales",
+    texto: "¿Cuál es la función de los tubos y canalizaciones en una instalación?",
+    opciones: ["Proteger los cables eléctricos que van por su interior.", "Decorar la pared.", "Aumentar la conductividad.", "Refrigerar el circuito."],
+    correctaTexto: "Proteger los cables eléctricos que van por su interior.",
+    explicacion: "Los cables nunca deben ir 'sueltos' empotrados. Van dentro de tubos corrugados o canaletas para protección mecánica y para poder cambiarlos."
+  },
+  {
+    id: 1103,
+    tema: "Energía Solar",
+    texto: "En una instalación solar fotovoltaica, ¿qué elementos metálicos deben conectarse obligatoriamente a tierra?",
+    opciones: ["Las estructuras soporte y los marcos metálicos de los paneles.", "Solo el inversor.", "El cristal de los paneles.", "Ninguno, son aislantes."],
+    correctaTexto: "Las estructuras soporte y los marcos metálicos de los paneles.",
+    explicacion: "Como están a la intemperie y son metálicos, hay que ponerlos a tierra para evitar peligros si hay una derivación o cae un rayo cerca."
+  },
+  {
+    id: 1104,
+    tema: "Seguridad",
+    texto: "¿La conexión a tierra de las carcasas asegura el correcto disparo de qué dispositivo?",
+    opciones: ["Del interruptor diferencial.", "Del fusible.", "Del contador.", "Del interruptor de la luz."],
+    correctaTexto: "Del interruptor diferencial.",
+    explicacion: "Si hay una fuga a tierra (a través del cable verde-amarillo), el diferencial detecta que 'entra más corriente de la que sale' y salta."
+  },
+  {
+    id: 1105,
+    tema: "Seguridad",
+    texto: "Al conectar todos los cables de tierra entre sí en las cajas de conexión, ¿qué objetivo se consigue?",
+    opciones: ["La equipotencialidad (poner todas las masas al mismo potencial).", "Ahorrar cable.", "Mejorar la velocidad de la luz.", "Evitar cortocircuitos entre fases."],
+    correctaTexto: "La equipotencialidad (poner todas las masas al mismo potencial).",
+    explicacion: "Si todas las partes metálicas están unidas al mismo cable de tierra, no puede haber diferencias de voltaje peligrosas entre ellas."
+  },
+  {
+    id: 1106,
+    tema: "Protección",
+    texto: "¿Por qué un pararrayos protege un edificio?",
+    opciones: ["Porque ofrece al rayo un camino de menor resistencia hacia tierra que el edificio.", "Porque repele los rayos.", "Porque almacena la energía.", "Porque corta la luz."],
+    correctaTexto: "Porque ofrece al rayo un camino de menor resistencia hacia tierra que el edificio.",
+    explicacion: "La electricidad es vaga y siempre va por donde le cuesta menos. El pararrayos es un 'camino fácil' directo al suelo."
+  },
+  {
+    id: 1107,
+    tema: "Planos",
+    texto: "¿Cómo define el texto un 'Plano' eléctrico a diferencia de un esquema?",
+    opciones: ["Dibujo representativo que muestra el emplazamiento físico de la obra.", "Un dibujo con símbolos abstractos.", "Una lista de materiales.", "Un gráfico de potencia."],
+    correctaTexto: "Dibujo representativo que muestra el emplazamiento físico de la obra.",
+    explicacion: "El esquema te dice cómo se conectan los cables (lógica). El plano te dice DÓNDE están puestos físicamente (paredes, habitaciones)."
+  },
+  {
+    id: 1108,
+    tema: "Relación V-I-P",
+    texto: "Manteniendo la tensión constante, ¿cómo se relacionan la intensidad y la potencia?",
+    opciones: ["Son directamente proporcionales (más intensidad = más potencia).", "Son inversamente proporcionales.", "No tienen relación.", "La potencia baja si sube la intensidad."],
+    correctaTexto: "Son directamente proporcionales (más intensidad = más potencia).",
+    explicacion: "Si P = V · I, y V no cambia (230V), para tener más potencia (W) necesitas obligatoriamente chupar más amperios (I)."
+  },
+  {
+    id: 1109,
+    tema: "Transporte",
+    texto: "Si en el transporte de energía subimos mucho la Tensión (Voltaje), ¿qué le ocurre a la Intensidad para la misma potencia?",
+    opciones: ["Que disminuye drásticamente, reduciendo pérdidas.", "Que aumenta igual.", "Que se mantiene.", "Que se vuelve continua."],
+    correctaTexto: "Que disminuye drásticamente, reduciendo pérdidas.",
+    explicacion: "Esta es la clave de la Alta Tensión. Al subir los Voltios, bajamos los Amperios. Menos amperios significan cables más finos y menos calor perdido."
+  }
+
+
+
+
+];
+
+
+// --- TEMA 2: RED DE DISTRIBUCIÓN E INSTALACIONES DE ENLACE ---

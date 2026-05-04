@@ -3,7 +3,7 @@ const CONFIGURACION_CURSO = [
     bloque: "pestana1",
     titulo_boton: "1. Instalaciones Eléctricas Interiores (10 Unidades)",
     asignaturas: [
-      { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Eléctricas Interiores (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA },
+      { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Eléctricas Interiores (40 preguntas)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA },
       { nombre: "U1: Conductores y herramientas eléctricas", data: TEMA_1_DATA },
       { nombre: "U2: Circuitos eléctricos básicos en interiores", data: TEMA_2_DATA },
       { nombre: "U3: Protección de las instalaciones eléctricas", data: TEMA_3_DATA },
@@ -18,8 +18,9 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana2",
-    titulo_boton: "2. Instalaciones solares fotovoltaicas",
+    titulo_boton: "2. Instalaciones Fotovoltaicas (8 Unidades)",
     asignaturas: [
+      { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Fotovoltaicas (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA },
       { nombre: "U1: Componentes de una instalación solar fotovoltaica", data: TEMA_FV_U1_DATA },
       { nombre: "U2: Fundamentos de energía solar fotovoltaica", data: TEMA_FV_U2_DATA },
       { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: TEMA_FV_U3_DATA },
@@ -34,6 +35,7 @@ const CONFIGURACION_CURSO = [
     bloque: "pestana3",
     titulo_boton: "3. Itinerario Personal para la Empleabilidad",
     asignaturas: [
+      { nombre: "⭐ SIMULACRO SEMESTRAL: Itinerario Personal para la Empleabilidad (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA },
       { nombre: "U1: Economía y administración nociones básicas", data: TEMA_EMPLEABILIDAD_U1_DATA },
       { nombre: "U2: El sistema fiscal", data: TEMA_EMPLEABILIDAD_U2_DATA },
       { nombre: "U3: Concepto de marketing y análisis de mercado", data: TEMA_EMPLEABILIDAD_U3_DATA },
@@ -44,9 +46,15 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana4",
-    titulo_boton: "4. Próximamente...",
+    titulo_boton: "4. Inglés Profesional (6 Unidades)",
     asignaturas: [
-       { nombre: "En desarrollo", data: [] }
+      { nombre: "⭐ SIMULACRO SEMESTRAL: Inglés Profesional (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA },
+      { nombre: "U1: Living in the present", data: TEMA_INGLES_PROFESSIONAL_U1_DATA },
+      { nombre: "U2: What do you like?", data: TEMA_INGLES_PROFESSIONAL_U2_DATA },
+      { nombre: "U3: Exploring the past", data: TEMA_INGLES_PROFESSIONAL_U3_DATA },
+      { nombre: "U4: What's next?", data: TEMA_INGLES_PROFESSIONAL_U4_DATA },
+      { nombre: "U5: What would you do if...?", data: TEMA_INGLES_PROFESSIONAL_U5_DATA },
+      { nombre: "U6: Work smarter", data: TEMA_INGLES_PROFESSIONAL_U6_DATA }
     ]
   }
 ];

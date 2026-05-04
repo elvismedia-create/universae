@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Universae</title>
+<title>MasterTest BT · v67.6 ✅</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
 <link rel="apple-touch-icon" href="img/icon-192.png">
-<link rel="icon" type="image/svg+xml" href="img/universae-logo.svg">
-<link rel="icon" type="image/png" href="img/icon-192.png" sizes="192x192">
 
 <style>
 /* === VARIABLES DE COLOR === */
@@ -46,7 +44,7 @@ body.dark-mode {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Transiciones suaves dark mode v67.24 */
+/* Transiciones suaves dark mode v67.6 */
 body,
 .card,
 .opcion,
@@ -92,7 +90,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
 .btn-tool { background: var(--bg); color: var(--text-light); border: 1px solid var(--border); padding: 8px 12px; font-size: 0.9rem; border-radius: 10px; display: flex; align-items: center; gap: 5px; font-weight: 600; }
 .btn-theme { font-size: 1.1rem; padding: 6px 10px; }
 
-/* === NAVEGACIÓN CON TABS (v67.24) === */
+/* === NAVEGACIÓN CON TABS (v67.6) === */
 .tabs-container {
   margin-bottom: 30px;
   border-bottom: 2px solid var(--border);
@@ -203,14 +201,14 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   position: relative;
 }
 
-/* Animación gradiente v67.24 */
+/* Animación gradiente v67.6 */
 @keyframes shimmerProgress {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Brillo que recorre v67.24 */
+/* Brillo que recorre v67.6 */
 .barra-relleno::after {
   content: '';
   position: absolute;
@@ -355,7 +353,13 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   overflow: hidden;
 }
 
-/* Hover ELIMINADO v67.24 - mejor sin hover que con bug */
+/* Hover suave (solo desktop) */
+.opcion:hover:not(.seleccionada):not(.correcta):not(.incorrecta) {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+  border-color: var(--primary);
+  background: var(--card);
+}
 
 /* Seleccionada */
 .opcion.seleccionada{ 
@@ -367,7 +371,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
-/* Correcta - Pulse animado v67.24 */
+/* Correcta - Pulse animado v67.6 */
 .opcion.correcta {
   background: var(--success) !important;
   border-color: var(--success) !important;
@@ -391,7 +395,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   }
 }
 
-/* Incorrecta - Shake animado v67.24 */
+/* Incorrecta - Shake animado v67.6 */
 .opcion.incorrecta {
   background: var(--danger) !important;
   border-color: var(--danger) !important;
@@ -406,7 +410,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   20%, 40%, 60%, 80% { transform: translateX(12px); }
 }
 
-/* Ripple effect v67.24 */
+/* Ripple effect v67.6 */
 .opcion::after {
   content: '';
   position: absolute;
@@ -434,12 +438,6 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
 .badge-oficial { background: var(--primary); color: white; }
 .badge-repaso { background: var(--text-light); color: white; }
 .badge-nuevo { background: var(--orange); color: white; }
-.badge-generada { 
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); 
-  color: white; 
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
-}
 #opciones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
 .botones-navegacion { display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; }
 
@@ -509,7 +507,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   .btn-orange:hover, .btn-outline:hover, .btn-upload:hover { transform: translateY(-3px) scale(1.02); filter: brightness(110%); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
   .btn-sim-num:hover, .btn-sim-custom:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); background-color: var(--success-bg); border-color: var(--success); }
   .btn-pill-right:hover { transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-  /* ELIMINADO: .opcion:hover duplicado que causaba bug en iPad */
+  .opcion:hover { background: white; border-color: var(--primary); transform: translateX(5px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1); }
   .btn-tool:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-2px); }
   .strip-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.08); }
 }
@@ -675,70 +673,6 @@ button:active, .opcion:active, .btn-tool:active, .selector-btn:active { transfor
   z-index: 1;
 }
 
-/* === SKELETON SCREENS v67.24 === */
-.skeleton {
-  background: linear-gradient(90deg, 
-    var(--bg) 0%, 
-    var(--card) 50%, 
-    var(--bg) 100%
-  );
-  background-size: 200% 100%;
-  animation: skeletonLoading 1.5s ease-in-out infinite;
-  border-radius: 8px;
-}
-
-@keyframes skeletonLoading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.skeleton-card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 15px;
-  border: 1px solid var(--border);
-}
-
-.skeleton-line {
-  height: 16px;
-  margin-bottom: 12px;
-}
-
-.skeleton-title {
-  height: 24px;
-  width: 70%;
-  margin-bottom: 15px;
-}
-
-.skeleton-bar {
-  height: 10px;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.skeleton-button {
-  height: 48px;
-  width: 100%;
-  margin-top: 15px;
-}
-
-/* === FIX HOVER EN SVG v67.24 === */
-svg, svg * {
-  pointer-events: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-  -webkit-touch-callout: none !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
-}
-
-/* Permitir pointer-events solo en contenedor visual */
-.pregunta-box svg {
-  pointer-events: auto;
-}
-
-/* @media (hover: none) ELIMINADO v67.24 - sin hover = sin bugs */
-
 </style>
 
 
@@ -784,12 +718,9 @@ svg, svg * {
 
 <div id="pantalla-inicio" class="card active">
   <div class="header-flex">
-    <div style="display:flex; align-items:center; gap:16px;">
-      <img src="img/universae-logo.svg" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0;">
-      <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v67.41</span></h1>
-        <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
-      </div>
+    <div>
+      <h1>⚡ MasterTest BT <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v67.6</span></h1>
+      <p class="subtitle">✅ Actualizada · Apuntes integrados</p>
     </div>
 
 
@@ -808,7 +739,7 @@ svg, svg * {
 
   </div>
 
-  <!-- Tabs de navegación v67.24 -->
+  <!-- Tabs de navegación v67.6 -->
   <div class="tabs-container">
     <div id="tabs-bloques" class="tabs-scroll"></div>
   </div>
@@ -838,12 +769,6 @@ svg, svg * {
 
 <div id="pantalla-mapa-mental" class="card"></div>
 
-<div id="pantalla-fotometria" class="card"></div>
-
-<div id="pantalla-caida-tension" class="card"></div>
-
-<div id="pantalla-simbolo-master" class="card"></div>
-
 <div id="pantalla-test" class="card"></div>
 
 <div id="pantalla-resultados" class="card"></div>
@@ -866,98 +791,70 @@ svg, svg * {
   </div>
 </div>
 
-<!-- DATOS DIVIDIDOS (v67.24-SPLIT) - Reduce carga inicial -->
-<script src="data-temas.js?v=20260414071000"></script>
-<script src="data-especial.js?v=20260414071000"></script>
-<script src="data-fv-u1.js?v=20260414071000"></script>
-<script src="data-fv-u2.js?v=20260414071000"></script>
-<script src="data-fv-u3.js?v=20260414071000"></script>
-<script src="data-fv-u4.js?v=20260414071000"></script>
-<script src="data-fv-u5.js?v=20260414071000"></script>
-<script src="data-fv-u6.js?v=20260414071000"></script>
-<script src="data-fv-u7.js?v=20260414071000"></script>
-<script src="data-fv-u8.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u1.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u2.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u3.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u4.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u5.js?v=20260414071000"></script>
-<script src="data-empleabilidad-u6.js?v=20260414071000"></script>
-<script src="data-examen-semestral-instalaciones-electricas-interiores.js?v=20260504145000"></script>
-<script src="data-examen-semestral-fotovoltaica.js?v=20260504145000"></script>
-<script src="data-examen-semestral-empleabilidad.js?v=20260504145000"></script>
-<script src="data-examen-semestral-ingles-profesional.js?v=20260504145000"></script>
-<script src="data-ingles-professional-u1.js?v=20260427160000"></script>
-<script src="data-ingles-professional-u2.js?v=20260427160000"></script>
-<script src="data-ingles-professional-u3.js?v=20260427170000"></script>
-<script src="data-ingles-professional-u4.js?v=20260427180000"></script>
-<script src="data-ingles-professional-u5.js?v=20260427190000"></script>
-<script src="data-ingles-professional-u6.js?v=20260427210000"></script>
-<script src="data-config.js?v=20260427210000"></script>
-<!-- MÓDULOS EDUCATIVOS -->
-<script src="fotometria.js"></script>
-<script src="caida-tension.js"></script>
-<script src="simbolo-master.js"></script>
-<!-- MOTOR PRINCIPAL -->
+<script src="data.js"></script>
 <script src="motor.js"></script>
 
-<!-- Auto-actualización NUCLEAR v67.24 -->
+<!-- Auto-actualización NUCLEAR v67.6 -->
 <script>
-console.log('🚀 v67.40 - Sistema NUCLEAR de actualización');
+console.log('🚀 v67.6 - Sistema NUCLEAR de actualización');
 
 if ('serviceWorker' in navigator) {
   // Escuchar mensajes del SW
   navigator.serviceWorker.addEventListener('message', (event) => {
     console.log('📨 Mensaje del SW:', event.data);
-
+    
     if (event.data && event.data.type === 'FORCE_RELOAD_NOW') {
-      console.log('🔥🔥🔥 RECARGA NUCLEAR FORZADA por', event.data.version || 'v67.40');
+      console.log('🔥🔥🔥 RECARGA NUCLEAR FORZADA por v67.6');
+      // Recarga INMEDIATA (sin setTimeout)
       location.reload(true);
     }
   });
-
-  // Función agresiva de actualización
-  function forceUpdateCheck() {
-    navigator.serviceWorker.ready.then((registration) => {
-      console.log('🔍 Verificando v67.40...');
-      registration.update().catch(err => console.error('Error update:', err));
-
-      // Si hay SW esperando, activarlo INMEDIATAMENTE
-      if (registration.waiting) {
-        console.log('⚠️ SW v67.40 esperando → Activando');
-        registration.waiting.postMessage('SKIP_WAITING');
-        setTimeout(() => location.reload(true), 100);
-      }
-
-      // Detectar nueva instalación
-      registration.addEventListener('updatefound', () => {
-        console.log('📦 v67.40 detectado en instalación');
-        const newWorker = registration.installing;
-
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            console.log('✅ v67.40 instalado → Recargando');
+  
+  // Forzar actualización al cargar
+  navigator.serviceWorker.ready.then((registration) => {
+    console.log('🔍 Verificando actualizaciones...');
+    registration.update();
+    
+    // Si hay SW esperando, activarlo YA
+    if (registration.waiting) {
+      console.log('⚠️ SW esperando → Activando AHORA');
+      registration.waiting.postMessage('SKIP_WAITING');
+      setTimeout(() => location.reload(true), 300);
+    }
+    
+    // Detectar nueva instalación
+    registration.addEventListener('updatefound', () => {
+      console.log('📦 Nueva versión detectada');
+      const newWorker = registration.installing;
+      
+      newWorker.addEventListener('statechange', () => {
+        console.log('🔄 SW state:', newWorker.state);
+        
+        if (newWorker.state === 'installed') {
+          if (navigator.serviceWorker.controller) {
+            console.log('✅ Nueva versión instalada → Recargando');
             newWorker.postMessage('SKIP_WAITING');
-            setTimeout(() => location.reload(true), 100);
+            setTimeout(() => location.reload(true), 200);
+          } else {
+            console.log('✅ Primera instalación');
           }
-        });
+        }
       });
-    }).catch(err => console.error('SW error:', err));
-  }
-
-  // FORZAR ACTUALIZACIÓN INMEDIATAMENTE al cargar
-  forceUpdateCheck();
-
-  // Verificar cada 3 segundos en los primeros 15 segundos
+    });
+  });
+  
+  // Verificar cada 10 segundos (durante los primeros 60s)
   let checkCount = 0;
   const checkInterval = setInterval(() => {
-    if (checkCount < 5) {
-      console.log('🔄 Auto-check v67.40 #' + (++checkCount));
-      forceUpdateCheck();
+    if (checkCount < 6) {
+      navigator.serviceWorker.ready.then(reg => {
+        console.log('🔄 Auto-check', ++checkCount);
+        reg.update();
+      });
     } else {
       clearInterval(checkInterval);
     }
-  }, 3000);
+  }, 10000);
 }
 </script>
 
@@ -971,7 +868,7 @@ const selectorBtn = document.querySelector(".selector-btn");
 const tabsBloques = document.getElementById("tabs-bloques");
 const grid = document.getElementById("grid-asignaturas");
 
-// Generar Tabs Horizontales v67.24
+// Generar Tabs Horizontales v67.6
 CONFIGURACION_CURSO.forEach((bloque, i) => {
   const db = JSON.parse(localStorage.getItem("mastertest_db")) || {};
   
@@ -1006,38 +903,14 @@ CONFIGURACION_CURSO.forEach((bloque, i) => {
 
 
 
-// LOGICA FILTRADO v67.24
+// LOGICA FILTRADO v67.6
 
 function filtrarBloque(bid) {
   window.currentBid = bid;
   const bloque = CONFIGURACION_CURSO.find(b => b.bloque === bid);
   if (!bloque) return;
 
-  // FIX v67.24: Sincronizar tabs activos con contenido mostrado
-  document.querySelectorAll(".tab-btn").forEach((tab, index) => {
-    tab.classList.remove("active");
-    // Activar el tab que corresponde al bid actual
-    const tabBloque = CONFIGURACION_CURSO[index];
-    if (tabBloque && tabBloque.bloque === bid) {
-      tab.classList.add("active");
-    }
-  });
-
-  // Mostrar skeleton screens mientras carga v67.24
-  grid.innerHTML = `
-    ${[1, 2, 3].map(() => `
-      <div class="skeleton-card">
-        <div class="skeleton skeleton-title"></div>
-        <div class="skeleton skeleton-line" style="width:60%"></div>
-        <div class="skeleton skeleton-bar"></div>
-        <div class="skeleton skeleton-button"></div>
-      </div>
-    `).join('')}
-  `;
-  
-  // Cargar contenido real (pequeño delay para que se vea el skeleton)
-  setTimeout(() => {
-    grid.innerHTML = "";
+  grid.innerHTML = "";
   
   
 
@@ -1068,78 +941,37 @@ function filtrarBloque(bid) {
     const card = document.createElement("div");
     card.className = "asig-card"; 
     
-    // Verificar si hay preguntas IA generadas para este tema v67.24
+    // Verificar si hay preguntas IA generadas para este tema
     const preguntasIA = preguntasIAStorage ? preguntasIAStorage.filter(p => p.tema === asig.nombre).length : 0;
     const totalConIA = totalPreg + preguntasIA;
+    const metaPreguntas = preguntasIA > 0 ? `${totalPreg} + ${preguntasIA} IA = ${totalConIA}` : `${totalPreg}`;
     
-    // Contar dominadas IA desde estructura separada v67.24
-    let dominadasIA = 0;
-    if (preguntasIA > 0) {
-      const dominadasIAStorage = JSON.parse(localStorage.getItem("mastertest_ia_dominadas")) || {};
-      if (dominadasIAStorage[asig.nombre]) {
-        dominadasIA = dominadasIAStorage[asig.nombre].length;
-      }
-    }
-    
-    // Total dominadas = normales + IA
-    const totalDominadas = numDominadas + dominadasIA;
-    
-    // Texto claro v67.24
-    const textoDominadas = preguntasIA > 0 
-      ? `${totalDominadas} de ${totalConIA} dominadas (${numDominadas} normales + ${dominadasIA} IA)`
-      : `${numDominadas} de ${totalPreg} dominadas`;
-    
-    // Mostrar botón IA siempre que tenga al menos 30% dominado (v67.24)
-    const mostrarBotonIA = porcentaje >= 30;
+    // Mostrar botón IA solo si ha dominado el 100%
+    const mostrarBotonIA = porcentaje >= 100;
     
     card.innerHTML = `
       <div class="asig-info">
         <div class="asig-title">${asig.nombre}</div>
-        <div class="asig-meta"><span style="display:flex; align-items:center; gap:5px; margin-right:10px;">${iconStatus} ${textoDominadas}</span><div style="display:flex; align-items:center;">${htmlBadges}</div></div>
+        <div class="asig-meta"><span style="display:flex; align-items:center; gap:5px; margin-right:10px;">${iconStatus} ${numDominadas} / ${metaPreguntas} Dominadas</span><div style="display:flex; align-items:center;">${htmlBadges}</div></div>
         <div class="barra-fondo"><div class="barra-relleno ${porcentaje >= 100 ? 'full' : ''}" style="width:${porcentaje}%"></div></div>
         <div style="font-size:0.75rem; text-align:right; margin-top:5px; color:var(--text-light); font-weight:600;">${Math.round(porcentaje)}% Completado</div>
         ${mostrarBotonIA ? `
           <div style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color:white; padding:12px; border-radius:10px; margin-top:15px; text-align:center; font-size:0.85rem;">
-            <div style="font-weight:600; margin-bottom:5px;">${porcentaje >= 100 ? '🎉 ¡Tema dominado!' : '🤖 Generar más preguntas'}</div>
-            <div style="opacity:0.9; font-size:0.8rem;">${porcentaje >= 100 ? '¿Quieres más desafío?' : 'Entrena con IA personalizada'}</div>
+            <div style="font-weight:600; margin-bottom:5px;">🎉 ¡Tema dominado!</div>
+            <div style="opacity:0.9; font-size:0.8rem;">¿Quieres más desafío?</div>
           </div>
         ` : ''}
       </div>
       <div style="display:flex; flex-direction:column; gap:10px;">
         <button class="btn-orange" onclick="jugar('carrera', ${idx}, '${bid}')">▶ Entrenar</button>
         ${mostrarBotonIA ? `
-          <button class="btn-outline btn-ia-${idx}" style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color:white; border:none; font-weight:600;">
+          <button class="btn-outline" onclick="generarPreguntasIA('${asig.nombre}', 10)" style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color:white; border:none; font-weight:600;">
             🤖 + 10 IA
           </button>
         ` : ''}
       </div>
     `;
     grid.appendChild(card);
-    
-    // DEBUG v67.24: Logging extremo
-    console.log('🔍 Card agregada, idx:', idx, 'tema:', asig.nombre, 'mostrarBotonIA:', mostrarBotonIA);
-    
-    // Agregar evento al botón IA inmediatamente después de crear la card
-    if (mostrarBotonIA) {
-      const btnIA = document.querySelector('.btn-ia-' + idx);
-      console.log('🔍 Buscando botón .btn-ia-' + idx, '→ Encontrado:', !!btnIA);
-      
-      if (btnIA) {
-        console.log('✅ Botón encontrado, asignando onclick...');
-        btnIA.onclick = function() {
-          console.log('🤖 Click IA detectado:', asig.nombre);
-          console.log('🔍 Verificando función generarPreguntasIA:', typeof generarPreguntasIA);
-          if (typeof generarPreguntasIA === 'function') {
-            generarPreguntasIA(asig.nombre, 10);
-          } else {
-            console.error('❌ generarPreguntasIA no existe!');
-          }
-        };
-        console.log('✅ onclick asignado a botón');
-      } else {
-        console.error('❌ No se encontró botón .btn-ia-' + idx);
-      }
-    }
   });
 
   const separador = document.createElement("hr");
@@ -1147,66 +979,6 @@ function filtrarBloque(bid) {
   grid.appendChild(separador);
 
   // =========================================================
-  // 0. ZONA NARANJA: SIMULACRO SEMESTRAL
-  // =========================================================
-  const cardSemestral = document.createElement("div");
-  cardSemestral.className = "asig-card card-simulacros";
-  cardSemestral.style.backgroundColor = "#ffe8cc";
-  cardSemestral.style.borderLeft = "4px solid #f97316";
-  cardSemestral.innerHTML = `
-    <div class="simulacro-header">
-      <div><h3 class="simulacro-title">⭐ Simulacro Semestral</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-      <div style="font-size: 2.5rem; opacity: 0.1;">📋</div>
-    </div>
-    <div class="simulacro-grid">
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(10)">10</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(20)">20</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
-    </div>
-  `;
-  grid.appendChild(cardSemestral);
-
-  // ZONA NARANJA: SIMULACRO SEMESTRAL FOTOVOLTAICA
-  const cardSemestralFotovoltaica = document.createElement("div");
-  cardSemestralFotovoltaica.className = "asig-card card-simulacros";
-  cardSemestralFotovoltaica.style.backgroundColor = "#ffe8cc";
-  cardSemestralFotovoltaica.style.borderLeft = "4px solid #f97316";
-  cardSemestralFotovoltaica.innerHTML = `
-    <div class="simulacro-header">
-      <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Fotovoltaica</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-      <div style="font-size: 2.5rem; opacity: 0.1;">☀️</div>
-    </div>
-    <div class="simulacro-grid">
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(10)">10</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(20)">20</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
-    </div>
-  `;
-  grid.appendChild(cardSemestralFotovoltaica);
-
-  // ZONA NARANJA: SIMULACRO SEMESTRAL EMPLEABILIDAD
-  if (bid === "pestana3" && typeof EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA !== 'undefined') {
-    const cardSemestralEmpleabilidad = document.createElement("div");
-    cardSemestralEmpleabilidad.className = "asig-card card-simulacros";
-    cardSemestralEmpleabilidad.style.backgroundColor = "#ffe8cc";
-    cardSemestralEmpleabilidad.style.borderLeft = "4px solid #f97316";
-    cardSemestralEmpleabilidad.innerHTML = `
-      <div class="simulacro-header">
-        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Empleabilidad</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-        <div style="font-size: 2.5rem; opacity: 0.1;">💼</div>
-      </div>
-      <div class="simulacro-grid">
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(10)">10</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(20)">20</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(30)">30</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
-      </div>
-    `;
-    grid.appendChild(cardSemestralEmpleabilidad);
-  }
-
   // 1. ZONA DE SIMULACROS
   // =========================================================
   const cardSimulacros = document.createElement("div");
@@ -1267,37 +1039,6 @@ function filtrarBloque(bid) {
         </div>
     </div>
 
-    <div class="strip-card strip-orange">
-        <div>
-            <div class="strip-header" style="color:#f59e0b">📐 Fotometría</div>
-            <div class="strip-meta">Lumen · Candela · Lux · Luminancia</div>
-        </div>
-        <div style="display:flex; gap:5px; justify-content:flex-end;">
-            <button class="btn-pill-right bg-orange" onclick="abrirFotometria()">📚 Estudiar</button>
-        </div>
-    </div>
-
-    <div class="strip-card strip-red">
-        <div>
-            <div class="strip-header" style="color:#dc2626">⚡ Caída de Tensión</div>
-            <div class="strip-meta">Límites REBT · Fórmulas · Ejemplos</div>
-        </div>
-        <div style="display:flex; gap:5px; justify-content:flex-end;">
-            <button class="btn-pill-right bg-danger" onclick="abrirCaidaTension()">📚 Estudiar</button>
-        </div>
-    </div>
-
-    <div class="strip-card strip-blue">
-        <div>
-            <div class="strip-header" style="color:#3b82f6">📖 Símbolo Master</div>
-            <div class="strip-meta">Aprende símbolos eléctricos</div>
-        </div>
-        <div style="display:flex; gap:5px; justify-content:flex-end;">
-            <button class="btn-pill-right bg-primary" onclick="abrirSimboloMaster()">🎮 Jugar</button>
-            <button class="btn-pill-right bg-white-purple" style="color:#3b82f6; border-color:#3b82f6;" onclick="abrirSimboloMaster()">📚 Ver</button>
-        </div>
-    </div>
-
     <div class="strip-card strip-cyan">
         <div>
             <div class="strip-header" style="color:#0891b2">🛠️ REBT</div>
@@ -1342,8 +1083,6 @@ function filtrarBloque(bid) {
   stripContainer.appendChild(cardFlashcards);
 
   grid.appendChild(stripContainer);
-  
-  }, 150); // Delay para mostrar skeleton screen v67.24
 }
 
 // Inicialización con restauración de contexto
@@ -1371,21 +1110,6 @@ setTimeout(() => {
     if(first) filtrarBloque(first.bloque, null);
   }
 }, 50);
-
-// DEBUG v67.24: Test de verificación
-setTimeout(() => {
-  console.log('🔍 TEST v67.24: Verificando sistema IA');
-  console.log('✓ generarPreguntasIA existe:', typeof generarPreguntasIA);
-  console.log('✓ Botones IA en página:', document.querySelectorAll('[class*="btn-ia-"]').length);
-  
-  const testBtn = document.querySelector('[class*="btn-ia-"]');
-  if (testBtn) {
-    console.log('✓ Primer botón IA encontrado, clase:', testBtn.className);
-    console.log('✓ onclick asignado:', !!testBtn.onclick);
-  } else {
-    console.warn('⚠️ No se encontraron botones IA en la página');
-  }
-}, 500);
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')

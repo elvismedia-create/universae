@@ -16,177 +16,28 @@ let recordActual = 0;
 // MODO TURBO (Persistente)
 let modoTurbo = localStorage.getItem("mastertest_turbo") === "true";
 
-/* =========================================================
-   SISTEMA DE VALIDACIÓN Y VERSIONADO (SEGURIDAD v67.24)
-   ========================================================= */
-const SCHEMA_VERSION = 1;
-
-// Estructura por defecto para la base de datos
-function getDefaultDatabase() {
-  return {};
-}
-
-// Validar que la estructura de datos sea correcta
-function validateDatabaseSchema(db) {
-  if (typeof db !== 'object' || db === null) return false;
-  for (const asigName in db) {
-    const asig = db[asigName];
-    if (!Array.isArray(asig.active) || !Array.isArray(asig.dom) || typeof asig.master_index !== 'number') {
-      return false;
-    }
-  }
-  return true;
-}
-
-// Cargar base de datos con validación
-function loadDatabase() {
-  try {
-    const raw = localStorage.getItem("mastertest_db");
-    if (!raw) return getDefaultDatabase();
-
-    const db = JSON.parse(raw);
-
-    // Validar estructura
-    if (!validateDatabaseSchema(db)) {
-      console.warn("⚠️ Base de datos corrupta, reiniciando...");
-      localStorage.removeItem("mastertest_db");
-      return getDefaultDatabase();
-    }
-
-    return db;
-  } catch (e) {
-    console.error("❌ Error cargando base de datos:", e);
-    localStorage.removeItem("mastertest_db");
-    return getDefaultDatabase();
-  }
-}
-
-// Guardar base de datos con validación
-function saveDatabase(db) {
-  try {
-    if (!validateDatabaseSchema(db)) {
-      console.error("❌ Intento de guardar datos inválidos");
-      return false;
-    }
-    localStorage.setItem("mastertest_db", JSON.stringify(db));
-    return true;
-  } catch (e) {
-    console.error("❌ Error guardando base de datos:", e);
-    return false;
-  }
-}
-
-// Cargar array de fallos con validación
-function loadFailures() {
-  try {
-    const raw = localStorage.getItem("mastertest_fails");
-    if (!raw) return [];
-    const fails = JSON.parse(raw);
-    return Array.isArray(fails) ? fails : [];
-  } catch (e) {
-    console.error("❌ Error cargando fallos:", e);
-    return [];
-  }
-}
-
-// Cargar favoritos con validación
-function loadFavorites() {
-  try {
-    const raw = localStorage.getItem("mastertest_favs");
-    if (!raw) return [];
-    const favs = JSON.parse(raw);
-    return Array.isArray(favs) ? favs : [];
-  } catch (e) {
-    console.error("❌ Error cargando favoritos:", e);
-    return [];
-  }
-}
-
-// FUNCIÓN SHOWTOAST (v67.24 SEGURO - XSS FIX)
-function showToast(tipo, titulo, detalle) {
-  console.log(`🔔 Toast [${tipo}]: ${titulo} - ${detalle}`);
-
-  // Crear toast visual - SEGURO contra XSS
-  const toastId = 'toast-' + Date.now();
-  const color = tipo === 'error' ? '#ef4444' : tipo === 'success' ? '#10b981' : '#3b82f6';
-  const icon = tipo === 'error' ? '❌' : tipo === 'success' ? '✅' : 'ℹ️';
-
-  // Crear elementos con DOM API en lugar de insertAdjacentHTML
-  const toast = document.createElement('div');
-  toast.id = toastId;
-  toast.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; background:white; padding:16px 20px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.2); max-width:400px; border-left:4px solid ' + color + '; animation:slideIn 0.3s ease;';
-
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'display:flex; align-items:flex-start; gap:12px;';
-
-  const iconDiv = document.createElement('div');
-  iconDiv.style.fontSize = '1.5rem';
-  iconDiv.textContent = icon;
-
-  const content = document.createElement('div');
-  content.style.cssText = 'flex:1;';
-
-  const tituloDiv = document.createElement('div');
-  tituloDiv.style.cssText = 'font-weight:700; color:#1f2937; margin-bottom:4px;';
-  tituloDiv.textContent = titulo; // Seguro - sin HTML
-
-  const detalleDiv = document.createElement('div');
-  detalleDiv.style.cssText = 'font-size:0.9rem; color:#6b7280;';
-  detalleDiv.textContent = detalle; // Seguro - sin HTML
-
-  const btn = document.createElement('button');
-  btn.textContent = '×';
-  btn.style.cssText = 'background:none; border:none; font-size:1.2rem; color:#9ca3af; cursor:pointer; padding:0; line-height:1;';
-  btn.onclick = () => toast.remove();
-
-  content.appendChild(tituloDiv);
-  content.appendChild(detalleDiv);
-  wrapper.appendChild(iconDiv);
-  wrapper.appendChild(content);
-  wrapper.appendChild(btn);
-  toast.appendChild(wrapper);
-
-  // Inyectar estilos una sola vez si no existen
-  if (!document.getElementById('toast-styles')) {
-    const style = document.createElement('style');
-    style.id = 'toast-styles';
-    style.textContent = '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { opacity: 1; } to { opacity: 0; transform: translateX(400px); } }';
-    document.head.appendChild(style);
-  }
-
-  document.body.appendChild(toast);
-
-  // Auto-cerrar después de 5 segundos
-  setTimeout(() => {
-    if (toast && toast.parentElement) {
-      toast.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => toast.remove(), 300);
-    }
-  }, 5000);
-}
-
 // --- INICIALIZACIÓN ---
 setTimeout(() => actualizarBotonTurbo(), 100);
 
-// --- AUTO-REPARACIÓN AL INICIO (CON VALIDACIÓN) ---
+// --- AUTO-REPARACIÓN AL INICIO ---
 (function sanearBaseDeDatos() {
     try {
-        let db = loadDatabase();
+        let db = JSON.parse(localStorage.getItem("mastertest_db")) || {};
         let cambio = false;
         const idsReales = new Set();
         if (typeof CONFIGURACION_CURSO !== 'undefined') {
             CONFIGURACION_CURSO.forEach(b => b.asignaturas.forEach(a => a.data.forEach(p => idsReales.add(p.id))));
             for (const asigName in db) {
-                if (db[asigName] && Array.isArray(db[asigName].dom)) {
+                if (db[asigName].dom) {
                     const longAntes = db[asigName].dom.length;
                     db[asigName].dom = db[asigName].dom.filter(id => idsReales.has(id));
                     db[asigName].dom = [...new Set(db[asigName].dom)];
                     if (db[asigName].dom.length !== longAntes) cambio = true;
                 }
             }
-            if (cambio) saveDatabase(db);
+            if (cambio) localStorage.setItem("mastertest_db", JSON.stringify(db));
         }
-    } catch (e) { console.error("❌ Error saneando DB:", e); }
+    } catch (e) { console.log("Error saneando DB", e); }
 })();
 
 function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
@@ -292,8 +143,8 @@ function jugar(modo, idx, bid, limit) {
     if (!bloque) return;
     const asig = bloque.asignaturas[idx];
     asignaturaActualObj = asig;
-    const db = loadDatabase(); // ✅ Con validación
-    const failsGlobal = loadFailures(); // ✅ Con validación
+    const db = JSON.parse(localStorage.getItem("mastertest_db")) || {};
+    const failsGlobal = JSON.parse(localStorage.getItem("mastertest_fails")) || [];
     
     if (!db[asig.nombre]) db[asig.nombre] = { active: [], master_index: 0, stats: {}, dom: [] };
     const estado = db[asig.nombre];
@@ -326,40 +177,8 @@ function jugar(modo, idx, bid, limit) {
         seleccion.push(...extra);
     }
     const mixIds = [...new Set(seleccion)];
-    saveDatabase(db); // ✅ Con validación
+    localStorage.setItem("mastertest_db", JSON.stringify(db));
     preguntasJuego = mixIds.map(id => asig.data.find(p => p.id === id)).filter(Boolean);
-    
-    // v67.24: PRIORIDAD 50/50 PARA PREGUNTAS IA
-    const preguntasIAStorage = JSON.parse(localStorage.getItem("mastertest_ia_preguntas")) || [];
-    const preguntasIATema = preguntasIAStorage.filter(p => p.tema === asig.nombre);
-    
-    if (preguntasIATema.length > 0) {
-      console.log(`🤖 Preguntas IA disponibles para ${asig.nombre}: ${preguntasIATema.length}`);
-      
-      // Separar preguntas normales e IA
-      const preguntasNormales = preguntasJuego;
-      
-      // Calcular mitad (50%)
-      const mitad = Math.floor(10 / 2); // 5 preguntas
-      
-      // Mezclar 50% IA + 50% normales
-      preguntasJuego = [
-        ...shuffle(preguntasIATema).slice(0, mitad),      // 5 IA
-        ...shuffle(preguntasNormales).slice(0, mitad)     // 5 normales
-      ];
-      
-      // v67.24: Mezclar todo junto para que no salgan agrupadas
-      preguntasJuego = shuffle(preguntasJuego);
-      
-      // Si no hay suficientes IA, rellenar con normales
-      if (preguntasJuego.length < 10) {
-        const faltantes = 10 - preguntasJuego.length;
-        const extras = shuffle(preguntasNormales).slice(0, faltantes);
-        preguntasJuego.push(...extras);
-      }
-      
-      console.log(`✅ Test final: ${preguntasJuego.filter(p => p.origen === 'ia').length} IA + ${preguntasJuego.filter(p => p.origen !== 'ia').length} normales`);
-    }
   }
   else if (modo === "global") {
     CONFIGURACION_CURSO.forEach(b => b.asignaturas.forEach(a => { if (a.data) preguntasJuego.push(...a.data); }));
@@ -367,7 +186,7 @@ function jugar(modo, idx, bid, limit) {
   }
   else if (modo === "personalizado") { if (preguntasJuego.length === 0) { alert("Error: Selecciona temas."); return; } }
   else if (modo === "purgatorio") {
-    const fails = loadFailures(); // ✅ Con validación
+    const fails = JSON.parse(localStorage.getItem("mastertest_fails")) || [];
     if(fails.length === 0) { alert("¡Purgatorio vacío!"); return; }
     let pool = []; CONFIGURACION_CURSO.forEach(b => b.asignaturas.forEach(a => pool.push(...a.data)));
     preguntasJuego = pool.filter(p => fails.includes(p.id));
@@ -375,10 +194,10 @@ function jugar(modo, idx, bid, limit) {
   }
   else if (modo === "muerte_subita") {
     CONFIGURACION_CURSO.forEach(b => b.asignaturas.forEach(a => preguntasJuego.push(...a.data)));
-    preguntasJuego = shuffle(preguntasJuego);
+    preguntasJuego = shuffle(preguntasJuego); 
   }
   else if (modo === "favoritos") {
-    const favs = loadFavorites(); // ✅ Con validación
+    const favs = JSON.parse(localStorage.getItem("mastertest_favs")) || [];
     if(favs.length === 0) { alert("No tienes preguntas favoritas aún"); return; }
     let pool = []; CONFIGURACION_CURSO.forEach(b => b.asignaturas.forEach(a => pool.push(...a.data)));
     preguntasJuego = pool.filter(p => favs.includes(p.id));
@@ -399,11 +218,7 @@ function jugar(modo, idx, bid, limit) {
    2. RENDERIZADO
    ========================================================= */
 function renderPregunta() {
-  // FIX v67.24: Limpieza simple (sin hover = sin problemas)
-  document.querySelectorAll('.opcion').forEach(op => {
-    op.classList.remove('seleccionada', 'correcta', 'incorrecta');
-  });
-  
+  if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   const p = preguntasJuego[indice];
   let titulo = "TEST"; let subtitulo = ""; let badge = `<span class="badge badge-oficial">PREGUNTA</span>`; let relojHtml = "";
   let barraProgresoHtml = "";
@@ -418,11 +233,6 @@ function renderPregunta() {
     if (estado.dom.includes(p.id)) badge = `<span class="badge badge-repaso">🟣 REPASO</span>`;
     else if (asignaturaActualObj.data.slice(0,10).some(x=>x.id===p.id)) badge = `<span class="badge badge-oficial">🔵 OFICIAL</span>`;
     else badge = `<span class="badge badge-nuevo">🟠 NUEVA</span>`;
-    
-    // v67.24: Badge GENERADA para preguntas IA (prioridad sobre otros)
-    if (p.origen === 'ia') {
-      badge = `<span class="badge badge-generada">🟣 GENERADA</span>`;
-    }
     
     const totalPreg = asignaturaActualObj.data.length; const numDominadas = estado.dom.length; const porcentaje = totalPreg > 0 ? (numDominadas / totalPreg) * 100 : 0;
     
@@ -537,17 +347,6 @@ function clickOpcion(i) {
 
   respuestasUsuario[indice] = i;
   renderPregunta();
-  
-  // AGREGAR ANIMACIONES v67.24
-  setTimeout(() => {
-    const opciones = document.querySelectorAll('.opcion');
-    if (esCorrecta) {
-      opciones[i].classList.add('correcta');
-    } else {
-      opciones[i].classList.add('incorrecta');
-    }
-  }, 50);
-  
   setTimeout(() => { if (indice < preguntasJuego.length - 1) { indice++; renderPregunta(); } else finalizar(); }, 800);
 }
 
@@ -579,30 +378,11 @@ function finalizar() {
         estado.stats[p.id] = (estado.stats[p.id] || 0) + 1;
         const umbralNecesario = modoTurbo ? 1 : 3;
         if (estado.stats[p.id] >= umbralNecesario && !estado.dom.includes(p.id)) estado.dom.push(p.id);
-        
-        // v67.24: Guardar dominadas IA por separado
-        if (p.origen === 'ia' && estado.stats[p.id] >= umbralNecesario) {
-          let dominadasIA = JSON.parse(localStorage.getItem("mastertest_ia_dominadas")) || {};
-          if (!dominadasIA[asignaturaActualObj.nombre]) dominadasIA[asignaturaActualObj.nombre] = [];
-          if (!dominadasIA[asignaturaActualObj.nombre].includes(p.id)) {
-            dominadasIA[asignaturaActualObj.nombre].push(p.id);
-            localStorage.setItem("mastertest_ia_dominadas", JSON.stringify(dominadasIA));
-          }
-        }
       } else {
         estado.stats[p.id] = 0;
         if (estado.dom.includes(p.id)) { 
             estado.dom = estado.dom.filter(id => id !== p.id); 
             if (!estado.active.includes(p.id)) estado.active.push(p.id); 
-        }
-        
-        // v67.24: Quitar de dominadas IA si falla
-        if (p.origen === 'ia') {
-          let dominadasIA = JSON.parse(localStorage.getItem("mastertest_ia_dominadas")) || {};
-          if (dominadasIA[asignaturaActualObj.nombre]) {
-            dominadasIA[asignaturaActualObj.nombre] = dominadasIA[asignaturaActualObj.nombre].filter(id => id !== p.id);
-            localStorage.setItem("mastertest_ia_dominadas", JSON.stringify(dominadasIA));
-          }
         }
       }
     }
@@ -730,7 +510,7 @@ function verEstadisticas() {
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
       <h1 style="margin:0;">📊 Stats</h1>
       <div style="background:#10b981; color:white; padding:8px 16px; border-radius:20px; font-weight:900; font-size:0.9rem; box-shadow:0 2px 8px rgba(16,185,129,0.3);">
-        v67.24
+        v67.6
       </div>
     </div>
     <div class="stats-grid">
@@ -839,24 +619,6 @@ function iniciarTestPersonalizado(n) {
     preguntasJuego = shuffle(preguntasJuego).slice(0, n);
     preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
     modoActual = "personalizado"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
-}
-function iniciarTestSemestral(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_INSTALACIONES_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
-}
-function iniciarTestSemestralFotovoltaica(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
-}
-function iniciarTestSemestralEmpleabilidad(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA].slice(0, n);
-    preguntasJuego = preguntasJuego.map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
     iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
 }
 function volverAlMenu() { 
@@ -1819,7 +1581,6 @@ function obtenerPreguntasIATema(nombreTema) {
 
 // Generar preguntas con IA
 async function generarPreguntasIA(tema, cantidad = 10) {
-  console.log('🚀 generarPreguntasIA llamada con:', tema, cantidad);
   try {
     // Mostrar loading
     const loadingHtml = `
@@ -1855,16 +1616,7 @@ async function generarPreguntasIA(tema, cantidad = 10) {
     else dificultad = 'avanzado';
 
     // Obtener ejemplos de preguntas existentes del tema
-    let preguntasEjemplo = [];
-    // Buscar el tema en CONFIGURACION_CURSO
-    CONFIGURACION_CURSO.forEach(bloque => {
-      const asigEncontrada = bloque.asignaturas.find(a => a.nombre === tema);
-      if (asigEncontrada && asigEncontrada.data) {
-        preguntasEjemplo = asigEncontrada.data.slice(0, 5);
-      }
-    });
-    
-    console.log('📝 Ejemplos de preguntas encontrados:', preguntasEjemplo.length);
+    const preguntasEjemplo = PREGUNTAS_DATA.filter(p => p.tema === tema).slice(0, 5);
 
     // Llamar a la función de Netlify
     const response = await fetch('/.netlify/functions/generar-preguntas', {
@@ -1882,41 +1634,9 @@ async function generarPreguntasIA(tema, cantidad = 10) {
 
     // Quitar loading
     document.getElementById('loading-ia')?.remove();
-    
-    // Logging detallado v67.24
-    console.log('📊 Respuesta generar-preguntas:', {
-      status: response.status,
-      success: data.success,
-      error: data.error,
-      details: data.details,
-      rawContent: data.rawContent
-    });
 
     if (!data.success) {
-      const errorText = data.error || 'Error desconocido';
-      console.error('❌ Error API generar preguntas:', errorText, 'Status:', response.status);
-      console.error('Details:', data.details);
-      console.error('Raw content:', data.rawContent);
-      
-      let titulo = 'Error al generar preguntas';
-      let detalle = errorText;
-      
-      // Diagnóstico específico v67.24
-      if (response.status === 401 || errorText.includes('API key') || errorText.includes('Unauthorized')) {
-        titulo = '🔑 API key no configurada';
-        detalle = 'Ve a Netlify → Site configuration → Environment variables → Agrega ANTHROPIC_API_KEY';
-      } else if (response.status === 429 || errorText.includes('quota') || errorText.includes('rate limit')) {
-        titulo = '💳 Sin créditos API';
-        detalle = 'Tu API key se quedó sin créditos. Recarga en console.anthropic.com';
-      } else if (response.status === 500 || response.status === 502 || response.status === 503) {
-        titulo = '🔥 Error del servidor';
-        detalle = 'Netlify Functions falló. Espera 1 minuto o verifica que se desplegaron correctamente.';
-      } else if (errorText.includes('timeout')) {
-        titulo = '⏱️ Tiempo agotado';
-        detalle = 'La generación tardó demasiado. Intenta con menos preguntas (5 en vez de 10).';
-      }
-      
-      showToast('error', titulo, detalle);
+      alert('❌ Error al generar preguntas:\n\n' + (data.error || 'Error desconocido'));
       return null;
     }
 
@@ -2015,28 +1735,7 @@ async function generarExplicacionProfunda(pregunta, tema, respuestaCorrecta, exp
     document.getElementById('loading-explicacion')?.remove();
 
     if (!data.success) {
-      const errorText = data.error || 'Error desconocido';
-      console.error('❌ Error API explicación:', errorText, 'Status:', response.status);
-      
-      let titulo = 'Error al generar explicación';
-      let detalle = errorText;
-      
-      // Diagnóstico específico v67.24
-      if (response.status === 401 || errorText.includes('API key') || errorText.includes('Unauthorized')) {
-        titulo = '🔑 API key no configurada';
-        detalle = 'Ve a Netlify → Site configuration → Environment variables → Agrega ANTHROPIC_API_KEY';
-      } else if (response.status === 429 || errorText.includes('quota') || errorText.includes('rate limit')) {
-        titulo = '💳 Sin créditos API';
-        detalle = 'Tu API key se quedó sin créditos. Recarga en console.anthropic.com';
-      } else if (response.status === 500 || response.status === 502 || response.status === 503) {
-        titulo = '🔥 Error del servidor';
-        detalle = 'Netlify Functions falló. Espera 1 minuto o verifica Deploy logs.';
-      } else if (errorText.includes('timeout')) {
-        titulo = '⏱️ Tiempo agotado';
-        detalle = 'La generación tardó demasiado. Intenta de nuevo en 30 segundos.';
-      }
-      
-      showToast('error', titulo, detalle);
+      alert('❌ Error al generar explicación:\n\n' + (data.error || 'Error desconocido'));
       return;
     }
 
@@ -2044,46 +1743,24 @@ async function generarExplicacionProfunda(pregunta, tema, respuestaCorrecta, exp
     explicacionesCache[cacheId] = data.explicacion;
     guardarExplicacionesCache();
 
-    // v67.24: Logging si se usaron apuntes
-    if (data.usaApuntes) {
-      console.log('📚 Explicación generada usando apuntes literales');
-    } else {
-      console.log('🤖 Explicación generada por IA (sin apuntes)');
-    }
-
     // Mostrar explicación
-    mostrarExplicacionProfunda(data.explicacion, pregunta, tema, data.usaApuntes);
+    mostrarExplicacionProfunda(data.explicacion, pregunta, tema);
 
   } catch (error) {
     document.getElementById('loading-explicacion')?.remove();
-    console.error('❌ Error generando explicación:', error);
-    
-    let titulo = 'Error de conexión';
-    let detalle = 'No se pudo conectar con el servidor.';
-    
-    if (!navigator.onLine) {
-      titulo = 'Sin internet';
-      detalle = 'Verifica tu conexión WiFi o datos móviles.';
-    } else if (error.message && error.message.includes('fetch')) {
-      detalle = 'No se pudo conectar con Netlify Functions. Verifica que estén desplegadas.';
-    }
-    
-    showToast('error', titulo, detalle);
+    console.error('Error generando explicación:', error);
+    alert('❌ Error de conexión.\n\nVerifica tu internet.');
   }
 }
 
 // Mostrar explicación profunda
-function mostrarExplicacionProfunda(explicacion, pregunta, tema, usaApuntes = false) {
+function mostrarExplicacionProfunda(explicacion, pregunta, tema) {
   // Convertir markdown simple a HTML
   let html = explicacion
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n\n/g, '</p><p>')
     .replace(/^(.+)$/gm, '<p>$1</p>')
     .replace(/• /g, '<br>• ');
-
-  const fuenteBadge = usaApuntes 
-    ? '<span style="background:#10b981; color:white; padding:4px 12px; border-radius:8px; font-size:0.85rem; font-weight:600;">📚 De tus apuntes</span>'
-    : '<span style="background:#8b5cf6; color:white; padding:4px 12px; border-radius:8px; font-size:0.85rem; font-weight:600;">🤖 Generado por IA</span>';
 
   const pantalla = `
     <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; overflow-y:auto; padding:20px;" id="pantalla-explicacion">
@@ -2093,11 +1770,8 @@ function mostrarExplicacionProfunda(explicacion, pregunta, tema, usaApuntes = fa
           <button class="btn-outline" onclick="document.getElementById('pantalla-explicacion').remove();">✕ Cerrar</button>
         </div>
 
-        <div style="background:var(--primary-light); padding:20px; border-radius:12px; margin-bottom:20px; border-left:4px solid var(--primary);">
-          <div style="display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
-            <div style="font-size:0.9rem; font-weight:600; color:var(--primary);">PREGUNTA</div>
-            ${fuenteBadge}
-          </div>
+        <div style="background:var(--primary-light); padding:20px; border-radius:12px; margin-bottom:30px; border-left:4px solid var(--primary);">
+          <div style="font-size:0.9rem; font-weight:600; color:var(--primary); margin-bottom:8px;">PREGUNTA</div>
           <div style="font-size:1.1rem; font-weight:600;">${pregunta}</div>
           <div style="font-size:0.85rem; color:var(--text-light); margin-top:8px;">Tema: ${tema}</div>
         </div>
