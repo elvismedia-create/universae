@@ -86,6 +86,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "El siguiente dispositivo es un:",
+    imagen: "img/transformador.png",
     opciones: ["Distribuidor", "Separador", "Transformador", "Modificador"],
     correctaTexto: "Transformador",
     explicacion: "Un transformador transforma la tensión y corriente de una instalación eléctrica."
@@ -95,6 +96,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "El siguiente empalme es:",
+    imagen: "img/empalme western.png",
     opciones: ["Empalme Western", "Empalme Duplex", "Empalme tipo T", "Empalme trenzado o cola de rata"],
     correctaTexto: "Empalme Western",
     explicacion: "El empalme Western es un tipo de empalme utilizado en instalaciones eléctricas."
@@ -104,6 +106,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "El siguiente símbolo hace referencia a:",
+    imagen: "img/conmutador.png",
     opciones: ["Interruptor", "Conmutador", "Punto de luz", "Pulsador"],
     correctaTexto: "Conmutador",
     explicacion: "El símbolo representa un conmutador que controla un circuito desde dos puntos."
@@ -140,6 +143,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "En la imagen se muestra:",
+    imagen: "img/telerruptor.png",
     opciones: ["Interruptor de control de potencia", "Telerruptor", "Timbre", "Zumbador"],
     correctaTexto: "Telerruptor",
     explicacion: "El telerruptor permite controlar circuitos desde múltiples puntos."
@@ -167,6 +171,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "Es cierto respecto al aparato de la imagen que:",
+    imagen: "img/polimetro-todas son correctas.png",
     opciones: ["Permite comprobar una instalación eléctrica de baja tensión", "Se denomina polímetro", "Miden magnitudes de resistencia, voltaje e intensidad de corriente", "Todas son correctas"],
     correctaTexto: "Todas son correctas",
     explicacion: "El polímetro es fundamental para verificar instalaciones eléctricas."
@@ -185,6 +190,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "Escoge la opción correcta:",
+    imagen: "img/circuito derecha paralelo.png",
     opciones: ["La imagen de la derecha muestra un circuito en paralelo", "La imagen de la derecha hace referencia a un circuito en serie", "La imagen de la izquierda es de un circuito en paralelo.", "Ninguna es correcta"],
     correctaTexto: "La imagen de la derecha muestra un circuito en paralelo",
     explicacion: "Identificar circuitos en serie y paralelo es fundamental."
@@ -257,6 +263,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "La siguiente imagen es de una herramienta, indica cuál:",
+    imagen: "img/pelacables.png",
     opciones: ["Pasacables", "Alicates", "Tijeras de electricistas", "Pelacables"],
     correctaTexto: "Pelacables",
     explicacion: "El pelacables retira el aislamiento de los conductores."
@@ -266,6 +273,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "La siguiente imagen hace referencia a:",
+    imagen: "img/interruptor diferencial.png",
     opciones: ["Interruptor magnetotérmico tetrapolar", "Interruptor de control de potencia", "Interruptor diferencial", "Interruptor cuádruple"],
     correctaTexto: "Interruptor diferencial",
     explicacion: "El interruptor diferencial protege contra contactos directos e indirectos."
@@ -275,6 +283,7 @@ const EXAMEN_SEMESTRAL_INSTALACIONES_DATA = [
     tema: "U1-U6: Instalaciones Eléctricas",
     tipo: "opción múltiple",
     texto: "La siguiente imagen muestra:",
+    imagen: "img/interruptor magnetotermico tetrapolar.png",
     opciones: ["Interruptor magnetotérmico tetrapolar", "Interruptor de control de potencia", "Interruptor automático diferencial", "Interruptor quíntuple"],
     correctaTexto: "Interruptor magnetotérmico tetrapolar",
     explicacion: "El magnetotérmico tetrapolar protege los cuatro conductores."

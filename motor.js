@@ -842,28 +842,16 @@ function iniciarTestPersonalizado(n) {
     iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
 }
 function iniciarTestSemestral(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_INSTALACIONES_DATA].slice(0, n);
-    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_INSTALACIONES_DATA, n, "⭐ Simulacro Semestral - Instalaciones Eléctricas");
 }
 function iniciarTestSemestralFotovoltaica(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA].slice(0, n);
-    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA, n, "⭐ Simulacro Semestral - Fotovoltaica");
 }
 function iniciarTestSemestralEmpleabilidad(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA].slice(0, n);
-    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA, n, "⭐ Simulacro Semestral - Empleabilidad");
 }
 function iniciarTestSemestralIngles(n) {
-    preguntasJuego = [...EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA].slice(0, n);
-    // Sin shuffle: opciones en el mismo orden que el examen oficial de la academia
-    modoActual = "semestral"; indice = 0; respuestasUsuario = new Array(preguntasJuego.length).fill(null);
-    iniciarReloj(n); mostrarPantalla("pantalla-test"); renderPregunta();
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA, n, "⭐ Simulacro Semestral - Inglés Profesional");
 }
 function volverAlMenu() { 
   detenerReloj(); 

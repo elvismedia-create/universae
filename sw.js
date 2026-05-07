@@ -1,6 +1,6 @@
-// v67.42 - Simulacros semestrales con opciones en orden fijo (igual que la academia) + Simulacro Inglés Profesional añadido
-const BUILD_TIMESTAMP = '20260504230000'; // Opciones fijas en simulacros semestrales + card Inglés
-const CACHE_NAME = `mastertest-v67.42-${BUILD_TIMESTAMP}`;
+// v67.43 - Imágenes añadidas a las 9 preguntas con imagen del simulacro de Instalaciones Eléctricas
+const BUILD_TIMESTAMP = '20260504235000'; // Imágenes semestral IEI
+const CACHE_NAME = `mastertest-v67.43-${BUILD_TIMESTAMP}`;
 
 const ASSETS_TO_CACHE = [
   './',

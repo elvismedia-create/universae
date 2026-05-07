@@ -104,6 +104,7 @@ const EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA = [
     tema: "Fotovoltaica",
     tipo: "opción múltiple",
     texto: "En un esquema de una instalación solar fotovoltaica este símbolo representa:",
+    imagen: "img/pregunta 12 esquema de una intalacion.png",
     opciones: ["El inversor.", "La célula fotovoltaica.", "La batería.", "El contador."],
     correctaTexto: "La célula fotovoltaica.",
     explicacion: "En esquemas eléctricos normalizados, el símbolo de célula fotovoltaica tiene un diseño específico que la distingue de otros componentes."

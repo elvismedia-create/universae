@@ -848,6 +848,8 @@ svg, svg * {
 
 <div id="pantalla-resultados" class="card"></div>
 
+<div id="pantalla-academia" class="card"></div>
+
 <div id="pantalla-configurador" class="card">
   <div class="header-flex">
     <h1>🧪 Test a la Carta</h1>
@@ -883,7 +885,7 @@ svg, svg * {
 <script src="data-empleabilidad-u4.js?v=20260414071000"></script>
 <script src="data-empleabilidad-u5.js?v=20260414071000"></script>
 <script src="data-empleabilidad-u6.js?v=20260414071000"></script>
-<script src="data-examen-semestral-instalaciones-electricas-interiores.js?v=20260504145000"></script>
+<script src="data-examen-semestral-instalaciones-electricas-interiores.js?v=20260504235000"></script>
 <script src="data-examen-semestral-fotovoltaica.js?v=20260504145000"></script>
 <script src="data-examen-semestral-empleabilidad.js?v=20260504145000"></script>
 <script src="data-examen-semestral-ingles-profesional.js?v=20260504145000"></script>
@@ -1147,31 +1149,31 @@ function filtrarBloque(bid) {
   grid.appendChild(separador);
 
   // =========================================================
-  // 0. ZONA NARANJA: SIMULACRO SEMESTRAL
+  // 0. ZONA VERDE: SIMULACRO SEMESTRAL INSTALACIONES
   // =========================================================
   const cardSemestral = document.createElement("div");
   cardSemestral.className = "asig-card card-simulacros";
-  cardSemestral.style.backgroundColor = "#ffe8cc";
-  cardSemestral.style.borderLeft = "4px solid #f97316";
+  cardSemestral.style.backgroundColor = "#dcfce7";
+  cardSemestral.style.borderLeft = "4px solid #16a34a";
   cardSemestral.innerHTML = `
     <div class="simulacro-header">
-      <div><h3 class="simulacro-title">⭐ Simulacro Semestral</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+      <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Instalaciones Eléctricas Interior</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
       <div style="font-size: 2.5rem; opacity: 0.1;">📋</div>
     </div>
     <div class="simulacro-grid">
       <button class="btn-sim-num" onclick="iniciarTestSemestral(10)">10</button>
       <button class="btn-sim-num" onclick="iniciarTestSemestral(20)">20</button>
       <button class="btn-sim-num" onclick="iniciarTestSemestral(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
+      <button class="btn-sim-num" onclick="iniciarTestSemestral(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
     </div>
   `;
   grid.appendChild(cardSemestral);
 
-  // ZONA NARANJA: SIMULACRO SEMESTRAL FOTOVOLTAICA
+  // ZONA VERDE: SIMULACRO SEMESTRAL FOTOVOLTAICA
   const cardSemestralFotovoltaica = document.createElement("div");
   cardSemestralFotovoltaica.className = "asig-card card-simulacros";
-  cardSemestralFotovoltaica.style.backgroundColor = "#ffe8cc";
-  cardSemestralFotovoltaica.style.borderLeft = "4px solid #f97316";
+  cardSemestralFotovoltaica.style.backgroundColor = "#dcfce7";
+  cardSemestralFotovoltaica.style.borderLeft = "4px solid #16a34a";
   cardSemestralFotovoltaica.innerHTML = `
     <div class="simulacro-header">
       <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Fotovoltaica</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
@@ -1181,17 +1183,17 @@ function filtrarBloque(bid) {
       <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(10)">10</button>
       <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(20)">20</button>
       <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
+      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
     </div>
   `;
   grid.appendChild(cardSemestralFotovoltaica);
 
-  // ZONA NARANJA: SIMULACRO SEMESTRAL EMPLEABILIDAD
-  if (bid === "pestana3" && typeof EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA !== 'undefined') {
+  // ZONA VERDE: SIMULACRO SEMESTRAL EMPLEABILIDAD
+  if (typeof EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA !== 'undefined') {
     const cardSemestralEmpleabilidad = document.createElement("div");
     cardSemestralEmpleabilidad.className = "asig-card card-simulacros";
-    cardSemestralEmpleabilidad.style.backgroundColor = "#ffe8cc";
-    cardSemestralEmpleabilidad.style.borderLeft = "4px solid #f97316";
+    cardSemestralEmpleabilidad.style.backgroundColor = "#dcfce7";
+    cardSemestralEmpleabilidad.style.borderLeft = "4px solid #16a34a";
     cardSemestralEmpleabilidad.innerHTML = `
       <div class="simulacro-header">
         <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Empleabilidad</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
@@ -1201,18 +1203,18 @@ function filtrarBloque(bid) {
         <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(10)">10</button>
         <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(20)">20</button>
         <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(30)">30</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
       </div>
     `;
     grid.appendChild(cardSemestralEmpleabilidad);
   }
 
-  // ZONA NARANJA: SIMULACRO SEMESTRAL INGLÉS PROFESIONAL
-  if (bid === "pestana4" && typeof EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA !== 'undefined') {
+  // ZONA VERDE: SIMULACRO SEMESTRAL INGLÉS PROFESIONAL
+  if (typeof EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA !== 'undefined') {
     const cardSemestralIngles = document.createElement("div");
     cardSemestralIngles.className = "asig-card card-simulacros";
-    cardSemestralIngles.style.backgroundColor = "#ffe8cc";
-    cardSemestralIngles.style.borderLeft = "4px solid #f97316";
+    cardSemestralIngles.style.backgroundColor = "#dcfce7";
+    cardSemestralIngles.style.borderLeft = "4px solid #16a34a";
     cardSemestralIngles.innerHTML = `
       <div class="simulacro-header">
         <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Inglés Profesional</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
@@ -1222,10 +1224,69 @@ function filtrarBloque(bid) {
         <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(10)">10</button>
         <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(20)">20</button>
         <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(30)">30</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(40)" style="background-color: #f97316; color: white; font-weight: bold;">40</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
       </div>
     `;
     grid.appendChild(cardSemestralIngles);
+  }
+
+  // TARJETA HISTORIAL DE SIMULACROS
+  const historialGuardado = localStorage.getItem("academia_historial");
+  if (historialGuardado) {
+    try {
+      const historial = JSON.parse(historialGuardado);
+      if (historial.length > 0) {
+        const ultimo = historial[historial.length - 1];
+        const colorNota = ultimo.porcentaje >= 75 ? "#16a34a" : ultimo.porcentaje >= 50 ? "#d97706" : "#dc2626";
+        const cardRevisar = document.createElement("div");
+        cardRevisar.className = "asig-card card-simulacros";
+        cardRevisar.style.backgroundColor = "#f0fdf4";
+        cardRevisar.style.borderLeft = "4px solid #16a34a";
+        cardRevisar.innerHTML = `
+          <div class="simulacro-header" style="margin-bottom:10px;">
+            <div>
+              <h3 class="simulacro-title">📋 Historial de simulacros</h3>
+              <p class="simulacro-subtitle">Último: ${ultimo.titulo} · <span style="color:${colorNota};font-weight:700;">${ultimo.nota}/10 (${ultimo.porcentaje}%)</span> · ${ultimo.fecha}</p>
+            </div>
+            <div style="font-size:2rem; opacity:0.15;">🗂️</div>
+          </div>
+          <button onclick="mostrarHistorialSimulacros()" style="width:100%; padding:12px; background:#16a34a; color:white; font-size:0.95rem; font-weight:700; border-radius:10px; border:none; cursor:pointer;">
+            🗂️ Ver historial (${historial.length} simulacro${historial.length > 1 ? 's' : ''})
+          </button>
+        `;
+        grid.appendChild(cardRevisar);
+      }
+    } catch(e) {}
+  }
+
+  // TARJETA ZONA DE FALLOS
+  const bancoRaw = localStorage.getItem("academia_banco_fallos");
+  if (bancoRaw) {
+    try {
+      const banco = JSON.parse(bancoRaw);
+      const numFallos = Object.keys(banco).length;
+      if (numFallos > 0) {
+        const cardFallos = document.createElement("div");
+        cardFallos.className = "asig-card card-simulacros";
+        cardFallos.style.backgroundColor = "#fef2f2";
+        cardFallos.style.borderLeft = "4px solid #dc2626";
+        cardFallos.innerHTML = `
+          <div class="simulacro-header" style="margin-bottom:12px;">
+            <div>
+              <h3 class="simulacro-title" style="color:#dc2626;">⚡ Zona de Fallos</h3>
+              <p class="simulacro-subtitle">${numFallos} pregunta${numFallos > 1 ? 's' : ''} pendiente${numFallos > 1 ? 's' : ''} · Mezcladas de todos los simulacros</p>
+            </div>
+            <div style="font-size:2rem; opacity:0.15;">🔥</div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+            <button onclick="iniciarArcadeFallos()" style="padding:10px 6px; background:#dc2626; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:0.85rem;">🕹️ Arcade</button>
+            <button onclick="iniciarPurgatorio()" style="padding:10px 6px; background:#7c3aed; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:0.85rem;">💀 Purgatorio</button>
+            <button onclick="iniciarRepasoRapido()" style="padding:10px 6px; background:#d97706; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:0.85rem;">⚡ Repaso</button>
+          </div>
+        `;
+        grid.appendChild(cardFallos);
+      }
+    } catch(e) {}
   }
 
   // 1. ZONA DE SIMULACROS
@@ -1368,7 +1429,34 @@ function filtrarBloque(bid) {
 }
 
 // Inicialización con restauración de contexto
-setTimeout(() => { 
+// Barrido automático de fallos desde historial existente (se ejecuta una sola vez)
+(function migrarFallosDesdeHistorial() {
+  try {
+    const yaMigrado = localStorage.getItem("academia_fallos_migrados");
+    if (yaMigrado) return;
+    const historial = JSON.parse(localStorage.getItem("academia_historial") || "[]");
+    if (!historial.length) return;
+    const banco = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+    historial.forEach(sim => {
+      if (!sim.preguntas || !sim.respuestas) return;
+      sim.preguntas.forEach((p, i) => {
+        const respUsuario = sim.respuestas[i];
+        const acerto = respUsuario !== undefined && p.opciones[respUsuario] === p.correctaTexto;
+        const key = String(p.id || p.texto.substring(0, 40));
+        if (!acerto) {
+          if (!banco[key]) banco[key] = { pregunta: p, fallos: 0, aciertosConsecutivos: 0 };
+          banco[key].fallos++;
+          banco[key].pregunta = p;
+        }
+      });
+    });
+    localStorage.setItem("academia_banco_fallos", JSON.stringify(banco));
+    localStorage.setItem("academia_fallos_migrados", "1");
+    console.log("✅ Barrido de fallos completado:", Object.keys(banco).length, "preguntas");
+  } catch(e) { console.warn("Error en migración de fallos:", e); }
+})();
+
+setTimeout(() => {
   // Intentar restaurar contexto guardado
   const savedContext = localStorage.getItem("mastertest_lastcontext");
   
@@ -1514,6 +1602,593 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+</script>
+
+<script>
+// =========================================================
+// MODO ACADEMIA - Simulacros tarjeta verde
+// Todas las preguntas visibles, scroll, resultados al final
+// =========================================================
+
+let academiaPreguntasJuego = [];
+let academiaRespuestas = {};
+let academiaTitulo = "";
+
+function iniciarModoAcademia(data, n, titulo) {
+  academiaPreguntasJuego = [...data].slice(0, n).map(p => ({
+    ...p,
+    opciones: shuffle([...p.opciones])
+  }));
+  academiaRespuestas = {};
+  academiaTitulo = titulo || "Simulacro Semestral";
+  renderAcademia();
+  mostrarPantalla("pantalla-academia");
+}
+
+function renderAcademia() {
+  const pantalla = document.getElementById("pantalla-academia");
+  const total = academiaPreguntasJuego.length;
+
+  let html = `
+    <div class="academia-header">
+      <button class="btn-tool" onclick="volverAlMenu()" style="margin-bottom:16px;">← Volver</button>
+      <h2 style="margin:0 0 4px 0; color:var(--primary); font-size:1.5rem; font-weight:800;">${academiaTitulo}</h2>
+      <p style="color:var(--text-light); margin:0 0 20px 0; font-size:0.95rem;">${total} preguntas · Responde todas y pulsa <strong>Terminar</strong></p>
+    </div>
+    <div id="academia-preguntas">
+  `;
+
+  academiaPreguntasJuego.forEach((p, i) => {
+    html += `
+      <div class="academia-pregunta-bloque" id="academia-bloque-${i}">
+        <div class="academia-pregunta-meta">
+          <span class="academia-num">Pregunta <strong>${i + 1}</strong></span>
+          <span class="academia-estado" id="academia-estado-${i}">Sin contestar</span>
+        </div>
+        <div class="academia-enunciado">${p.texto}</div>
+        ${p.imagen ? `<div class="academia-imagen"><img src="${p.imagen}" alt="Imagen pregunta ${i+1}" onerror="this.style.display='none'"></div>` : ''}
+        <div class="academia-opciones">
+          ${p.opciones.map((op, j) => `
+            <label class="academia-opcion" id="academia-opcion-${i}-${j}">
+              <input type="radio" name="academia-q${i}" value="${j}" onchange="academiaSeleccionar(${i}, ${j}, this)">
+              <span class="academia-letra">${String.fromCharCode(65+j)}.</span>
+              <span class="academia-texto-op">${op}</span>
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+    </div>
+    <div class="academia-footer">
+      <div id="academia-aviso" class="academia-aviso" style="display:none;"></div>
+      <button class="academia-btn-terminar" onclick="terminarAcademia()">✅ Terminar examen</button>
+    </div>
+  `;
+
+  pantalla.innerHTML = html;
+}
+
+function academiaSeleccionar(pregIdx, opIdx, input) {
+  academiaRespuestas[pregIdx] = opIdx;
+  // Actualizar estado visual del bloque
+  const estado = document.getElementById(`academia-estado-${pregIdx}`);
+  if (estado) { estado.textContent = "Contestada"; estado.style.color = "#16a34a"; }
+  // Marcar bloque como contestado
+  const bloque = document.getElementById(`academia-bloque-${pregIdx}`);
+  if (bloque) bloque.classList.add("academia-contestada");
+}
+
+function terminarAcademia() {
+  const total = academiaPreguntasJuego.length;
+  const sinContestar = [];
+  for (let i = 0; i < total; i++) {
+    if (academiaRespuestas[i] === undefined) sinContestar.push(i + 1);
+  }
+
+  if (sinContestar.length > 0) {
+    const aviso = document.getElementById("academia-aviso");
+    aviso.style.display = "block";
+    aviso.innerHTML = `⚠️ Te faltan <strong>${sinContestar.length}</strong> pregunta${sinContestar.length > 1 ? 's' : ''} sin contestar: <strong>${sinContestar.join(", ")}</strong>. ¿Seguro que quieres terminar?
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="academia-btn-terminar" style="background:#dc2626;" onclick="terminarAcademiaForzado()">Terminar igualmente</button>
+        <button class="btn-tool" onclick="document.getElementById('academia-aviso').style.display='none'; scrollToPreguntaSinContestar(${sinContestar[0] - 1})">Ir a la pregunta ${sinContestar[0]}</button>
+      </div>`;
+    aviso.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  terminarAcademiaForzado();
+}
+
+function scrollToPreguntaSinContestar(idx) {
+  const bloque = document.getElementById(`academia-bloque-${idx}`);
+  if (bloque) bloque.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function revisarSimulacro(idx) {
+  const historial = JSON.parse(localStorage.getItem("academia_historial") || "[]");
+  const datos = historial[idx];
+  if (!datos) { alert("No se encontró ese simulacro."); return; }
+  academiaPreguntasJuego = datos.preguntas;
+  academiaRespuestas = datos.respuestas;
+  academiaTitulo = datos.titulo;
+  mostrarPantalla("pantalla-academia");
+  terminarAcademiaForzado();
+}
+
+function mostrarHistorialSimulacros() {
+  const historial = JSON.parse(localStorage.getItem("academia_historial") || "[]");
+  if (historial.length === 0) { alert("Todavía no has completado ningún simulacro."); return; }
+  const pantalla = document.getElementById("pantalla-academia");
+  let html = `
+    <div class="academia-header">
+      <button class="btn-tool" onclick="volverAlMenu()" style="margin-bottom:16px;">← Volver</button>
+      <h2 style="margin:0 0 4px 0; color:var(--primary); font-size:1.5rem; font-weight:800;">📋 Historial de simulacros</h2>
+      <p style="color:var(--text-light); margin:0 0 20px 0;">${historial.length} simulacro${historial.length > 1 ? 's' : ''} completado${historial.length > 1 ? 's' : ''}</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+  `;
+  historial.slice().reverse().forEach((d, i) => {
+    const realIdx = historial.length - 1 - i;
+    const colorNota = d.porcentaje >= 75 ? "#16a34a" : d.porcentaje >= 50 ? "#d97706" : "#dc2626";
+    html += `
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+        <div>
+          <div style="font-weight:700; font-size:0.97rem; margin-bottom:4px;">${d.titulo}</div>
+          <div style="font-size:0.85rem; color:var(--text-light);">${d.fecha} · ${d.total} preguntas</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <span style="font-size:1.2rem; font-weight:800; color:${colorNota};">${d.nota}/10 <span style="font-size:0.85rem;">(${d.porcentaje}%)</span></span>
+          <button onclick="revisarSimulacro(${realIdx})" style="padding:8px 16px; background:#16a34a; color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.9rem;">🔍 Revisar</button>
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  pantalla.innerHTML = html;
+  mostrarPantalla("pantalla-academia");
+}
+
+function terminarAcademiaForzado() {
+  const total = academiaPreguntasJuego.length;
+  let correctas = 0;
+  let resultadosHTML = "";
+
+  academiaPreguntasJuego.forEach((p, i) => {
+    const respUsuario = academiaRespuestas[i];
+    const correctaTexto = p.correctaTexto;
+    const correctaIdx = p.opciones.findIndex(op => op === correctaTexto);
+    const acerto = respUsuario !== undefined && p.opciones[respUsuario] === correctaTexto;
+    if (acerto) correctas++;
+
+    const sinContestar = respUsuario === undefined;
+    const claseBloque = acerto ? "academia-res-ok" : "academia-res-fail";
+
+    resultadosHTML += `
+      <div class="academia-resultado-bloque ${claseBloque}">
+        <div class="academia-res-cabecera">
+          <span class="academia-num">Pregunta ${i + 1}</span>
+          <span class="academia-badge">${acerto ? "✅ Correcta" : sinContestar ? "⬜ Sin contestar" : "❌ Incorrecta"}</span>
+        </div>
+        <div class="academia-enunciado">${p.texto}</div>
+        ${p.imagen ? `<div class="academia-imagen"><img src="${p.imagen}" alt="Imagen pregunta ${i+1}" onerror="this.style.display='none'"></div>` : ''}
+        <div class="academia-opciones academia-readonly">
+          ${p.opciones.map((op, j) => {
+            const esCorrecta = op === correctaTexto;
+            const esElegida = j === respUsuario;
+            let claseOp = "academia-opcion";
+            if (esCorrecta) claseOp += " academia-op-correcta";
+            else if (esElegida && !acerto) claseOp += " academia-op-incorrecta";
+            return `<div class="${claseOp}">
+              <span class="academia-letra">${String.fromCharCode(65+j)}.</span>
+              <span class="academia-texto-op">${op}</span>
+              ${esCorrecta ? '<span style="margin-left:6px;">✔</span>' : ''}
+              ${esElegida && !acerto ? '<span style="margin-left:6px;">✘</span>' : ''}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="academia-res-correcta-box">La respuesta correcta es: <strong>${correctaTexto}</strong></div>
+      </div>
+    `;
+  });
+
+  const porcentaje = Math.round((correctas / total) * 100);
+  const nota = ((correctas / total) * 10).toFixed(2);
+  const colorNota = porcentaje >= 75 ? "#16a34a" : porcentaje >= 50 ? "#d97706" : "#dc2626";
+
+  // Guardar en historial
+  try {
+    const historial = JSON.parse(localStorage.getItem("academia_historial") || "[]");
+    historial.push({
+      titulo: academiaTitulo,
+      preguntas: academiaPreguntasJuego,
+      respuestas: academiaRespuestas,
+      fecha: new Date().toLocaleString("es-ES"),
+      nota, porcentaje, correctas, total
+    });
+    if (historial.length > 20) historial.splice(0, historial.length - 20);
+    localStorage.setItem("academia_historial", JSON.stringify(historial));
+
+    // Guardar fallos en banco de fallos
+    const bancoFallos = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+    academiaPreguntasJuego.forEach((p, i) => {
+      const respUsuario = academiaRespuestas[i];
+      const acerto = respUsuario !== undefined && p.opciones[respUsuario] === p.correctaTexto;
+      const key = String(p.id || p.texto.substring(0, 40));
+      if (!acerto) {
+        if (!bancoFallos[key]) bancoFallos[key] = { pregunta: p, fallos: 0, aciertosConsecutivos: 0 };
+        bancoFallos[key].fallos++;
+        bancoFallos[key].aciertosConsecutivos = 0;
+        bancoFallos[key].pregunta = p; // actualizar por si cambió
+      } else if (bancoFallos[key]) {
+        bancoFallos[key].aciertosConsecutivos = (bancoFallos[key].aciertosConsecutivos || 0) + 1;
+        if (bancoFallos[key].aciertosConsecutivos >= 2) delete bancoFallos[key]; // sale del purgatorio
+      }
+    });
+    localStorage.setItem("academia_banco_fallos", JSON.stringify(bancoFallos));
+  } catch(e) {}
+
+  const pantalla = document.getElementById("pantalla-academia");
+  pantalla.innerHTML = `
+    <div class="academia-header">
+      <button class="btn-tool" onclick="volverAlMenu()" style="margin-bottom:16px;">← Volver al menú</button>
+      <h2 style="margin:0 0 4px 0; color:var(--primary); font-size:1.5rem; font-weight:800;">${academiaTitulo} — Resultados</h2>
+    </div>
+    <div class="academia-resumen-tabla">
+      <div class="academia-resumen-fila"><span>Estado</span><span style="color:#16a34a; font-weight:700;">Finalizado</span></div>
+      <div class="academia-resumen-fila"><span>Preguntas</span><span>${total}</span></div>
+      <div class="academia-resumen-fila"><span>Correctas</span><span style="color:#16a34a; font-weight:700;">${correctas} / ${total}</span></div>
+      <div class="academia-resumen-fila"><span>Nota</span><span style="color:${colorNota}; font-weight:800; font-size:1.1rem;">${nota} / 10,00 (${porcentaje}%)</span></div>
+    </div>
+    <div id="academia-preguntas">${resultadosHTML}</div>
+    <div class="academia-footer">
+      <button class="academia-btn-terminar" onclick="volverAlMenu()">🏠 Volver al menú</button>
+    </div>
+  `;
+  window.scrollTo(0, 0);
+}
+
+// CSS del modo academia
+(function() {
+  const s = document.createElement("style");
+  s.textContent = `
+    .academia-header { margin-bottom: 10px; }
+    .academia-pregunta-bloque {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+    .academia-pregunta-bloque.academia-contestada { border-color: #86efac; }
+    .academia-pregunta-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .academia-num { font-size: 0.9rem; color: var(--text-light); }
+    .academia-num strong { font-size: 1.1rem; color: var(--text); }
+    .academia-estado { font-size: 0.82rem; color: #d97706; font-weight: 600; background: #fef3c7; padding: 2px 10px; border-radius: 20px; }
+    .academia-enunciado { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 14px; line-height: 1.5; }
+    .academia-opciones { display: flex; flex-direction: column; gap: 8px; }
+    .academia-opcion {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg);
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
+      font-size: 0.95rem;
+    }
+    .academia-opcion:hover { background: var(--card); border-color: #16a34a; }
+    .academia-opcion input[type=radio] { accent-color: #16a34a; width: 16px; height: 16px; flex-shrink: 0; }
+    .academia-imagen { margin: 10px 0 14px 0; text-align: center; }
+    .academia-imagen img { max-width: 100%; max-height: 260px; border-radius: 10px; border: 1px solid var(--border); object-fit: contain; }
+    .academia-letra { font-weight: 700; color: var(--text-light); min-width: 20px; }
+    .academia-footer {
+      position: sticky; bottom: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 16px 0 10px 0;
+      margin-top: 10px;
+      z-index: 10;
+    }
+    .academia-btn-terminar {
+      width: 100%; padding: 15px;
+      background: #16a34a; color: white;
+      font-size: 1rem; font-weight: 800;
+      border-radius: 12px; border: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .academia-btn-terminar:hover { background: #15803d; }
+    .academia-aviso {
+      background: #fef3c7; border: 1px solid #fbbf24;
+      border-radius: 12px; padding: 14px 16px;
+      color: #92400e; font-size: 0.93rem;
+      margin-bottom: 12px;
+    }
+    /* Resultados */
+    .academia-resumen-tabla {
+      border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; margin-bottom: 24px;
+    }
+    .academia-resumen-fila {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .academia-resumen-fila:last-child { border-bottom: none; }
+    .academia-res-ok { border-left: 4px solid #16a34a !important; }
+    .academia-res-fail { border-left: 4px solid #dc2626 !important; }
+    .academia-res-cabecera {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .academia-badge {
+      font-size: 0.82rem; font-weight: 700; padding: 3px 12px;
+      border-radius: 20px; background: var(--bg);
+    }
+    .academia-readonly .academia-opcion { cursor: default; pointer-events: none; }
+    .academia-op-correcta { background: #dcfce7 !important; border-color: #16a34a !important; color: #15803d; font-weight: 700; }
+    .academia-op-incorrecta { background: #fee2e2 !important; border-color: #dc2626 !important; color: #dc2626; }
+    .academia-res-correcta-box {
+      margin-top: 12px; padding: 10px 14px;
+      background: #fef9c3; border-radius: 8px;
+      font-size: 0.9rem; color: #854d0e;
+    }
+  `;
+  document.head.appendChild(s);
+})();
+
+// =========================================================
+// ZONA DE FALLOS — Arcade, Purgatorio, Repaso Rápido
+// =========================================================
+
+function getFallosArray() {
+  const banco = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+  return Object.values(banco).map(f => f.pregunta);
+}
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── REPASO RÁPIDO ─────────────────────────────────────────
+function iniciarRepasoRapido() {
+  const preguntas = getFallosArray();
+  if (!preguntas.length) { alert("¡No tienes fallos guardados todavía!"); return; }
+  academiaPreguntasJuego = shuffleArr(preguntas).map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
+  academiaRespuestas = {};
+  academiaTitulo = "⚡ Repaso Rápido — Preguntas Falladas";
+  renderAcademia();
+  mostrarPantalla("pantalla-academia");
+}
+
+// ── PURGATORIO ────────────────────────────────────────────
+let purgatorioPreguntasRestantes = [];
+let purgatorioIndice = 0;
+let purgatorioAciertosConsec = {};
+let purgatorioTotal = 0;
+
+// Opciones barajadas de la pregunta actual del purgatorio (para evitar pasar datos por onclick)
+let purgatorioOpcionesActuales = [];
+
+function iniciarPurgatorio() {
+  const preguntas = getFallosArray();
+  if (!preguntas.length) { alert("¡No tienes fallos guardados! El purgatorio está vacío 😇"); return; }
+  purgatorioPreguntasRestantes = shuffleArr(preguntas);
+  purgatorioTotal = purgatorioPreguntasRestantes.length;
+  purgatorioIndice = 0;
+  purgatorioAciertosConsec = {};
+  renderPurgatorio();
+  mostrarPantalla("pantalla-academia");
+}
+
+function renderPurgatorio() {
+  const pantalla = document.getElementById("pantalla-academia");
+  const restantes = purgatorioPreguntasRestantes.length;
+  if (restantes === 0) {
+    pantalla.innerHTML = `
+      <div style="text-align:center; padding:60px 20px;">
+        <div style="font-size:4rem;">😇</div>
+        <h2 style="color:#16a34a; margin:16px 0 8px;">¡Purgatorio superado!</h2>
+        <p style="color:var(--text-light);">Has respondido correctamente todas las preguntas 2 veces seguidas.</p>
+        <button onclick="volverAlMenu()" style="margin-top:24px; padding:14px 32px; background:#16a34a; color:white; border:none; border-radius:12px; font-weight:800; font-size:1rem; cursor:pointer;">🏠 Volver al menú</button>
+      </div>`;
+    return;
+  }
+  const p = purgatorioPreguntasRestantes[purgatorioIndice % restantes];
+  purgatorioOpcionesActuales = shuffle([...p.opciones]);
+  const progreso = purgatorioTotal - restantes;
+
+  let opcionesHTML = purgatorioOpcionesActuales.map((op, j) => `
+    <button data-idx="${j}"
+      style="padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:10px; text-align:left; cursor:pointer; font-size:0.95rem; display:flex; gap:10px; align-items:center;">
+      <span style="font-weight:700; color:var(--text-light); min-width:18px;">${String.fromCharCode(65+j)}.</span> ${op}
+    </button>
+  `).join('');
+
+  pantalla.innerHTML = `
+    <div class="academia-header">
+      <button class="btn-tool" onclick="volverAlMenu()" style="margin-bottom:12px;">← Volver</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <h2 style="margin:0; color:#7c3aed; font-size:1.3rem; font-weight:800;">💀 Purgatorio</h2>
+        <span style="font-size:0.85rem; color:var(--text-light);">${progreso}/${purgatorioTotal} liberadas</span>
+      </div>
+      <div style="background:var(--border); border-radius:10px; height:6px; margin-bottom:16px;">
+        <div style="background:#7c3aed; height:6px; border-radius:10px; width:${(progreso/purgatorioTotal)*100}%;"></div>
+      </div>
+      <div style="background:#faf5ff; border:1px solid #7c3aed33; border-radius:12px; padding:18px 20px; margin-bottom:16px;">
+        <div style="font-size:0.8rem; color:#7c3aed; font-weight:700; margin-bottom:8px;">🔥 ${restantes} pregunta${restantes>1?'s':''} en el purgatorio</div>
+        <div style="font-weight:700; font-size:1rem; line-height:1.5;">${p.texto}</div>
+        ${p.imagen ? `<div class="academia-imagen"><img src="${p.imagen}" onerror="this.style.display='none'" style="max-height:180px;"></div>` : ''}
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;" id="purg-opciones">${opcionesHTML}</div>
+    </div>
+  `;
+
+  // Eventos por JS, sin pasar datos por onclick
+  document.querySelectorAll("#purg-opciones button").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const j = parseInt(this.dataset.idx);
+      responderPurgatorio(j);
+    });
+  });
+}
+
+function responderPurgatorio(opcionIdx) {
+  const restantes = purgatorioPreguntasRestantes.length;
+  const p = purgatorioPreguntasRestantes[purgatorioIndice % restantes];
+  const key = String(p.id || p.texto.substring(0, 40));
+  const respuesta = purgatorioOpcionesActuales[opcionIdx];
+  const correcta = p.correctaTexto;
+  const acerto = respuesta === correcta;
+
+  const botones = document.querySelectorAll("#purg-opciones button");
+  botones.forEach(b => b.disabled = true);
+
+  // Colorear respuesta elegida y correcta
+  botones[opcionIdx].style.background = acerto ? "#dcfce7" : "#fee2e2";
+  botones[opcionIdx].style.borderColor = acerto ? "#16a34a" : "#dc2626";
+  botones[opcionIdx].style.color = acerto ? "#15803d" : "#dc2626";
+
+  if (!acerto) {
+    // Marcar la correcta en verde
+    purgatorioOpcionesActuales.forEach((op, j) => {
+      if (op === correcta) {
+        botones[j].style.background = "#dcfce7";
+        botones[j].style.borderColor = "#16a34a";
+        botones[j].style.color = "#15803d";
+      }
+    });
+    purgatorioAciertosConsec[key] = 0;
+  } else {
+    purgatorioAciertosConsec[key] = (purgatorioAciertosConsec[key] || 0) + 1;
+    if (purgatorioAciertosConsec[key] >= 2) {
+      purgatorioPreguntasRestantes = purgatorioPreguntasRestantes.filter(q => String(q.id || q.texto.substring(0,40)) !== key);
+      const banco = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+      delete banco[key];
+      localStorage.setItem("academia_banco_fallos", JSON.stringify(banco));
+    }
+  }
+
+  setTimeout(() => {
+    purgatorioIndice++;
+    renderPurgatorio();
+  }, acerto ? 800 : 1500);
+}
+
+// ── ARCADE ────────────────────────────────────────────────
+let arcadePreguntas = [];
+let arcadeIndice = 0;
+let arcadeScore = 0;
+let arcadeVidas = 3;
+
+function iniciarArcadeFallos() {
+  const preguntas = getFallosArray();
+  if (!preguntas.length) { alert("¡No tienes fallos guardados todavía!"); return; }
+  arcadePreguntas = shuffleArr(preguntas).map(p => ({ ...p, opciones: shuffle([...p.opciones]) }));
+  arcadeIndice = 0; arcadeScore = 0; arcadeVidas = 3;
+  renderArcade();
+  mostrarPantalla("pantalla-academia");
+}
+
+function renderArcade() {
+  const pantalla = document.getElementById("pantalla-academia");
+  if (arcadeIndice >= arcadePreguntas.length || arcadeVidas <= 0) {
+    const razon = arcadeVidas <= 0 ? "💀 Sin vidas" : "🏆 ¡Completado!";
+    pantalla.innerHTML = `
+      <div style="text-align:center; padding:60px 20px;">
+        <div style="font-size:3.5rem;">${arcadeVidas <= 0 ? '💀' : '🏆'}</div>
+        <h2 style="margin:16px 0 8px; color:var(--primary);">${razon}</h2>
+        <div style="font-size:2.5rem; font-weight:900; color:#dc2626; margin:16px 0;">${arcadeScore} pts</div>
+        <p style="color:var(--text-light);">${arcadeIndice} preguntas respondidas de ${arcadePreguntas.length}</p>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:24px; flex-wrap:wrap;">
+          <button onclick="iniciarArcadeFallos()" style="padding:14px 24px; background:#dc2626; color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer;">🔄 Repetir</button>
+          <button onclick="volverAlMenu()" style="padding:14px 24px; background:var(--bg); border:1px solid var(--border); border-radius:12px; font-weight:700; cursor:pointer;">🏠 Menú</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const p = arcadePreguntas[arcadeIndice];
+  const vidas = '❤️'.repeat(arcadeVidas) + '🖤'.repeat(3 - arcadeVidas);
+  pantalla.innerHTML = `
+    <div style="position:sticky; top:0; background:var(--card); padding:14px 0 10px; border-bottom:1px solid var(--border); margin-bottom:16px; z-index:5;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:1.4rem;">${vidas}</div>
+        <div style="font-size:1.3rem; font-weight:900; color:#dc2626;">⚡ ${arcadeScore} pts</div>
+        <div style="font-size:0.85rem; color:var(--text-light);">${arcadeIndice+1}/${arcadePreguntas.length}</div>
+      </div>
+      <div style="background:var(--border); border-radius:10px; height:4px; margin-top:8px;">
+        <div style="background:#dc2626; height:4px; border-radius:10px; width:${((arcadeIndice)/arcadePreguntas.length)*100}%; transition:width 0.3s;"></div>
+      </div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px;">
+      <div style="font-size:0.78rem; color:#dc2626; font-weight:700; margin-bottom:8px;">🕹️ ARCADE · ${p.tema || 'Simulacro'}</div>
+      <div style="font-weight:700; font-size:1rem; line-height:1.5;">${p.texto}</div>
+      ${p.imagen ? `<div class="academia-imagen"><img src="${p.imagen}" onerror="this.style.display='none'" style="max-height:180px;"></div>` : ''}
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px;" id="arcade-opciones">
+      ${p.opciones.map((op, j) => `
+        <button data-idx="${j}"
+          style="padding:13px 16px; background:var(--bg); border:1px solid var(--border); border-radius:10px; text-align:left; cursor:pointer; font-size:0.95rem; display:flex; gap:10px; align-items:center; transition:all 0.15s;">
+          <span style="font-weight:700; color:var(--text-light); min-width:18px;">${String.fromCharCode(65+j)}.</span> ${op}
+        </button>
+      `).join('')}
+    </div>
+  `;
+  document.querySelectorAll("#arcade-opciones button").forEach(btn => {
+    btn.addEventListener("click", function() {
+      responderArcade(parseInt(this.dataset.idx));
+    });
+  });
+}
+
+function responderArcade(opcionIdx) {
+  const p = arcadePreguntas[arcadeIndice];
+  const key = String(p.id || p.texto.substring(0, 40));
+  const respuesta = p.opciones[opcionIdx];
+  const correcta = p.correctaTexto;
+  const acerto = respuesta === correcta;
+
+  const botones = document.querySelectorAll("#arcade-opciones button");
+  botones.forEach(b => b.disabled = true);
+
+  botones[opcionIdx].style.background = acerto ? "#dcfce7" : "#fee2e2";
+  botones[opcionIdx].style.borderColor = acerto ? "#16a34a" : "#dc2626";
+  botones[opcionIdx].style.color = acerto ? "#15803d" : "#dc2626";
+
+  if (acerto) {
+    arcadeScore += 10;
+    const banco = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+    if (banco[key]) {
+      banco[key].aciertosConsecutivos = (banco[key].aciertosConsecutivos || 0) + 1;
+      if (banco[key].aciertosConsecutivos >= 2) delete banco[key];
+      localStorage.setItem("academia_banco_fallos", JSON.stringify(banco));
+    }
+  } else {
+    p.opciones.forEach((op, j) => {
+      if (op === correcta) {
+        botones[j].style.background = "#dcfce7";
+        botones[j].style.borderColor = "#16a34a";
+        botones[j].style.color = "#15803d";
+      }
+    });
+    arcadeVidas--;
+    const banco = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
+    if (banco[key]) { banco[key].aciertosConsecutivos = 0; localStorage.setItem("academia_banco_fallos", JSON.stringify(banco)); }
+  }
+  setTimeout(() => {
+    arcadeIndice++;
+    renderArcade();
+  }, acerto ? 600 : 1400);
+}
 
 </script>
 

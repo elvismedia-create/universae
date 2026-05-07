@@ -1,19 +1,27 @@
+// Filtra solo las preguntas marcadas como TEST OFICIAL (campo tema o texto)
+function soloOficiales(data) {
+  return data.filter(p =>
+    (p.tema && String(p.tema).includes('TEST OFICIAL')) ||
+    (p.texto && String(p.texto).includes('TEST OFICIAL'))
+  );
+}
+
 const CONFIGURACION_CURSO = [
   {
     bloque: "pestana1",
-    titulo_boton: "1. Instalaciones Eléctricas Interiores (10 Unidades)",
+    titulo_boton: "1. Instalaciones Eléctricas",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Eléctricas Interiores (40 preguntas)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA },
-      { nombre: "U1: Conductores y herramientas eléctricas", data: TEMA_1_DATA },
-      { nombre: "U2: Circuitos eléctricos básicos en interiores", data: TEMA_2_DATA },
-      { nombre: "U3: Protección de las instalaciones eléctricas", data: TEMA_3_DATA },
-      { nombre: "U4: Montaje de instalaciones eléctricas en viviendas", data: TEMA_4_DATA },
-      { nombre: "U5: Instalaciones de alumbrado, luminotecnia", data: TEMA_5_DATA },
-      { nombre: "U6: Instalaciones eléctricas en viviendas", data: TEMA_6_DATA },
-      { nombre: "U7: Documentación en las instalaciones", data: TEMA_7_DATA },
-      { nombre: "U8: Instalaciones de locales especiales", data: TEMA_8_DATA },
-      { nombre: "U9: Mantenimiento y detección de averías en instalaciones eléctricas", data: TEMA_9_DATA },
-      { nombre: "U10: Instalaciones eléctricas en industrias", data: TEMA_10_DATA }
+      { nombre: "U1: Conductores y herramientas eléctricas", data: soloOficiales(TEMA_1_DATA) },
+      { nombre: "U2: Circuitos eléctricos básicos en interiores", data: soloOficiales(TEMA_2_DATA) },
+      { nombre: "U3: Protección de las instalaciones eléctricas", data: soloOficiales(TEMA_3_DATA) },
+      { nombre: "U4: Montaje de instalaciones eléctricas en viviendas", data: soloOficiales(TEMA_4_DATA) },
+      { nombre: "U5: Instalaciones de alumbrado, luminotecnia", data: soloOficiales(TEMA_5_DATA) },
+      { nombre: "U6: Instalaciones eléctricas en viviendas", data: soloOficiales(TEMA_6_DATA) },
+      { nombre: "U7: Documentación en las instalaciones", data: soloOficiales(TEMA_7_DATA) },
+      { nombre: "U8: Instalaciones de locales especiales", data: soloOficiales(TEMA_8_DATA) },
+      { nombre: "U9: Mantenimiento y detección de averías en instalaciones eléctricas", data: soloOficiales(TEMA_9_DATA) },
+      { nombre: "U10: Instalaciones eléctricas en industrias", data: soloOficiales(TEMA_10_DATA) }
     ]
   },
   {
@@ -21,14 +29,14 @@ const CONFIGURACION_CURSO = [
     titulo_boton: "2. Instalaciones Fotovoltaicas (8 Unidades)",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Fotovoltaicas (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA },
-      { nombre: "U1: Componentes de una instalación solar fotovoltaica", data: TEMA_FV_U1_DATA },
-      { nombre: "U2: Fundamentos de energía solar fotovoltaica", data: TEMA_FV_U2_DATA },
-      { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: TEMA_FV_U3_DATA },
-      { nombre: "U4: Normativa y seguridad en FV", data: TEMA_FV_U4_DATA },
-      { nombre: "U5: Monitoreo y mantenimiento de plantas solares", data: TEMA_FV_U5_DATA },
-      { nombre: "U6: Conexión a red e inversores", data: TEMA_FV_U6_DATA },
-      { nombre: "U7: Cálculos y dimensionamiento de sistemas FV", data: TEMA_FV_U7_DATA },
-      { nombre: "U8: Puesta a tierra y protecciones en FV", data: TEMA_FV_U8_DATA }
+      { nombre: "U1: Componentes de una instalación solar fotovoltaica", data: soloOficiales(TEMA_FV_U1_DATA) },
+      { nombre: "U2: Fundamentos de energía solar fotovoltaica", data: soloOficiales(TEMA_FV_U2_DATA) },
+      { nombre: "U3: Diseño e instalación de sistemas fotovoltaicos", data: soloOficiales(TEMA_FV_U3_DATA) },
+      { nombre: "U4: Normativa y seguridad en FV", data: soloOficiales(TEMA_FV_U4_DATA) },
+      { nombre: "U5: Monitoreo y mantenimiento de plantas solares", data: soloOficiales(TEMA_FV_U5_DATA) },
+      { nombre: "U6: Conexión a red e inversores", data: soloOficiales(TEMA_FV_U6_DATA) },
+      { nombre: "U7: Cálculos y dimensionamiento de sistemas FV", data: soloOficiales(TEMA_FV_U7_DATA) },
+      { nombre: "U8: Puesta a tierra y protecciones en FV", data: soloOficiales(TEMA_FV_U8_DATA) }
     ]
   },
   {

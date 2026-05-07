@@ -5,6 +5,88 @@
    ========================================================= */
 
 const TEMA_1_DATA = [
+  // ========== EXAMEN OFICIAL (10 preguntas) ==========
+  {
+    id: 100101,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Con respecto a la resistividad:",
+    opciones: ["El cobre es el material con menor resistividad.", "El cobre tiene menor resistividad que el aluminio, pero es más caro.", "El aluminio tiene menor resistividad que el cobre.", "Cuanto mayor sea, mejor conductor es."],
+    correctaTexto: "El cobre tiene menor resistividad que el aluminio, pero es más caro.",
+    explicacion: "El cobre tiene una resistividad de 1,72×10⁻⁸ Ω·m, menor que el aluminio (2,63×10⁻⁸ Ω·m), pero su mayor coste hace que el aluminio se use en líneas de distribución."
+  },
+  {
+    id: 100102,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "En cuanto a la sección de un conductor:",
+    opciones: ["Los fabricantes suelen elaborar las secciones conforme quieren los clientes.", "Cuanto mayor es la sección, mayor es la intensidad que soporta.", "El tipo de aislamiento no varía la intensidad que soporta.", "Todas las anteriores son correctas."],
+    correctaTexto: "Cuanto mayor es la sección, mayor es la intensidad que soporta.",
+    explicacion: "A mayor sección transversal del conductor, mayor es la intensidad admisible, ya que hay más superficie para el paso de corriente y menor resistencia."
+  },
+  {
+    id: 100103,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "La conductividad:",
+    opciones: ["Se ve afectada por la luz incidente.", "Se ve afectada por los efectos mecánicos sobre el cable.", "Se ve afectada por la temperatura del conductor.", "Ninguna de las anteriores es cierta."],
+    correctaTexto: "Se ve afectada por la temperatura del conductor.",
+    explicacion: "La conductividad de los metales disminuye al aumentar la temperatura, ya que las vibraciones atómicas dificultan el movimiento de los electrones libres."
+  },
+  {
+    id: 100104,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "La principal característica en una herramienta eléctrica ha de ser:",
+    opciones: ["Que tenga gran parte de su cuerpo recubierto de aislante y sea segura.", "Que sea pequeña para operar en espacios pequeños.", "Que tenga luces incorporadas para operar en lugares oscuros.", "Que sea de color rojo para que se sepa que está habilitada para trabajar con electricidad."],
+    correctaTexto: "Que tenga gran parte de su cuerpo recubierto de aislante y sea segura.",
+    explicacion: "La seguridad es la característica principal. Las herramientas eléctricas deben tener el cuerpo aislado para proteger al operario de contactos eléctricos accidentales."
+  },
+  {
+    id: 100105,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "¿Cuál es la función de la armadura en un conductor?",
+    opciones: ["Conducir más electricidad.", "Aislar térmicamente al cableado.", "Aumentar el ruido en la señal eléctrica.", "Otorgar al conductor una mayor protección mecánica."],
+    correctaTexto: "Otorgar al conductor una mayor protección mecánica.",
+    explicacion: "La armadura es una capa de protección mecánica (normalmente de hilos de acero) que protege el cable contra aplastamientos, rozamientos y daños externos."
+  },
+  {
+    id: 100106,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Los aislamientos se dividen según la tensión capaz de soportar en:",
+    opciones: ["220/380 V y 0,6/1 kV.", "450/750 V y 0,6/1 V.", "450/750 V y 0,6/1 kV.", "220/380 V y 450/750 V."],
+    correctaTexto: "450/750 V y 0,6/1 kV.",
+    explicacion: "Según la norma UNE, los aislamientos se clasifican en dos categorías de tensión: 450/750 V (cables de instalaciones interiores) y 0,6/1 kV (cables de distribución y acometidas)."
+  },
+  {
+    id: 100107,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Los bornes y conectores sirven para:",
+    opciones: ["Calcular la sección del conductor.", "Para conducir la electricidad.", "Unir cables entre sí o con dispositivos eléctricos.", "Ninguna de las anteriores es cierta."],
+    correctaTexto: "Unir cables entre sí o con dispositivos eléctricos.",
+    explicacion: "Los bornes y conectores son elementos de conexión que permiten unir conductores entre sí o conectarlos a aparatos eléctricos de forma segura y desmontable."
+  },
+  {
+    id: 100108,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Los guantes o pantallas de seguridad:",
+    opciones: ["Son herramientas básicas.", "Son herramientas especiales.", "Son herramientas de comprobación de baja tensión.", "Ninguna de las anteriores es correcta."],
+    correctaTexto: "Son herramientas especiales.",
+    explicacion: "Los guantes y pantallas de seguridad se clasifican como herramientas especiales de protección individual (EPI), diseñadas para proteger al electricista de contactos eléctricos."
+  },
+  {
+    id: 100109,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Para la designación de cables:",
+    opciones: ["Se usa la norma UNE.", "No existe la designación de cables.", "Se usan letras griegas.", "No está normalizada."],
+    correctaTexto: "Se usa la norma UNE.",
+    explicacion: "La designación de cables en España se realiza conforme a la norma UNE, que establece un código de letras y números que identifican el material, aislamiento, tensión y sección del cable."
+  },
+  {
+    id: 100110,
+    tema: "U1: Conductores y herramientas eléctricas (TEST OFICIAL)",
+    texto: "Una manguera:",
+    opciones: ["Está constituido por varios conductores.", "Tienen un recubrimiento de material semiconductor.", "Está constituido por un solo hilo conductor.", "Todas las anteriores son ciertas."],
+    correctaTexto: "Está constituido por varios conductores.",
+    explicacion: "Una manguera es un cable flexible formado por varios conductores aislados reunidos bajo una cubierta común, a diferencia del cable unipolar que tiene un solo conductor."
+  },
+
   // ========== SECCIÓN 1.1: CONDUCTORES ELÉCTRICOS ==========
   // Subsección 1.1.1: Resistencia de un conductor
 
@@ -646,8 +728,90 @@ const TEMA_1_DATA = [
 // ========================================================
 
 
-const TEMA_2_DATA = 
+const TEMA_2_DATA =
 [
+  // ========== EXAMEN OFICIAL (10 preguntas) ==========
+  {
+    id: 100201,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "¿Qué artículo del REBT se aplica a las instalaciones eléctricas interiores?",
+    opciones: ["El 5.", "El 13.", "El 16.", "El 34."],
+    correctaTexto: "El 16.",
+    explicacion: "El artículo 16 del REBT (Reglamento Electrotécnico para Baja Tensión) regula las instalaciones eléctricas de interior en viviendas y locales."
+  },
+  {
+    id: 100202,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "A la hora del cálculo de secciones no se tiene en cuenta:",
+    opciones: ["La caída de tensión que se produce en la línea.", "La capacidad térmica del conductor.", "La intensidad que circula por la línea.", "La parte del país donde se quiere hacer la instalación."],
+    correctaTexto: "La parte del país donde se quiere hacer la instalación.",
+    explicacion: "El cálculo de secciones se basa en criterios técnicos: caída de tensión, capacidad térmica e intensidad. La ubicación geográfica no es un parámetro de cálculo de secciones."
+  },
+  {
+    id: 100203,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "Con respecto a la fórmula para calcular la sección, ¿Qué parámetro de los siguientes no interviene?",
+    opciones: ["La energía eléctrica.", "La resistividad.", "La caída de tensión.", "La longitud del conductor."],
+    correctaTexto: "La energía eléctrica.",
+    explicacion: "La fórmula de cálculo de sección (S = 2·ρ·L·I / ΔU) incluye resistividad, longitud, intensidad y caída de tensión. La energía eléctrica no interviene directamente."
+  },
+  {
+    id: 100204,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "Cuando se calcula una sección:",
+    opciones: ["Hay que buscar un conductor con dicha tensión.", "Hay que ver cuáles son las opciones comerciales y escoger la sección inmediatamente inferior.", "Hay que ver cuáles son las opciones comerciales y escoger la sección inmediatamente superior.", "Ninguna de las anteriores es correcta."],
+    correctaTexto: "Hay que ver cuáles son las opciones comerciales y escoger la sección inmediatamente superior.",
+    explicacion: "Al calcular una sección teórica, siempre se escoge la sección comercial inmediatamente superior para garantizar seguridad y cumplir la normativa."
+  },
+  {
+    id: 100205,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "El CGMP es:",
+    opciones: ["El interruptor diferencial.", "El interruptor general automático.", "El cuadro genérico y mapa potencial.", "El cuadro general de mando y protección."],
+    correctaTexto: "El cuadro general de mando y protección.",
+    explicacion: "El CGMP (Cuadro General de Mando y Protección) es el conjunto de dispositivos que protegen y controlan los circuitos de una instalación eléctrica interior."
+  },
+  {
+    id: 100206,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "El enlace de la red de distribución pública a la caja de protección se realiza mediante:",
+    opciones: ["La línea repartidora.", "La acometida.", "El contador.", "La derivación individual."],
+    correctaTexto: "La acometida.",
+    explicacion: "La acometida es la parte de la instalación que enlaza la red de distribución pública con la caja general de protección (CGP) del usuario."
+  },
+  {
+    id: 100207,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "El factor de potencia depende de:",
+    opciones: ["La potencia aparente.", "La potencia reactiva y activa.", "La tensión.", "El trabajo."],
+    correctaTexto: "La potencia reactiva y activa.",
+    explicacion: "El factor de potencia (cos φ) es el cociente entre la potencia activa (W) y la potencia aparente (VA). Depende de la relación entre potencia activa y reactiva del circuito."
+  },
+  {
+    id: 100208,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "Indica cuál de las siguientes no es una instalación eléctrica:",
+    opciones: ["Abierta.", "Sin conductores.", "Oculta.", "Ahogada."],
+    correctaTexto: "Sin conductores.",
+    explicacion: "Los tipos de instalación eléctrica según su montaje son: abierta, empotrada (oculta) y ahogada. 'Sin conductores' no es un tipo de instalación eléctrica."
+  },
+  {
+    id: 100209,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "La derivación individual:",
+    opciones: ["Puede ser monofásica.", "Puede ser trifásica.", "En suministros para un único usuario solo la caída de tensión máxima permitida es del 1,5%.", "Todas son correctas."],
+    correctaTexto: "Todas son correctas.",
+    explicacion: "La derivación individual puede ser monofásica o trifásica según la potencia del suministro. En suministros para un único usuario, la caída de tensión máxima es del 1,5%."
+  },
+  {
+    id: 100210,
+    tema: "U2: Circuitos eléctricos básicos en interiores (TEST OFICIAL)",
+    texto: "La intensidad que circula por un conductor de una determinada sección depende también:",
+    opciones: ["Del color del aislante.", "De la altura del lugar con respecto al mar.", "De las dos respuestas anteriores.", "Del material del aislante."],
+    correctaTexto: "Del material del aislante.",
+    explicacion: "La intensidad máxima admisible por un conductor depende de su sección, pero también del material del aislante (PVC, XLPE, etc.), ya que cada material tiene una temperatura máxima de servicio diferente."
+  },
+
   // ========== SECCIÓN 2.1: INTRODUCCIÓN A LAS INSTALACIONES ==========
 
   {
