@@ -1,8 +1,9 @@
-// Filtra solo las preguntas marcadas como TEST OFICIAL (campo tema o texto)
+// Filtra solo las preguntas marcadas como TEST OFICIAL (campo tema, texto o explicacion)
 function soloOficiales(data) {
   return data.filter(p =>
     (p.tema && String(p.tema).includes('TEST OFICIAL')) ||
-    (p.texto && String(p.texto).includes('TEST OFICIAL'))
+    (p.texto && String(p.texto).includes('TEST OFICIAL')) ||
+    (p.explicacion && String(p.explicacion).includes('TEST OFICIAL'))
   );
 }
 

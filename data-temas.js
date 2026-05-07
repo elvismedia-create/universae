@@ -1649,10 +1649,11 @@ const TEMA_3_DATA = [
   {
     id: 3024,
     tema: "Magnetotérmico - Símbolo (TEST OFICIAL)",
-    texto: "¿A qué hace referencia el símbolo del interruptor mostrado con disparador térmico y magnético?",
+    texto: "¿A qué hace referencia el siguiente símbolo?",
+    imagen: "img/interruptor magnetotermico tetrapolar.png",
     opciones: ["Interruptor general automático.", "Interruptor diferencial.", "Interruptor magnetotérmico.", "Toma a tierra."],
     correctaTexto: "Interruptor magnetotérmico.",
-    explicacion: "El símbolo del interruptor magnetotérmico incluye los elementos gráficos del disparador térmico (lámina bimetálica) y el disparador magnético (electroimán). Representa la doble protección: térmica (sobrecargas) y magnética (cortocircuitos)."
+    explicacion: "El símbolo del interruptor magnetotérmico incluye los elementos gráficos del disparador térmico (lámina bimetálica) y el disparador magnético (electroimán). Representa la doble protección: térmica (sobrecargas) y magnética (cortocircuitos). (TEST OFICIAL)"
   },
 
   // ========== SECCIÓN 3.4: INTERRUPTOR AUTOMÁTICO DIFERENCIAL (ID) ==========
@@ -2054,6 +2055,15 @@ const TEMA_3_DATA = [
     opciones: ["De la ITC-BT-21 a la 24.", "De la ITC-BT-15 a la 19.", "La ITC-BT-25.", "Todo el REBT."],
     correctaTexto: "De la ITC-BT-21 a la 24.",
     explicacion: "Las Instrucciones Técnicas Complementarias que tratan sobre los equipos de protección van desde la ITC-BT-21 a la ITC-BT-24: ITC-BT-21 (tubos y canales protectoras), ITC-BT-22 (sobreintensidades), ITC-BT-23 (sobretensiones), ITC-BT-24 (contactos directos e indirectos)."
+  },
+
+  {
+    id: 3068,
+    tema: "U3: Protección de las instalaciones eléctricas (TEST OFICIAL)",
+    texto: "Los elementos de protección se encuentran en:",
+    opciones: ["La acometida.", "El contador.", "Cuadro General de Mando y Protección", "Ninguna de las anteriores es correcta."],
+    correctaTexto: "Cuadro General de Mando y Protección",
+    explicacion: "El Cuadro General de Mando y Protección (CGMP) es donde se alojan todos los dispositivos de protección de la instalación: el IGA, los diferenciales y los magnetotérmicos de cada circuito. (TEST OFICIAL)"
   }
 
 ];
@@ -2209,7 +2219,7 @@ const TEMA_4_DATA = [
   },
   {
     id: 4012,
-    tema: "U4: Montaje de instalaciones eléctricas en viviendas (TEST OFICIAL)",
+    tema: "U4: Montaje de instalaciones eléctricas en viviendas",
     texto: "¿Cuál es la potencia prevista para un uso de electrificación básica a 230V?",
     opciones: [
       "3680W",
@@ -2948,6 +2958,34 @@ const TEMA_4_DATA = [
     ],
     correctaTexto: "Generador, conductores, receptor y elementos de protección",
     explicacion: "Un circuito completo está compuesto por: la fuente de energía (generador), los conductores (fase, neutro, tierra), el receptor (carga) y los elementos de protección (magnetotérmicos, diferenciales)."
+  },
+
+  {
+    id: 4099,
+    tema: "U4: Montaje de instalaciones eléctricas en viviendas (TEST OFICIAL)",
+    texto: "Las abrazaderas y colgadores sirven para:",
+    opciones: [
+      "Sujetar los cables a la pared y techo.",
+      "Sujetar los fusibles del cuadro de mando.",
+      "Mejorar el rendimiento de la instalación.",
+      "Todas las anteriores son ciertas."
+    ],
+    correctaTexto: "Sujetar los cables a la pared y techo.",
+    explicacion: "Las abrazaderas y colgadores son elementos de fijación mecánica que se utilizan para sujetar y fijar los cables y canalizaciones a la pared, techo u otras superficies de la instalación. (TEST OFICIAL)"
+  },
+
+  {
+    id: 4098,
+    tema: "U4: Montaje de instalaciones eléctricas en viviendas (TEST OFICIAL)",
+    texto: "Indica cuál no es una característica de los sensores:",
+    opciones: [
+      "Tensión de alimentación.",
+      "Índice de refracción.",
+      "Tipo de contacto.",
+      "Tiempo de actuación."
+    ],
+    correctaTexto: "Índice de refracción.",
+    explicacion: "Las características típicas de los sensores son: tensión de alimentación, tipo de contacto, tiempo de actuación, alcance de detección, etc. El índice de refracción es una propiedad óptica de materiales, no una característica de sensores eléctricos. (TEST OFICIAL)"
   }
 ];
 
