@@ -1,6 +1,6 @@
-// v67.43 - Imágenes añadidas a las 9 preguntas con imagen del simulacro de Instalaciones Eléctricas
-const BUILD_TIMESTAMP = '20260504235000'; // Imágenes semestral IEI
-const CACHE_NAME = `mastertest-v67.43-${BUILD_TIMESTAMP}`;
+// v68.0 - Filtro soloOficiales: solo 10 preguntas TEST OFICIAL por unidad IE y FV
+const BUILD_TIMESTAMP = '20260507120000'; // Filtro oficial U1-U10 IE + U1-U8 FV
+const CACHE_NAME = `mastertest-v68.0-${BUILD_TIMESTAMP}`;
 
 const ASSETS_TO_CACHE = [
   './',
@@ -88,7 +88,7 @@ self.addEventListener('activate', (e) => {
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v67.41'
+            version: 'v68.0'
           });
         });
       })
