@@ -1,11 +1,19 @@
-// v68.0 - Filtro soloOficiales: solo 10 preguntas TEST OFICIAL por unidad IE y FV
-const BUILD_TIMESTAMP = '20260507120000'; // Filtro oficial U1-U10 IE + U1-U8 FV
-const CACHE_NAME = `mastertest-v68.0-${BUILD_TIMESTAMP}`;
+// v69.0 - Offline-first mejorado: Funciona completamente sin internet
+const BUILD_TIMESTAMP = '20260508-offline-fix';
+const CACHE_NAME = `universae-v69.0-${BUILD_TIMESTAMP}`;
+const OFFLINE_CACHE = `universae-offline-v69.0`;
 
-const ASSETS_TO_CACHE = [
+// ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
+const CRITICAL_ASSETS = [
   './',
   './index.html',
   './motor.js',
+  './data-config.js',
+  './simbolo-master.js',
+];
+
+// ARCHIVOS DE DATOS - Importante cachearlos
+const DATA_ASSETS = [
   './data-temas.js',
   './data-especial.js',
   './data-fv-u1.js',
@@ -32,41 +40,75 @@ const ASSETS_TO_CACHE = [
   './data-ingles-professional-u4.js',
   './data-ingles-professional-u5.js',
   './data-ingles-professional-u6.js',
-  './data-config.js',
+];
+
+const ASSETS_TO_CACHE = [
+  ...CRITICAL_ASSETS,
+  ...DATA_ASSETS,
   './fotometria.js',
   './caida-tension.js',
-  './simbolo-master.js',
   './manifest.json',
   './img/universae-logo.svg',
 ];
 
-// INSTALACIÓN: FORZAR inmediatamente
+// INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('🔥🔥🔥 FORZANDO actualización NUCLEAR v67.41...');
+  console.log('⚡ INSTALANDO Universae v69.0 - Offline-First...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        // Intentar agregar todos los assets, pero continuar si alguno falla
-        return Promise.allSettled(ASSETS_TO_CACHE.map(url =>
-          fetch(url).then(res => res.ok ? cache.put(url, res) : Promise.reject(url))
-        )).then(() => cache);
-      })
-      .then(() => {
-        console.log('✅ Assets cacheados (v67.41 + Real Exams)');
-        return self.skipWaiting();
+        console.log('🔴 Cacheando ARCHIVOS CRÍTICOS primero...');
+
+        // 1. Cachear críticos primero (debe funcionar offline)
+        return Promise.all(
+          CRITICAL_ASSETS.map(url => {
+            return fetch(url, { cache: 'no-store' })
+              .then(res => {
+                if (res.ok) {
+                  cache.put(url, res.clone());
+                  console.log('✅ Crítico cacheado:', url);
+                  return true;
+                } else {
+                  console.warn('⚠️ Crítico falló (status ' + res.status + '):', url);
+                  return false;
+                }
+              })
+              .catch(err => {
+                console.error('❌ Error crítico:', url, err.message);
+                return false;
+              });
+          })
+        ).then(results => {
+          const allOk = results.every(r => r);
+          if (!allOk) {
+            console.error('⚠️ ADVERTENCIA: Algunos archivos críticos no se cachearon');
+          }
+
+          // 2. Cachear datos (menos prioritario)
+          console.log('🟡 Cacheando DATOS...');
+          return Promise.allSettled(
+            DATA_ASSETS.map(url =>
+              fetch(url, { cache: 'no-store' })
+                .then(res => res.ok ? cache.put(url, res) : Promise.reject(url))
+            )
+          );
+        }).then(() => {
+          console.log('✅ Instalación completada - v69.0 ready offline');
+          return self.skipWaiting();
+        });
       })
       .catch(err => {
-        console.error('❌ Error en instalación:', err);
+        console.error('❌ Error fatal en instalación:', err);
         return self.skipWaiting();
       })
   );
 });
 
-// ACTIVACIÓN: ELIMINAR TODO
+// ACTIVACIÓN v69.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('🗑️🗑️🗑️ LIMPIEZA NUCLEAR v67.41...');
+  console.log('✨ ACTIVANDO Universae v69.0...');
 
   e.waitUntil(
     caches.keys()
@@ -74,21 +116,25 @@ self.addEventListener('activate', (e) => {
         console.log('📋 Cachés encontrados:', keyList);
         return Promise.all(
           keyList.map(key => {
-            if (key !== CACHE_NAME) {
-              console.log('❌ Eliminando caché antiguo:', key);
+            if (key !== CACHE_NAME && key !== OFFLINE_CACHE) {
+              console.log('🗑️ Eliminando caché antiguo:', key);
               return caches.delete(key);
             }
           })
         );
       })
-      .then(() => self.clients.claim())
+      .then(() => {
+        console.log('✅ Cachés limpios');
+        return self.clients.claim();
+      })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('✅ Service Worker v67.41 activado - notificando', clients.length, 'clientes');
+        console.log('📲 Service Worker v69.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
-            type: 'FORCE_RELOAD_NOW',
-            version: 'v68.0'
+            type: 'SERVICE_WORKER_UPDATED',
+            version: 'v69.0',
+            message: 'Universae v69.0 activado - Modo offline mejorado'
           });
         });
       })
@@ -98,81 +144,147 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// FETCH: Estrategia mejorada con fallbacks
+// FETCH v69.0: Offline-first con fallbacks inteligentes
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
   const isHTML = e.request.url.includes('.html') || url.pathname.endsWith('/');
   const isAsset = /\.(js|css|json|woff|woff2|ttf)$/i.test(url.pathname);
   const isImage = /\.(png|jpg|jpeg|gif|svg|webp|ico)$/i.test(url.pathname);
 
-  // HTML: Network first (siempre intenta actualizar)
+  // HTML: Intentar red primero, fallback a caché
   if (isHTML) {
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, { cache: 'no-store' })
         .then(res => {
           if (res.ok) {
+            // Actualizar caché con nueva versión
             caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
             return res;
           }
+          // Si la red falla, intentar caché
           return caches.match(e.request) || res;
         })
         .catch(() => {
+          // Sin internet: servir desde caché
           return caches.match(e.request).then(res => {
-            if (res) return res;
-            // Fallback si todo falla
-            return new Response('<h1>Offline - sin conexión</h1>', {
-              headers: { 'Content-Type': 'text/html' }
-            });
+            if (res) {
+              console.log('📱 Sirviendo desde caché (offline):', url.pathname);
+              return res;
+            }
+            // Si ni caché, página offline minimalista
+            console.warn('⚠️ Archivo no disponible offline:', url.pathname);
+            return new Response(
+              '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Universae Offline</title></head>' +
+              '<body style="font-family:sans-serif;padding:20px;background:#f5f5f5;">' +
+              '<h1>⚠️ Sin conexión a Internet</h1>' +
+              '<p>Universae está funcionando en modo offline. Los datos disponibles están en caché.</p>' +
+              '<p>Intenta recarga (Cmd+R) cuando recuperes conexión.</p>' +
+              '</body></html>',
+              { headers: { 'Content-Type': 'text/html; charset=utf-8' }, status: 200 }
+            );
           });
         })
     );
   }
-  // JS/CSS/Data: Cache first pero actualizar en background
+  // JS/CSS/Data: CACHE FIRST - Si está en caché, usa eso
   else if (isAsset) {
     e.respondWith(
       caches.match(e.request)
         .then(response => {
-          // Servir desde caché si existe
-          if (response) return response;
+          if (response) {
+            console.log('✅ Caché hit:', url.pathname);
+            // En background, intentar actualizar
+            fetch(e.request, { cache: 'no-store' })
+              .then(res => {
+                if (res.ok) {
+                  caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
+                  console.log('🔄 Actualizado en background:', url.pathname);
+                }
+              })
+              .catch(() => {
+                // Sin error - usamos lo cacheado
+              });
+            return response;
+          }
 
-          // Si no está en caché, intentar red
-          return fetch(e.request).then(res => {
-            if (res.ok) {
-              caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
-            }
-            return res;
-          }).catch(() => {
-            console.warn('⚠️ No se pudo cargar asset:', url.pathname);
-            return new Response('', { status: 404 });
-          });
+          // Si NO está en caché, buscar en red
+          console.log('🔍 Buscando en red:', url.pathname);
+          return fetch(e.request, { cache: 'no-store' })
+            .then(res => {
+              if (res.ok) {
+                // Cachear para próxima vez
+                caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
+                console.log('💾 Nuevo archivo cacheado:', url.pathname);
+              }
+              return res;
+            })
+            .catch(err => {
+              console.error('❌ No se pudo cargar:', url.pathname, err.message);
+              // Devolver response vacío en lugar de error
+              return new Response('console.log("Asset offline");', {
+                headers: { 'Content-Type': 'application/javascript' },
+                status: 200
+              });
+            });
         })
     );
   }
-  // Imágenes: Cache first indefinido
+  // Imágenes: Cache first, fallback a placeholder
   else if (isImage) {
     e.respondWith(
       caches.match(e.request)
-        .then(response => response || fetch(e.request).then(res => {
-          if (res.ok) caches.open(CACHE_NAME).then(c => c.put(e.request, res.clone()));
+        .then(response => response || fetch(e.request, { cache: 'no-store' }).then(res => {
+          if (res.ok) {
+            caches.open(CACHE_NAME).then(c => c.put(e.request, res.clone()));
+          }
           return res;
         }))
         .catch(() => {
-          // Imagen placeholder si falla
-          return new Response('', { status: 404 });
+          // Placeholder transparent PNG si falla
+          return new Response(
+            new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 10, 73, 68, 65, 84, 120, 156, 99, 0, 1, 0, 0, 5, 0, 1, 13, 10, 45, 180, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130]),
+            { headers: { 'Content-Type': 'image/png' } }
+          );
         })
     );
   }
   // Otros: Network first
   else {
     e.respondWith(
-      fetch(e.request).catch(() => caches.match(e.request))
+      fetch(e.request, { cache: 'no-store' }).catch(() => caches.match(e.request))
     );
   }
 });
 
-// Mensajes
+// Mensajes: Comunicación bidireccional con la app
 self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') {
+  const { type, data } = event.data || {};
+
+  if (type === 'SKIP_WAITING') {
     self.skipWaiting();
+  }
+  else if (type === 'ONLINE_STATUS_CHANGED') {
+    console.log('📡 Estado de conexión:', data.online ? 'ONLINE ✅' : 'OFFLINE ❌');
+    // Notificar a todos los clientes sobre cambio de conexión
+    self.clients.matchAll().then(clients => {
+      clients.forEach(client => {
+        client.postMessage({
+          type: 'CONNECTION_STATUS',
+          online: data.online
+        });
+      });
+    });
+  }
+  else if (type === 'CACHE_STATUS_CHECK') {
+    // Verificar qué está en caché
+    caches.open(CACHE_NAME).then(cache => {
+      cache.keys().then(requests => {
+        event.ports[0].postMessage({
+          type: 'CACHE_STATUS',
+          count: requests.length,
+          cached: requests.map(r => r.url)
+        });
+      });
+    });
   }
 });
