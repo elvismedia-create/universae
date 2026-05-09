@@ -1,7 +1,7 @@
-// v69.0 - Offline-first mejorado: Funciona completamente sin internet
-const BUILD_TIMESTAMP = '20260508-offline-fix';
-const CACHE_NAME = `universae-v69.0-${BUILD_TIMESTAMP}`;
-const OFFLINE_CACHE = `universae-offline-v69.0`;
+// v70.0 - Offline-first mejorado + Trimestre 3
+const BUILD_TIMESTAMP = '20260509-trimestre3';
+const CACHE_NAME = `universae-v70.0-${BUILD_TIMESTAMP}`;
+const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
 const CRITICAL_ASSETS = [
@@ -40,6 +40,11 @@ const DATA_ASSETS = [
   './data-ingles-professional-u4.js',
   './data-ingles-professional-u5.js',
   './data-ingles-professional-u6.js',
+  // TRIMESTRE 3
+  './data-t3-domot-ica.js',
+  './data-t3-distribución.js',
+  './data-t3-infraestructura-telecom.js',
+  './data-t3-maquinas-electricas.js',
 ];
 
 const ASSETS_TO_CACHE = [

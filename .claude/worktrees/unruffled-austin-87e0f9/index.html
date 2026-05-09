@@ -172,55 +172,6 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   background: rgba(255,255,255,0.3);
 }
 
-/* === MENÚ DROPDOWN DE TRIMESTRES === */
-.trimestre-selector {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-  padding: 15px;
-  background: var(--primary-light);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.trimestre-label {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 0.95rem;
-}
-
-.trimestre-btns {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.btn-trimestre {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 2px solid var(--border);
-  background: var(--card);
-  color: var(--text-light);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
-}
-
-.btn-trimestre:hover {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.btn-trimestre.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
-
 /* Eliminados estilos de dropdown viejo */
 
 
@@ -836,7 +787,7 @@ svg, svg * {
     <div style="display:flex; align-items:center; gap:16px;">
       <img src="img/universae-logo.svg" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0;">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.0</span></h1>
+        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v67.41</span></h1>
         <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
@@ -855,12 +806,6 @@ svg, svg * {
     </div>
 
 
-  </div>
-
-  <!-- Selector de Trimestres (Dropdown) -->
-  <div class="trimestre-selector">
-    <span class="trimestre-label">📅 Trimestre:</span>
-    <div class="trimestre-btns" id="selector-trimestres"></div>
   </div>
 
   <!-- Tabs de navegación v67.24 -->
@@ -950,12 +895,7 @@ svg, svg * {
 <script src="data-ingles-professional-u4.js?v=20260427180000"></script>
 <script src="data-ingles-professional-u5.js?v=20260427190000"></script>
 <script src="data-ingles-professional-u6.js?v=20260427210000"></script>
-<!-- DATOS TRIMESTRE 3 -->
-<script src="data-t3-domot-ica.js?v=20260509000000"></script>
-<script src="data-t3-distribución.js?v=20260509000000"></script>
-<script src="data-t3-infraestructura-telecom.js?v=20260509000000"></script>
-<script src="data-t3-maquinas-electricas.js?v=20260509000000"></script>
-<script src="data-config.js?v=20260509000100"></script>
+<script src="data-config.js?v=20260427210000"></script>
 <!-- MÓDULOS EDUCATIVOS -->
 <script src="fotometria.js"></script>
 <script src="caida-tension.js"></script>
@@ -968,33 +908,13 @@ svg, svg * {
 console.log('🚀 v67.40 - Sistema NUCLEAR de actualización');
 
 if ('serviceWorker' in navigator) {
-  // Escuchar mensajes del SW v69.0 mejorado
+  // Escuchar mensajes del SW
   navigator.serviceWorker.addEventListener('message', (event) => {
-    const msg = event.data;
-    console.log('📨 Mensaje del SW:', msg);
+    console.log('📨 Mensaje del SW:', event.data);
 
-    if (!msg || !msg.type) return;
-
-    // Tipo 1: Recarga nuclear (compatibilidad con versiones antiguas)
-    if (msg.type === 'FORCE_RELOAD_NOW') {
-      console.log('🔥 RECARGA FORZADA por', msg.version || 'antigua');
-      setTimeout(() => location.reload(true), 500);
-    }
-    // Tipo 2: Service Worker actualizado (v69.0 - sin recarga agresiva)
-    else if (msg.type === 'SERVICE_WORKER_UPDATED') {
-      console.log('✅ SW v69.0 activado -', msg.message);
-      // No recargar, esperar a que usuario lo haga o la siguiente navegación
-      if (window.showNotification) {
-        showNotification('Universae actualizado - Recarga para cambios', 'info');
-      }
-    }
-    // Tipo 3: Estado de conexión
-    else if (msg.type === 'CONNECTION_STATUS') {
-      const online = msg.online;
-      console.log(online ? '📡 ONLINE ✅' : '📡 OFFLINE ❌');
-      if (window.handleConnectionChange) {
-        handleConnectionChange(online);
-      }
+    if (event.data && event.data.type === 'FORCE_RELOAD_NOW') {
+      console.log('🔥🔥🔥 RECARGA NUCLEAR FORZADA por', event.data.version || 'v67.40');
+      location.reload(true);
     }
   });
 
@@ -1052,76 +972,38 @@ const selectorLista = document.getElementById("selector-lista");
 const selectorBtn = document.querySelector(".selector-btn");
 const tabsBloques = document.getElementById("tabs-bloques");
 const grid = document.getElementById("grid-asignaturas");
-const selectorTrimestres = document.getElementById("selector-trimestres");
 
-// PASO 1: Generar botones de trimestres
-const trimestresUnicos = [...new Set(CONFIGURACION_CURSO.map(b => b.trimestre))];
-let trimestreActual = trimestresUnicos[0]; // T2 por defecto
-
-trimestresUnicos.forEach(trim => {
-  const btnTrim = document.createElement("button");
-  btnTrim.className = "btn-trimestre";
-  if (trim === trimestreActual) btnTrim.classList.add("active");
-  btnTrim.textContent = `${trim}`;
-
-  btnTrim.onclick = () => {
-    // Desactivar todos los botones de trimestre
-    document.querySelectorAll(".btn-trimestre").forEach(b => b.classList.remove("active"));
-    // Activar trimestre clickeado
-    btnTrim.classList.add("active");
-    trimestreActual = trim;
-
-    // Regenerar tabs con bloques del trimestre seleccionado
-    generarTabsParaTrimestre(trim);
-
-    // Filtrar el primer bloque del trimestre
-    const bloqueDelTrimestre = CONFIGURACION_CURSO.find(b => b.trimestre === trim);
-    if (bloqueDelTrimestre) filtrarBloque(bloqueDelTrimestre.bloque);
-  };
-
-  selectorTrimestres.appendChild(btnTrim);
-});
-
-// PASO 2: Función para generar tabs según trimestre seleccionado
-function generarTabsParaTrimestre(trim) {
-  tabsBloques.innerHTML = ""; // Limpiar tabs anteriores
-
-  const bloquesDeTrimestre = CONFIGURACION_CURSO.filter(b => b.trimestre === trim);
-
-  bloquesDeTrimestre.forEach((bloque, i) => {
-    const db = JSON.parse(localStorage.getItem("mastertest_db")) || {};
-
-    // Calcular total de preguntas del bloque
-    let totalPreguntasBloque = 0;
-    bloque.asignaturas.forEach(asig => {
-      totalPreguntasBloque += asig.data.length;
-    });
-
-    // Crear tab button
-    const tabBtn = document.createElement("button");
-    tabBtn.className = "tab-btn";
-    if (i === 0) tabBtn.classList.add("active");
-
-    tabBtn.innerHTML = `
-      <span>${bloque.titulo_boton}</span>
-      <span class="tab-count">${totalPreguntasBloque}</span>
-    `;
-
-    tabBtn.onclick = () => {
-      // Desactivar todos los tabs
-      document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("active"));
-      // Activar tab clickeado
-      tabBtn.classList.add("active");
-      // Filtrar contenido
-      filtrarBloque(bloque.bloque);
-    };
-
-    tabsBloques.appendChild(tabBtn);
+// Generar Tabs Horizontales v67.24
+CONFIGURACION_CURSO.forEach((bloque, i) => {
+  const db = JSON.parse(localStorage.getItem("mastertest_db")) || {};
+  
+  // Calcular total de preguntas del bloque
+  let totalPreguntasBloque = 0;
+  bloque.asignaturas.forEach(asig => {
+    totalPreguntasBloque += asig.data.length;
   });
-}
-
-// PASO 3: Generar tabs iniciales (T2)
-generarTabsParaTrimestre(trimestreActual);
+  
+  // Crear tab button
+  const tabBtn = document.createElement("button");
+  tabBtn.className = "tab-btn";
+  if (i === 0) tabBtn.classList.add("active");
+  
+  tabBtn.innerHTML = `
+    <span>${bloque.titulo_boton}</span>
+    <span class="tab-count">${totalPreguntasBloque}</span>
+  `;
+  
+  tabBtn.onclick = () => {
+    // Desactivar todos los tabs
+    document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("active"));
+    // Activar tab clickeado
+    tabBtn.classList.add("active");
+    // Filtrar contenido
+    filtrarBloque(bloque.bloque);
+  };
+  
+  tabsBloques.appendChild(tabBtn);
+});
 
 
 
@@ -1636,7 +1518,7 @@ if ('serviceWorker' in navigator) {
 
 // Función para mostrar notificación de actualización
 function mostrarNotificacionActualizacion(version) {
-  const versionActual = 'v68.0';
+  const versionActual = 'v66';
   
   // Solo mostrar si hay una versión diferente
   if (version && version !== versionActual) {

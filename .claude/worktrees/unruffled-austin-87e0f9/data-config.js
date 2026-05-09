@@ -8,10 +8,8 @@ function soloOficiales(data) {
 }
 
 const CONFIGURACION_CURSO = [
-  // ===== TRIMESTRE 2 =====
   {
     bloque: "pestana1",
-    trimestre: "T2",
     titulo_boton: "1. Instalaciones Eléctricas",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Eléctricas Interiores (40 preguntas)", data: EXAMEN_SEMESTRAL_INSTALACIONES_DATA },
@@ -29,7 +27,6 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana2",
-    trimestre: "T2",
     titulo_boton: "2. Instalaciones Fotovoltaicas (8 Unidades)",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Instalaciones Fotovoltaicas (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_FOTOVOLTAICA_DATA },
@@ -45,7 +42,6 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana3",
-    trimestre: "T2",
     titulo_boton: "3. Itinerario Personal para la Empleabilidad",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Itinerario Personal para la Empleabilidad (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA },
@@ -59,7 +55,6 @@ const CONFIGURACION_CURSO = [
   },
   {
     bloque: "pestana4",
-    trimestre: "T2",
     titulo_boton: "4. Inglés Profesional (6 Unidades)",
     asignaturas: [
       { nombre: "⭐ SIMULACRO SEMESTRAL: Inglés Profesional (40 preguntas - 75% examen oficial)", data: EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA },
@@ -69,40 +64,6 @@ const CONFIGURACION_CURSO = [
       { nombre: "U4: What's next?", data: TEMA_INGLES_PROFESSIONAL_U4_DATA },
       { nombre: "U5: What would you do if...?", data: TEMA_INGLES_PROFESSIONAL_U5_DATA },
       { nombre: "U6: Work smarter", data: TEMA_INGLES_PROFESSIONAL_U6_DATA }
-    ]
-  },
-
-  // ===== TRIMESTRE 3 =====
-  {
-    bloque: "pestana5",
-    trimestre: "T3",
-    titulo_boton: "1. Instalaciones Domóticas",
-    asignaturas: [
-      { nombre: "Instalaciones Domóticas", data: TEMA_T3_DOMOT_ICA_DATA }
-    ]
-  },
-  {
-    bloque: "pestana6",
-    trimestre: "T3",
-    titulo_boton: "2. Instalaciones de Distribución",
-    asignaturas: [
-      { nombre: "Instalaciones de Distribución", data: TEMA_T3_DISTRIBUCION_DATA }
-    ]
-  },
-  {
-    bloque: "pestana7",
-    trimestre: "T3",
-    titulo_boton: "3. Infraestructuras de Telecomunicación",
-    asignaturas: [
-      { nombre: "Infraestructuras Comunes de Telecomunicación", data: TEMA_T3_INFRAESTRUCTURA_TELECOM_DATA }
-    ]
-  },
-  {
-    bloque: "pestana8",
-    trimestre: "T3",
-    titulo_boton: "4. Máquinas Eléctricas",
-    asignaturas: [
-      { nombre: "Máquinas Eléctricas", data: TEMA_T3_MAQUINAS_ELECTRICAS_DATA }
     ]
   }
 ];
