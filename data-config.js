@@ -109,7 +109,14 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "3. Infraestructuras de Telecomunicación",
     asignaturas: [
-      { nombre: "Infraestructuras Comunes de Telecomunicación", data: TEMA_T3_INFRAESTRUCTURA_TELECOM_DATA }
+      { nombre: "⭐ SIMULACRO: Infraestructuras de Telecomunicación (35 preguntas)", data: EXAMEN_SEMESTRAL_TELECOM_DATA },
+      { nombre: "U1: Televisión Terrestre. Transmisión de la señal", data: soloOficiales(TEMA_TELECOM_U1_DATA) },
+      { nombre: "U2: Propagación de la señal", data: soloOficiales(TEMA_TELECOM_U2_DATA) },
+      { nombre: "U3: Sistemas de recepción de TV terrestre", data: soloOficiales(TEMA_TELECOM_U3_DATA) },
+      { nombre: "U4: Sistema de recepción de TV por satélite", data: soloOficiales(TEMA_TELECOM_U4_DATA) },
+      { nombre: "U5: Telefonía interior e intercomunicación", data: soloOficiales(TEMA_TELECOM_U5_DATA) },
+      { nombre: "U6: Sistemas de telefonía y videoportería", data: soloOficiales(TEMA_TELECOM_U6_DATA) },
+      { nombre: "U7: Sonido y megafonía", data: soloOficiales(TEMA_TELECOM_U7_DATA) }
     ]
   },
   {
