@@ -94,7 +94,14 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "2. Instalaciones de Distribución",
     asignaturas: [
-      { nombre: "Instalaciones de Distribución", data: TEMA_T3_DISTRIBUCION_DATA }
+      { nombre: "⭐ SIMULACRO: Instalaciones de Distribución (35 preguntas)", data: EXAMEN_SEMESTRAL_DISTRIBUCION_DATA },
+      { nombre: "U1: Prevención de riesgos laborales y protección ambiental", data: soloOficiales(TEMA_DISTRIBUCION_U1_DATA) },
+      { nombre: "U2: Configuración de los centros de transformación", data: soloOficiales(TEMA_DISTRIBUCION_U2_DATA) },
+      { nombre: "U3: Operaciones de mantenimiento de centros de transformación", data: soloOficiales(TEMA_DISTRIBUCION_U3_DATA) },
+      { nombre: "U4: Configuración de redes de distribución de baja tensión", data: soloOficiales(TEMA_DISTRIBUCION_U4_DATA) },
+      { nombre: "U5: Operaciones de montaje y mantenimiento de baja tensión", data: soloOficiales(TEMA_DISTRIBUCION_U5_DATA) },
+      { nombre: "U6: Configuración de instalaciones de enlace", data: soloOficiales(TEMA_DISTRIBUCION_U6_DATA) },
+      { nombre: "U7: Montaje y mantenimiento de instalaciones de enlace", data: soloOficiales(TEMA_DISTRIBUCION_U7_DATA) }
     ]
   },
   {
