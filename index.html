@@ -952,16 +952,29 @@ svg, svg * {
 <script src="data-ingles-professional-u6.js?v=20260427210000"></script>
 <!-- DATOS TRIMESTRE 3 -->
 <script src="data-t3-domot-ica.js?v=20260509000000"></script>
+<script src="data-t3-domotica.js?v=20260511220000"></script>
 <script src="data-t3-distribución.js?v=20260509000000"></script>
 <script src="data-t3-infraestructura-telecom.js?v=20260509000000"></script>
 <script src="data-t3-maquinas-electricas.js?v=20260509000000"></script>
-<script src="data-config.js?v=20260509000100"></script>
+<script src="data-t3-prevencion-riesgos-laborales.js?v=20260510000000"></script>
+<script src="data-t3-centros-transformacion.js?v=20260510120000"></script>
+<!-- DATOS TEMAS DE ESTUDIO -->
+<script src="data-tema1-estudio.js?v=20260511170000"></script>
+<script src="data-tema2-estudio.js?v=20260511170000"></script>
+<script src="data-tema3-estudio.js?v=20260511170000"></script>
+<script src="data-tema4-estudio.js?v=20260511170000"></script>
+<script src="data-tema5-estudio.js?v=20260511170000"></script>
+<script src="data-tema6-estudio.js?v=20260511170000"></script>
+<script src="data-tema7-estudio.js?v=20260511170000"></script>
+<script src="data-tema-economia-u1.js?v=20260511170000"></script>
+<script src="data-t3-domotica-estudio.js?v=20260511200000"></script>
+<script src="data-config.js?v=20260511220000"></script>
 <!-- MÓDULOS EDUCATIVOS -->
 <script src="fotometria.js"></script>
 <script src="caida-tension.js"></script>
 <script src="simbolo-master.js"></script>
 <!-- MOTOR PRINCIPAL -->
-<script src="motor.js?v=20260504230000"></script>
+<script src="motor.js?v=20260511220000"></script>
 
 <!-- Auto-actualización NUCLEAR v67.24 -->
 <script>
@@ -1056,7 +1069,7 @@ const selectorTrimestres = document.getElementById("selector-trimestres");
 
 // PASO 1: Generar botones de trimestres
 const trimestresUnicos = [...new Set(CONFIGURACION_CURSO.map(b => b.trimestre))];
-let trimestreActual = trimestresUnicos[0]; // T2 por defecto
+let trimestreActual = trimestresUnicos.includes("T3") ? "T3" : trimestresUnicos[0]; // T3 por defecto, fallback a primer trimestre
 
 trimestresUnicos.forEach(trim => {
   const btnTrim = document.createElement("button");

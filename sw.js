@@ -1,6 +1,6 @@
-// v70.0 - Offline-first mejorado + Trimestre 3
-const BUILD_TIMESTAMP = '20260509-trimestre3';
-const CACHE_NAME = `universae-v70.0-${BUILD_TIMESTAMP}`;
+// v71.0 - Fix offline: query params + archivos nuevos T3 y temas estudio
+const BUILD_TIMESTAMP = '20260521-fix-offline';
+const CACHE_NAME = `universae-v71.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -45,6 +45,18 @@ const DATA_ASSETS = [
   './data-t3-distribución.js',
   './data-t3-infraestructura-telecom.js',
   './data-t3-maquinas-electricas.js',
+  './data-t3-prevencion-riesgos-laborales.js',
+  './data-t3-centros-transformacion.js',
+  // TEMAS ESTUDIO
+  './data-tema1-estudio.js',
+  './data-tema2-estudio.js',
+  './data-tema3-estudio.js',
+  './data-tema4-estudio.js',
+  './data-tema5-estudio.js',
+  './data-tema6-estudio.js',
+  './data-tema7-estudio.js',
+  './data-tema-economia-u1.js',
+  './data-tema1-prevencion.js',
 ];
 
 const ASSETS_TO_CACHE = [
@@ -166,12 +178,12 @@ self.addEventListener('fetch', (e) => {
             caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
             return res;
           }
-          // Si la red falla, intentar caché
-          return caches.match(e.request) || res;
+          // Si la red falla, intentar caché (ignoreSearch: ignorar ?v=timestamp)
+          return caches.match(e.request, { ignoreSearch: true }) || res;
         })
         .catch(() => {
-          // Sin internet: servir desde caché
-          return caches.match(e.request).then(res => {
+          // Sin internet: servir desde caché (ignoreSearch: ignorar ?v=timestamp)
+          return caches.match(e.request, { ignoreSearch: true }).then(res => {
             if (res) {
               console.log('📱 Sirviendo desde caché (offline):', url.pathname);
               return res;
@@ -194,7 +206,8 @@ self.addEventListener('fetch', (e) => {
   // JS/CSS/Data: CACHE FIRST - Si está en caché, usa eso
   else if (isAsset) {
     e.respondWith(
-      caches.match(e.request)
+      // ignoreSearch: true → ignora ?v=timestamp al buscar en caché
+      caches.match(e.request, { ignoreSearch: true })
         .then(response => {
           if (response) {
             console.log('✅ Caché hit:', url.pathname);
@@ -237,7 +250,7 @@ self.addEventListener('fetch', (e) => {
   // Imágenes: Cache first, fallback a placeholder
   else if (isImage) {
     e.respondWith(
-      caches.match(e.request)
+      caches.match(e.request, { ignoreSearch: true })
         .then(response => response || fetch(e.request, { cache: 'no-store' }).then(res => {
           if (res.ok) {
             caches.open(CACHE_NAME).then(c => c.put(e.request, res.clone()));
@@ -256,7 +269,7 @@ self.addEventListener('fetch', (e) => {
   // Otros: Network first
   else {
     e.respondWith(
-      fetch(e.request, { cache: 'no-store' }).catch(() => caches.match(e.request))
+      fetch(e.request, { cache: 'no-store' }).catch(() => caches.match(e.request, { ignoreSearch: true }))
     );
   }
 });

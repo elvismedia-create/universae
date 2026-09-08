@@ -74,11 +74,19 @@ const CONFIGURACION_CURSO = [
 
   // ===== TRIMESTRE 3 =====
   {
-    bloque: "pestana5",
+    bloque: "pestana5b",
     trimestre: "T3",
     titulo_boton: "1. Instalaciones Domóticas",
     asignaturas: [
-      { nombre: "Instalaciones Domóticas", data: TEMA_T3_DOMOT_ICA_DATA }
+      { nombre: "⭐ SIMULACRO: Instalaciones Domóticas (40 preguntas)", data: EXAMEN_SEMESTRAL_DOMOTICA_DATA },
+      { nombre: "U1: La domótica", data: soloOficiales(TEMA_DOMOTICA_U1_DATA) },
+      { nombre: "U2: Elementos de las instalaciones. Sensores y actuadores", data: soloOficiales(TEMA_DOMOTICA_U2_DATA) },
+      { nombre: "U3: Sistemas domóticos basados en corrientes portadoras X10", data: soloOficiales(TEMA_DOMOTICA_U3_DATA) },
+      { nombre: "U4: Sistemas domóticos basados en bus de campo. El sistema KNX", data: soloOficiales(TEMA_DOMOTICA_U4_DATA) },
+      { nombre: "U5: Sistemas domóticos basados en autómatas programables", data: soloOficiales(TEMA_DOMOTICA_U5_DATA) },
+      { nombre: "U6: Sistemas domóticos basados en electrónica. Arduino", data: soloOficiales(TEMA_DOMOTICA_U6_DATA) },
+      { nombre: "U7: Sistemas domóticos basados en asistentes virtuales. Alexa", data: soloOficiales(TEMA_DOMOTICA_U7_DATA) },
+      { nombre: "U8: Nuevas Tecnologías", data: soloOficiales(TEMA_DOMOTICA_U8_DATA) }
     ]
   },
   {
@@ -103,6 +111,16 @@ const CONFIGURACION_CURSO = [
     titulo_boton: "4. Máquinas Eléctricas",
     asignaturas: [
       { nombre: "Máquinas Eléctricas", data: TEMA_T3_MAQUINAS_ELECTRICAS_DATA }
+    ]
+  },
+
+  // ===== MÓDULO DE ESTUDIO: DOMÓTICA T3 =====
+  {
+    bloque: "estudio_t3_domotica",
+    trimestre: "T3",
+    titulo_boton: "📚 Estudio Domótica: Instalaciones Domóticas",
+    asignaturas: [
+      { nombre: "Módulo de Estudio: Instalaciones Domóticas (40 preguntas)", data: DATA_T3_DOMOTICA_ESTUDIO }
     ]
   }
 ];
