@@ -274,6 +274,13 @@
         flex: 1;
         padding: 18px 10px 40px;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
+      }
+      .pdf-pages-zoom {
+        transform-origin: top center;
+        width: max-content;
+        min-width: 100%;
+        margin: 0 auto;
       }
       .pdf-page-wrap {
         position: relative;
@@ -385,6 +392,9 @@
       <button class="pdf-tool-btn" data-tool="pen" title="Pintar libre">✏️ Lápiz</button>
       <button class="pdf-tool-btn" data-tool="eraser">Borrar</button>
       <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Activar o quitar ayuda para subrayado recto">📏 Ayuda recta: OFF</button>
+      <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar">−</button>
+      <button class="pdf-tool-btn" data-action="zoom-reset" title="Restablecer zoom">100%</button>
+      <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar">+</button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
@@ -438,7 +448,48 @@
 
     toolbar.querySelector('[data-action="clear"]').addEventListener('click', actions.clearCurrentPage);
     toolbar.querySelector('[data-action="close"]').addEventListener('click', actions.close);
+    toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => actions.setZoom(state.zoom + 0.15));
+    toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => actions.setZoom(state.zoom - 0.15));
+    toolbar.querySelector('[data-action="zoom-reset"]').addEventListener('click', () => actions.setZoom(1));
     return toolbar;
+  }
+
+  function clampZoom(value) {
+    return Math.max(0.75, Math.min(3, value));
+  }
+
+  function distanceBetweenTouches(touchA, touchB) {
+    const dx = touchA.clientX - touchB.clientX;
+    const dy = touchA.clientY - touchB.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function attachPinchZoom(pagesContainer, zoomSurface, state, actions) {
+    let startDistance = 0;
+    let startZoom = 1;
+
+    pagesContainer.addEventListener('touchstart', event => {
+      if (event.touches.length !== 2) return;
+      startDistance = distanceBetweenTouches(event.touches[0], event.touches[1]);
+      startZoom = state.zoom;
+    }, { passive: true });
+
+    pagesContainer.addEventListener('touchmove', event => {
+      if (event.touches.length !== 2 || !startDistance) return;
+      event.preventDefault();
+      const nextDistance = distanceBetweenTouches(event.touches[0], event.touches[1]);
+      actions.setZoom(startZoom * (nextDistance / startDistance));
+    }, { passive: false });
+
+    pagesContainer.addEventListener('touchend', event => {
+      if (event.touches.length < 2) startDistance = 0;
+    }, { passive: true });
+
+    pagesContainer.addEventListener('wheel', event => {
+      if (!event.ctrlKey && !event.metaKey) return;
+      event.preventDefault();
+      actions.setZoom(state.zoom + (event.deltaY < 0 ? 0.1 : -0.1));
+    }, { passive: false });
   }
 
   function attachDrawing(canvas, pageNumber, state, annotations, key) {
@@ -541,6 +592,8 @@
     const pagesContainer = document.createElement('div');
     pagesContainer.className = 'pdf-viewer-pages';
     pagesContainer.innerHTML = '<div class="pdf-viewer-loading">Cargando PDF...</div>';
+    const zoomSurface = document.createElement('div');
+    zoomSurface.className = 'pdf-pages-zoom';
 
     const annotations = loadAnnotations(key);
     const state = {
@@ -548,6 +601,7 @@
       color: 'rgba(255,235,59,0.50)',
       width: 18,
       straightAssist: false,
+      zoom: 1,
       currentPage: 1
     };
 
@@ -557,6 +611,14 @@
         shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
           canvas.dataset.tool = state.tool;
         });
+      },
+      setZoom: value => {
+        state.zoom = clampZoom(value);
+        zoomSurface.style.zoom = String(state.zoom);
+        zoomSurface.style.transform = CSS.supports('zoom', '1.1') ? '' : `scale(${state.zoom})`;
+        zoomSurface.style.marginBottom = CSS.supports('zoom', '1.1') ? '' : `${Math.round((state.zoom - 1) * zoomSurface.offsetHeight)}px`;
+        const resetButton = shell.querySelector('[data-action="zoom-reset"]');
+        if (resetButton) resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
       },
       clearCurrentPage: () => {
         annotations[state.currentPage] = [];
@@ -569,12 +631,14 @@
     shell.appendChild(createToolbar(info, state, actions));
     shell.appendChild(pagesContainer);
     document.body.appendChild(shell);
+    attachPinchZoom(pagesContainer, zoomSurface, state, actions);
 
     try {
       const pdfjs = await loadPdfJs();
       const data = await blob.arrayBuffer();
       const pdf = await pdfjs.getDocument({ data }).promise;
       pagesContainer.innerHTML = '';
+      pagesContainer.appendChild(zoomSurface);
 
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
         const page = await pdf.getPage(pageNumber);
@@ -612,7 +676,7 @@
 
         wrap.appendChild(pdfCanvas);
         wrap.appendChild(drawCanvas);
-        pagesContainer.appendChild(wrap);
+        zoomSurface.appendChild(wrap);
 
         redrawAnnotations(drawCanvas, annotations[pageNumber] || []);
         attachDrawing(drawCanvas, String(pageNumber), state, annotations, key);

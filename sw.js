@@ -1,6 +1,6 @@
-// v76.0 - Toggleable straight underline assist
-const BUILD_TIMESTAMP = '20260908-straight-underline-assist';
-const CACHE_NAME = `universae-v76.0-${BUILD_TIMESTAMP}`;
+// v77.0 - Pinch zoom in local PDF viewer
+const BUILD_TIMESTAMP = '20260908-pdf-pinch-zoom';
+const CACHE_NAME = `universae-v77.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -73,7 +73,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v76.0 - Straight underline assist...');
+  console.log('⚡ INSTALANDO Universae v77.0 - PDF pinch zoom...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -115,7 +115,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v76.0 ready offline');
+          console.log('✅ Instalación completada - v77.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -126,9 +126,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v76.0: Limpieza y notificación
+// ACTIVACIÓN v77.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v76.0...');
+  console.log('✨ ACTIVANDO Universae v77.0...');
 
   e.waitUntil(
     caches.keys()
@@ -149,12 +149,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v76.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v77.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v76.0',
-            message: 'Universae v76.0 activado - Ayuda de subrayado recto'
+            version: 'v77.0',
+            message: 'Universae v77.0 activado - Zoom con dos dedos en PDF'
           });
         });
       })
