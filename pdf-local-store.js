@@ -245,6 +245,10 @@
         background: #2563eb;
         border-color: #60a5fa;
       }
+      .pdf-toggle-btn.active {
+        background: #16a34a;
+        border-color: #86efac;
+      }
       .pdf-size-btn {
         min-width: 34px;
         height: 32px;
@@ -379,8 +383,8 @@
       <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
       <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF">✋ Mano</button>
       <button class="pdf-tool-btn" data-tool="pen" title="Pintar libre">✏️ Lápiz</button>
-      <button class="pdf-tool-btn" data-tool="line" title="Ayuda para línea recta">📏 Recta</button>
       <button class="pdf-tool-btn" data-tool="eraser">Borrar</button>
+      <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Activar o quitar ayuda para subrayado recto">📏 Ayuda recta: OFF</button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
@@ -420,6 +424,18 @@
       });
     });
 
+    const straightButton = toolbar.querySelector('[data-action="straight"]');
+    straightButton.addEventListener('click', () => {
+      state.straightAssist = !state.straightAssist;
+      straightButton.classList.toggle('active', state.straightAssist);
+      straightButton.textContent = state.straightAssist ? '📏 Ayuda recta: ON' : '📏 Ayuda recta: OFF';
+      if (state.straightAssist && state.tool !== 'pen') {
+        state.tool = 'pen';
+        toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
+        actions.updateToolState();
+      }
+    });
+
     toolbar.querySelector('[data-action="clear"]').addEventListener('click', actions.clearCurrentPage);
     toolbar.querySelector('[data-action="close"]').addEventListener('click', actions.close);
     return toolbar;
@@ -452,7 +468,7 @@
         return;
       }
 
-      if (state.tool === 'line') {
+      if (state.tool === 'pen' && state.straightAssist) {
         lineStart = point;
         return;
       }
@@ -477,7 +493,7 @@
         return;
       }
 
-      if (state.tool === 'line' && lineStart) {
+      if (state.tool === 'pen' && state.straightAssist && lineStart) {
         const preview = {
           color: state.color,
           width: state.width,
@@ -494,7 +510,7 @@
 
     function finish(event) {
       if (event.pointerId !== pointerId) return;
-      if (state.tool === 'line' && lineStart) {
+      if (state.tool === 'pen' && state.straightAssist && lineStart) {
         const end = getPointerPoint(event, canvas);
         ensurePage().push({
           color: state.color,
@@ -531,6 +547,7 @@
       tool: 'pan',
       color: 'rgba(255,235,59,0.50)',
       width: 18,
+      straightAssist: false,
       currentPage: 1
     };
 
