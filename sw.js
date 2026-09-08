@@ -1,6 +1,6 @@
-// v74.0 - Annotated local PDF viewer
-const BUILD_TIMESTAMP = '20260908-annotated-pdf-viewer';
-const CACHE_NAME = `universae-v74.0-${BUILD_TIMESTAMP}`;
+// v75.0 - PDF viewer hand, pen sizes and straight lines
+const BUILD_TIMESTAMP = '20260908-pdf-tools';
+const CACHE_NAME = `universae-v75.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -73,7 +73,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v74.0 - Annotated PDF viewer...');
+  console.log('⚡ INSTALANDO Universae v75.0 - PDF tools...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -115,7 +115,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v74.0 ready offline');
+          console.log('✅ Instalación completada - v75.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -126,9 +126,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v74.0: Limpieza y notificación
+// ACTIVACIÓN v75.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v74.0...');
+  console.log('✨ ACTIVANDO Universae v75.0...');
 
   e.waitUntil(
     caches.keys()
@@ -149,12 +149,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v74.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v75.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v74.0',
-            message: 'Universae v74.0 activado - Visor PDF con anotaciones'
+            version: 'v75.0',
+            message: 'Universae v75.0 activado - Herramientas PDF mejoradas'
           });
         });
       })

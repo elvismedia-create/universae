@@ -245,6 +245,18 @@
         background: #2563eb;
         border-color: #60a5fa;
       }
+      .pdf-size-btn {
+        min-width: 34px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pdf-size-dot {
+        display: block;
+        border-radius: 999px;
+        background: currentColor;
+      }
       .pdf-color-btn {
         width: 32px;
         height: 32px;
@@ -273,6 +285,13 @@
         inset: 0;
         touch-action: none;
         cursor: crosshair;
+      }
+      .pdf-draw-layer[data-tool="pan"] {
+        pointer-events: none;
+        cursor: grab;
+      }
+      .pdf-draw-layer[data-tool="eraser"] {
+        cursor: cell;
       }
       .pdf-viewer-loading {
         padding: 24px;
@@ -337,6 +356,13 @@
     strokes.forEach(stroke => drawStroke(ctx, stroke, canvas.width, canvas.height));
   }
 
+  function redrawWithPreview(canvas, strokes, previewStroke) {
+    redrawAnnotations(canvas, strokes);
+    if (previewStroke) {
+      drawStroke(canvas.getContext('2d'), previewStroke, canvas.width, canvas.height);
+    }
+  }
+
   function pointNearStroke(point, stroke) {
     const threshold = 0.025;
     return (stroke.points || []).some(strokePoint => {
@@ -351,8 +377,13 @@
     toolbar.className = 'pdf-viewer-toolbar';
     toolbar.innerHTML = `
       <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
-      <button class="pdf-tool-btn active" data-tool="pen">Pintar</button>
+      <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF">✋ Mano</button>
+      <button class="pdf-tool-btn" data-tool="pen" title="Pintar libre">✏️ Lápiz</button>
+      <button class="pdf-tool-btn" data-tool="line" title="Ayuda para línea recta">📏 Recta</button>
       <button class="pdf-tool-btn" data-tool="eraser">Borrar</button>
+      <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
+      <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
+      <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
       <button class="pdf-color-btn active" data-color="rgba(255,235,59,0.50)" style="background:#fde047;" title="Amarillo"></button>
       <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde"></button>
       <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul"></button>
@@ -366,6 +397,15 @@
         state.tool = button.dataset.tool;
         toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
+        actions.updateToolState();
+      });
+    });
+
+    toolbar.querySelectorAll('[data-width]').forEach(button => {
+      button.addEventListener('click', () => {
+        state.width = Number(button.dataset.width);
+        toolbar.querySelectorAll('[data-width]').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
       });
     });
 
@@ -376,6 +416,7 @@
         toolbar.querySelectorAll('[data-color]').forEach(btn => btn.classList.remove('active'));
         toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
         button.classList.add('active');
+        actions.updateToolState();
       });
     });
 
@@ -389,6 +430,7 @@
 
     let activeStroke = null;
     let pointerId = null;
+    let lineStart = null;
 
     function ensurePage() {
       if (!annotations[pageNumber]) annotations[pageNumber] = [];
@@ -396,6 +438,7 @@
     }
 
     canvas.addEventListener('pointerdown', event => {
+      if (state.tool === 'pan') return;
       event.preventDefault();
       pointerId = event.pointerId;
       canvas.setPointerCapture(pointerId);
@@ -406,6 +449,11 @@
         annotations[pageNumber] = ensurePage().filter(stroke => !pointNearStroke(point, stroke));
         redrawAnnotations(canvas, annotations[pageNumber]);
         save();
+        return;
+      }
+
+      if (state.tool === 'line') {
+        lineStart = point;
         return;
       }
 
@@ -429,6 +477,16 @@
         return;
       }
 
+      if (state.tool === 'line' && lineStart) {
+        const preview = {
+          color: state.color,
+          width: state.width,
+          points: [lineStart, point]
+        };
+        redrawWithPreview(canvas, ensurePage(), preview);
+        return;
+      }
+
       if (!activeStroke) return;
       activeStroke.points.push(point);
       redrawAnnotations(canvas, annotations[pageNumber]);
@@ -436,6 +494,16 @@
 
     function finish(event) {
       if (event.pointerId !== pointerId) return;
+      if (state.tool === 'line' && lineStart) {
+        const end = getPointerPoint(event, canvas);
+        ensurePage().push({
+          color: state.color,
+          width: state.width,
+          points: [lineStart, end]
+        });
+        lineStart = null;
+        redrawAnnotations(canvas, annotations[pageNumber]);
+      }
       if (activeStroke && activeStroke.points.length < 2) {
         annotations[pageNumber] = ensurePage().filter(stroke => stroke !== activeStroke);
       }
@@ -460,7 +528,7 @@
 
     const annotations = loadAnnotations(key);
     const state = {
-      tool: 'pen',
+      tool: 'pan',
       color: 'rgba(255,235,59,0.50)',
       width: 18,
       currentPage: 1
@@ -468,6 +536,11 @@
 
     const actions = {
       close: () => shell.remove(),
+      updateToolState: () => {
+        shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
+          canvas.dataset.tool = state.tool;
+        });
+      },
       clearCurrentPage: () => {
         annotations[state.currentPage] = [];
         saveAnnotations(key, annotations);
@@ -511,6 +584,7 @@
 
         drawCanvas.className = 'pdf-draw-layer';
         drawCanvas.dataset.page = String(pageNumber);
+        drawCanvas.dataset.tool = state.tool;
 
         const renderContext = {
           canvasContext: pdfCanvas.getContext('2d'),
