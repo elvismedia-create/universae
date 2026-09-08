@@ -836,7 +836,7 @@ svg, svg * {
     <div style="display:flex; align-items:center; gap:16px;">
       <img src="img/universae-logo.svg" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0;">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.0</span></h1>
+        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.1</span></h1>
         <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
@@ -1147,11 +1147,12 @@ function filtrarBloque(bid) {
   const bloque = CONFIGURACION_CURSO.find(b => b.bloque === bid);
   if (!bloque) return;
 
-  // FIX v67.24: Sincronizar tabs activos con contenido mostrado
+  // FIX v70.1: Sincronizar tabs activos con contenido mostrado
+  // (usa solo los bloques del trimestre actualmente visible, no todo CONFIGURACION_CURSO)
+  const bloquesDelTrimestreActivo = CONFIGURACION_CURSO.filter(b => b.trimestre === bloque.trimestre);
   document.querySelectorAll(".tab-btn").forEach((tab, index) => {
     tab.classList.remove("active");
-    // Activar el tab que corresponde al bid actual
-    const tabBloque = CONFIGURACION_CURSO[index];
+    const tabBloque = bloquesDelTrimestreActivo[index];
     if (tabBloque && tabBloque.bloque === bid) {
       tab.classList.add("active");
     }
@@ -1602,13 +1603,13 @@ setTimeout(() => {
       // Limpiar el contexto guardado
       localStorage.removeItem("mastertest_lastcontext");
     } catch (e) {
-      // Si falla, ir al primer bloque
-      const first = CONFIGURACION_CURSO[0]; 
+      // Si falla, ir al primer bloque del trimestre actual (T3 por defecto)
+      const first = CONFIGURACION_CURSO.find(b => b.trimestre === trimestreActual) || CONFIGURACION_CURSO[0];
       if(first) filtrarBloque(first.bloque, null);
     }
   } else {
-    // Si no hay contexto guardado, ir al primer bloque
-    const first = CONFIGURACION_CURSO[0]; 
+    // Si no hay contexto guardado, ir al primer bloque del trimestre actual (T3 por defecto)
+    const first = CONFIGURACION_CURSO.find(b => b.trimestre === trimestreActual) || CONFIGURACION_CURSO[0];
     if(first) filtrarBloque(first.bloque, null);
   }
 }, 50);
