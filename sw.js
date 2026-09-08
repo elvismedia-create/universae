@@ -1,6 +1,6 @@
-// v72.0 - Vercel update fix: network-first assets + compatible SW messages
-const BUILD_TIMESTAMP = '20260908-vercel-update-fix';
-const CACHE_NAME = `universae-v72.0-${BUILD_TIMESTAMP}`;
+// v73.0 - Local iPad PDF import
+const BUILD_TIMESTAMP = '20260908-local-pdf-import';
+const CACHE_NAME = `universae-v73.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -8,6 +8,7 @@ const CRITICAL_ASSETS = [
   './',
   './index.html',
   './motor.js',
+  './pdf-local-store.js',
   './data-config.js',
   './simbolo-master.js',
 ];
@@ -72,7 +73,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v72.0 - Update fix...');
+  console.log('⚡ INSTALANDO Universae v73.0 - Local PDF import...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -114,7 +115,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v72.0 ready offline');
+          console.log('✅ Instalación completada - v73.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -125,9 +126,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v72.0: Limpieza y notificación
+// ACTIVACIÓN v73.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v72.0...');
+  console.log('✨ ACTIVANDO Universae v73.0...');
 
   e.waitUntil(
     caches.keys()
@@ -148,12 +149,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v72.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v73.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v72.0',
-            message: 'Universae v72.0 activado - Actualización aplicada'
+            version: 'v73.0',
+            message: 'Universae v73.0 activado - Importación local de PDFs'
           });
         });
       })
