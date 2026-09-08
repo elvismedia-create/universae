@@ -124,7 +124,20 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "4. Máquinas Eléctricas",
     asignaturas: [
-      { nombre: "Máquinas Eléctricas", data: TEMA_T3_MAQUINAS_ELECTRICAS_DATA }
+      { nombre: "⭐ SIMULACRO: Máquinas Eléctricas (65 preguntas)", data: EXAMEN_SEMESTRAL_MAQUINAS_DATA },
+      { nombre: "U1: Introducción al taller de máquinas eléctricas", data: soloOficiales(TEMA_MAQUINAS_U1_DATA) },
+      { nombre: "U2: Nociones de magnetismo", data: soloOficiales(TEMA_MAQUINAS_U2_DATA) },
+      { nombre: "U3: Interpretación de documentación técnica en máquinas eléctricas", data: soloOficiales(TEMA_MAQUINAS_U3_DATA) },
+      { nombre: "U4: Construcción de transformadores eléctricos de pequeña potencia", data: soloOficiales(TEMA_MAQUINAS_U4_DATA) },
+      { nombre: "U5: Ensayos de transformadores eléctricos", data: soloOficiales(TEMA_MAQUINAS_U5_DATA) },
+      { nombre: "U6: Máquinas de corriente continua y sus bobinados", data: soloOficiales(TEMA_MAQUINAS_U6_DATA) },
+      { nombre: "U7: Mantenimiento y reparación de máquinas eléctricas de corriente continua", data: soloOficiales(TEMA_MAQUINAS_U7_DATA) },
+      { nombre: "U8: Ensayos de máquinas eléctricas de corriente continua", data: soloOficiales(TEMA_MAQUINAS_U8_DATA) },
+      { nombre: "U9: Máquinas de corriente alterna y sus bobinados", data: soloOficiales(TEMA_MAQUINAS_U9_DATA) },
+      { nombre: "U10: Mantenimiento y reparación de máquinas eléctricas de corriente alterna", data: soloOficiales(TEMA_MAQUINAS_U10_DATA) },
+      { nombre: "U11: Ensayos de máquinas eléctricas de corriente alterna", data: soloOficiales(TEMA_MAQUINAS_U11_DATA) },
+      { nombre: "U12: Instalación de los motores eléctricos", data: soloOficiales(TEMA_MAQUINAS_U12_DATA) },
+      { nombre: "U13: Prevención de riesgos laborales y protección ambiental", data: soloOficiales(TEMA_MAQUINAS_U13_DATA) }
     ]
   },
 
