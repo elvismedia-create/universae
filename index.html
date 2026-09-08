@@ -836,7 +836,7 @@ svg, svg * {
     <div style="display:flex; align-items:center; gap:16px;">
       <img src="img/universae-logo.svg" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0;">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.8</span></h1>
+        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.9</span></h1>
         <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
@@ -1246,7 +1246,7 @@ function filtrarBloque(bid) {
       <div style="display:flex; flex-direction:column; gap:10px;">
         <button class="btn-orange" onclick="jugar('carrera', ${idx}, '${bid}')">▶ Entrenar</button>
         ${(typeof PDF_T3_URLS !== 'undefined' && PDF_T3_URLS[bid] && PDF_T3_URLS[bid][idx]) ? `
-          <a href="${PDF_T3_URLS[bid][idx]}" target="_blank" rel="noopener" class="btn-outline" style="text-align:center; text-decoration:none; display:block; color:#16a34a; border-color:#16a34a; font-weight:600;">
+          <a href="${PDF_T3_URLS[bid][idx]}" class="btn-outline" style="text-align:center; text-decoration:none; display:block; color:#16a34a; border-color:#16a34a; font-weight:600;">
             📄 Ver PDF del tema
           </a>
         ` : ''}
