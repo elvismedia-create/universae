@@ -853,6 +853,18 @@ function iniciarTestSemestralEmpleabilidad(n) {
 function iniciarTestSemestralIngles(n) {
     iniciarModoAcademia(EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA, n, "⭐ Simulacro Semestral - Inglés Profesional");
 }
+function iniciarTestSemestralDomotica(n) {
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_DOMOTICA_DATA, n, "⭐ Simulacro Semestral - Instalaciones Domóticas");
+}
+function iniciarTestSemestralDistribucion(n) {
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_DISTRIBUCION_DATA, n, "⭐ Simulacro Semestral - Instalaciones de Distribución");
+}
+function iniciarTestSemestralTelecom(n) {
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_TELECOM_DATA, n, "⭐ Simulacro Semestral - Infraestructuras de Telecomunicación");
+}
+function iniciarTestSemestralMaquinas(n) {
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_MAQUINAS_DATA, n, "⭐ Simulacro Semestral - Máquinas Eléctricas");
+}
 function volverAlMenu() { 
   detenerReloj(); 
   

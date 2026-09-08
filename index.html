@@ -836,7 +836,7 @@ svg, svg * {
     <div style="display:flex; align-items:center; gap:16px;">
       <img src="img/universae-logo.svg" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0;">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.5</span></h1>
+        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v70.6</span></h1>
         <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
@@ -977,7 +977,7 @@ svg, svg * {
 <script src="caida-tension.js"></script>
 <script src="simbolo-master.js"></script>
 <!-- MOTOR PRINCIPAL -->
-<script src="motor.js?v=20260514000000"></script>
+<script src="motor.js?v=20260908120743"></script>
 
 <!-- Auto-actualización NUCLEAR v67.24 -->
 <script>
@@ -1284,85 +1284,172 @@ function filtrarBloque(bid) {
   grid.appendChild(separador);
 
   // =========================================================
-  // 0. ZONA VERDE: SIMULACRO SEMESTRAL INSTALACIONES
+  // 0. ZONA VERDE: SIMULACROS SEMESTRALES (varía según el trimestre del bloque activo)
   // =========================================================
-  const cardSemestral = document.createElement("div");
-  cardSemestral.className = "asig-card card-simulacros";
-  cardSemestral.style.backgroundColor = "#dcfce7";
-  cardSemestral.style.borderLeft = "4px solid #16a34a";
-  cardSemestral.innerHTML = `
-    <div class="simulacro-header">
-      <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Instalaciones Eléctricas Interior</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-      <div style="font-size: 2.5rem; opacity: 0.1;">📋</div>
-    </div>
-    <div class="simulacro-grid">
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(10)">10</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(20)">20</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestral(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
-    </div>
-  `;
-  grid.appendChild(cardSemestral);
+  if (bloque.trimestre === "T3") {
+    // ZONA VERDE T3: SIMULACRO SEMESTRAL DOMÓTICA
+    if (typeof EXAMEN_SEMESTRAL_DOMOTICA_DATA !== 'undefined') {
+      const cardSemestralDomotica = document.createElement("div");
+      cardSemestralDomotica.className = "asig-card card-simulacros";
+      cardSemestralDomotica.style.backgroundColor = "#dcfce7";
+      cardSemestralDomotica.style.borderLeft = "4px solid #16a34a";
+      cardSemestralDomotica.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Instalaciones Domóticas</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">🏠</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDomotica(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDomotica(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDomotica(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDomotica(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralDomotica);
+    }
 
-  // ZONA VERDE: SIMULACRO SEMESTRAL FOTOVOLTAICA
-  const cardSemestralFotovoltaica = document.createElement("div");
-  cardSemestralFotovoltaica.className = "asig-card card-simulacros";
-  cardSemestralFotovoltaica.style.backgroundColor = "#dcfce7";
-  cardSemestralFotovoltaica.style.borderLeft = "4px solid #16a34a";
-  cardSemestralFotovoltaica.innerHTML = `
-    <div class="simulacro-header">
-      <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Fotovoltaica</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-      <div style="font-size: 2.5rem; opacity: 0.1;">☀️</div>
-    </div>
-    <div class="simulacro-grid">
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(10)">10</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(20)">20</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(30)">30</button>
-      <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
-    </div>
-  `;
-  grid.appendChild(cardSemestralFotovoltaica);
+    // ZONA VERDE T3: SIMULACRO SEMESTRAL DISTRIBUCIÓN
+    if (typeof EXAMEN_SEMESTRAL_DISTRIBUCION_DATA !== 'undefined') {
+      const cardSemestralDistribucion = document.createElement("div");
+      cardSemestralDistribucion.className = "asig-card card-simulacros";
+      cardSemestralDistribucion.style.backgroundColor = "#dcfce7";
+      cardSemestralDistribucion.style.borderLeft = "4px solid #16a34a";
+      cardSemestralDistribucion.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Instalaciones de Distribución</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">🔌</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDistribucion(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDistribucion(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDistribucion(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralDistribucion(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralDistribucion);
+    }
 
-  // ZONA VERDE: SIMULACRO SEMESTRAL EMPLEABILIDAD
-  if (typeof EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA !== 'undefined') {
-    const cardSemestralEmpleabilidad = document.createElement("div");
-    cardSemestralEmpleabilidad.className = "asig-card card-simulacros";
-    cardSemestralEmpleabilidad.style.backgroundColor = "#dcfce7";
-    cardSemestralEmpleabilidad.style.borderLeft = "4px solid #16a34a";
-    cardSemestralEmpleabilidad.innerHTML = `
+    // ZONA VERDE T3: SIMULACRO SEMESTRAL TELECOMUNICACIÓN
+    if (typeof EXAMEN_SEMESTRAL_TELECOM_DATA !== 'undefined') {
+      const cardSemestralTelecom = document.createElement("div");
+      cardSemestralTelecom.className = "asig-card card-simulacros";
+      cardSemestralTelecom.style.backgroundColor = "#dcfce7";
+      cardSemestralTelecom.style.borderLeft = "4px solid #16a34a";
+      cardSemestralTelecom.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Infraestructuras de Telecomunicación</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">📡</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralTelecom(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralTelecom(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralTelecom(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralTelecom(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralTelecom);
+    }
+
+    // ZONA VERDE T3: SIMULACRO SEMESTRAL MÁQUINAS ELÉCTRICAS
+    if (typeof EXAMEN_SEMESTRAL_MAQUINAS_DATA !== 'undefined') {
+      const cardSemestralMaquinas = document.createElement("div");
+      cardSemestralMaquinas.className = "asig-card card-simulacros";
+      cardSemestralMaquinas.style.backgroundColor = "#dcfce7";
+      cardSemestralMaquinas.style.borderLeft = "4px solid #16a34a";
+      cardSemestralMaquinas.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Máquinas Eléctricas</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">⚙️</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralMaquinas(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralMaquinas(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralMaquinas(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralMaquinas(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralMaquinas);
+    }
+  } else {
+    // ZONA VERDE T2: SIMULACRO SEMESTRAL INSTALACIONES
+    const cardSemestral = document.createElement("div");
+    cardSemestral.className = "asig-card card-simulacros";
+    cardSemestral.style.backgroundColor = "#dcfce7";
+    cardSemestral.style.borderLeft = "4px solid #16a34a";
+    cardSemestral.innerHTML = `
       <div class="simulacro-header">
-        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Empleabilidad</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-        <div style="font-size: 2.5rem; opacity: 0.1;">💼</div>
+        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Instalaciones Eléctricas Interior</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+        <div style="font-size: 2.5rem; opacity: 0.1;">📋</div>
       </div>
       <div class="simulacro-grid">
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(10)">10</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(20)">20</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(30)">30</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestral(10)">10</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestral(20)">20</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestral(30)">30</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestral(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
       </div>
     `;
-    grid.appendChild(cardSemestralEmpleabilidad);
-  }
+    grid.appendChild(cardSemestral);
 
-  // ZONA VERDE: SIMULACRO SEMESTRAL INGLÉS PROFESIONAL
-  if (typeof EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA !== 'undefined') {
-    const cardSemestralIngles = document.createElement("div");
-    cardSemestralIngles.className = "asig-card card-simulacros";
-    cardSemestralIngles.style.backgroundColor = "#dcfce7";
-    cardSemestralIngles.style.borderLeft = "4px solid #16a34a";
-    cardSemestralIngles.innerHTML = `
+    // ZONA VERDE T2: SIMULACRO SEMESTRAL FOTOVOLTAICA
+    const cardSemestralFotovoltaica = document.createElement("div");
+    cardSemestralFotovoltaica.className = "asig-card card-simulacros";
+    cardSemestralFotovoltaica.style.backgroundColor = "#dcfce7";
+    cardSemestralFotovoltaica.style.borderLeft = "4px solid #16a34a";
+    cardSemestralFotovoltaica.innerHTML = `
       <div class="simulacro-header">
-        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Inglés Profesional</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
-        <div style="font-size: 2.5rem; opacity: 0.1;">🇬🇧</div>
+        <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Fotovoltaica</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+        <div style="font-size: 2.5rem; opacity: 0.1;">☀️</div>
       </div>
       <div class="simulacro-grid">
-        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(10)">10</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(20)">20</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(30)">30</button>
-        <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(10)">10</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(20)">20</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(30)">30</button>
+        <button class="btn-sim-num" onclick="iniciarTestSemestralFotovoltaica(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
       </div>
     `;
-    grid.appendChild(cardSemestralIngles);
+    grid.appendChild(cardSemestralFotovoltaica);
+
+    // ZONA VERDE T2: SIMULACRO SEMESTRAL EMPLEABILIDAD
+    if (typeof EXAMEN_SEMESTRAL_EMPLEABILIDAD_DATA !== 'undefined') {
+      const cardSemestralEmpleabilidad = document.createElement("div");
+      cardSemestralEmpleabilidad.className = "asig-card card-simulacros";
+      cardSemestralEmpleabilidad.style.backgroundColor = "#dcfce7";
+      cardSemestralEmpleabilidad.style.borderLeft = "4px solid #16a34a";
+      cardSemestralEmpleabilidad.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Empleabilidad</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">💼</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralEmpleabilidad(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralEmpleabilidad);
+    }
+
+    // ZONA VERDE T2: SIMULACRO SEMESTRAL INGLÉS PROFESIONAL
+    if (typeof EXAMEN_SEMESTRAL_INGLES_PROFESIONAL_DATA !== 'undefined') {
+      const cardSemestralIngles = document.createElement("div");
+      cardSemestralIngles.className = "asig-card card-simulacros";
+      cardSemestralIngles.style.backgroundColor = "#dcfce7";
+      cardSemestralIngles.style.borderLeft = "4px solid #16a34a";
+      cardSemestralIngles.innerHTML = `
+        <div class="simulacro-header">
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Inglés Profesional</h3><p class="simulacro-subtitle">75% del examen oficial - Academia (Cronómetro incluido)</p></div>
+          <div style="font-size: 2.5rem; opacity: 0.1;">🇬🇧</div>
+        </div>
+        <div class="simulacro-grid">
+          <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(10)">10</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(20)">20</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(30)">30</button>
+          <button class="btn-sim-num" onclick="iniciarTestSemestralIngles(40)" style="background-color: #16a34a; color: white; font-weight: bold;">40</button>
+        </div>
+      `;
+      grid.appendChild(cardSemestralIngles);
+    }
   }
 
   // TARJETA HISTORIAL DE SIMULACROS
