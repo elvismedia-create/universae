@@ -142,30 +142,6 @@ TAREA: Genera una explicación de 300-500 palabras que incluya:
 Formato: Párrafos corridos, sin títulos de sección. Tono profesional pero accesible.
 `;
     }
-   - Números concretos
-
-5. **NORMATIVA APLICABLE** (60-80 palabras)
-   - Referencias ITC-BT relevantes
-   - Qué dice el REBT
-
-6. **ERRORES COMUNES** (60-80 palabras)
-   - 2-3 errores típicos de estudiantes
-   - Por qué son incorrectos
-
-7. **TRUCO PARA RECORDAR** (30-40 palabras)
-   - Mnemotecnia o frase memorable
-   - Algo que ayude en el examen
-
-FORMATO:
-Usa markdown simple:
-- **Negrita** para títulos de secciones
-- Párrafos separados con línea en blanco
-- Listas con • cuando sea necesario
-- NO uses emojis
-- Escribe en tono educativo pero cercano
-- Sé preciso técnicamente
-
-GENERA LA EXPLICACIÓN COMPLETA AHORA:`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
