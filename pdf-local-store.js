@@ -521,9 +521,9 @@
 
     toolbar.querySelector('[data-action="clear"]').addEventListener('click', actions.clearCurrentPage);
     toolbar.querySelector('[data-action="close"]').addEventListener('click', actions.close);
-    toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => actions.setZoom(state.zoom + 0.15));
-    toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => actions.setZoom(state.zoom - 0.15));
-    toolbar.querySelector('[data-action="zoom-reset"]').addEventListener('click', () => actions.setZoom(1));
+    toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => actions.setZoom(state.zoom + 0.15, actions.getViewportCenter()));
+    toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => actions.setZoom(state.zoom - 0.15, actions.getViewportCenter()));
+    toolbar.querySelector('[data-action="zoom-reset"]').addEventListener('click', () => actions.setZoom(1, actions.getViewportCenter()));
     return toolbar;
   }
 
@@ -535,6 +535,13 @@
     const dx = touchA.clientX - touchB.clientX;
     const dy = touchA.clientY - touchB.clientY;
     return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getTouchCenter(touchA, touchB) {
+    return {
+      clientX: (touchA.clientX + touchB.clientX) / 2,
+      clientY: (touchA.clientY + touchB.clientY) / 2
+    };
   }
 
   function attachPinchZoom(pagesContainer, zoomSurface, state, actions) {
@@ -551,7 +558,7 @@
       if (event.touches.length !== 2 || !startDistance) return;
       event.preventDefault();
       const nextDistance = distanceBetweenTouches(event.touches[0], event.touches[1]);
-      actions.setZoom(startZoom * (nextDistance / startDistance));
+      actions.setZoom(startZoom * (nextDistance / startDistance), getTouchCenter(event.touches[0], event.touches[1]));
     }, { passive: false });
 
     pagesContainer.addEventListener('touchend', event => {
@@ -561,7 +568,10 @@
     pagesContainer.addEventListener('wheel', event => {
       if (!event.ctrlKey && !event.metaKey) return;
       event.preventDefault();
-      actions.setZoom(state.zoom + (event.deltaY < 0 ? 0.1 : -0.1));
+      actions.setZoom(state.zoom + (event.deltaY < 0 ? 0.1 : -0.1), {
+        clientX: event.clientX,
+        clientY: event.clientY
+      });
     }, { passive: false });
   }
 
@@ -703,9 +713,29 @@
           canvas.dataset.tool = state.tool;
         });
       },
-      setZoom: value => {
-        state.zoom = clampZoom(value);
+      getViewportCenter: () => {
+        const rect = pagesContainer.getBoundingClientRect();
+        return {
+          clientX: rect.left + rect.width / 2,
+          clientY: rect.top + rect.height / 2
+        };
+      },
+      setZoom: (value, anchor) => {
+        const previousZoom = state.zoom;
+        const nextZoom = clampZoom(value);
+        const rect = pagesContainer.getBoundingClientRect();
+        const anchorX = anchor ? anchor.clientX - rect.left : rect.width / 2;
+        const anchorY = anchor ? anchor.clientY - rect.top : rect.height / 2;
+        const scrollAnchorX = pagesContainer.scrollLeft + anchorX;
+        const scrollAnchorY = pagesContainer.scrollTop + anchorY;
+
+        state.zoom = nextZoom;
         applyPageZoom(zoomSurface, state.zoom);
+
+        const zoomRatio = previousZoom ? nextZoom / previousZoom : 1;
+        pagesContainer.scrollLeft = Math.max(0, scrollAnchorX * zoomRatio - anchorX);
+        pagesContainer.scrollTop = Math.max(0, scrollAnchorY * zoomRatio - anchorY);
+
         const resetButton = shell.querySelector('[data-action="zoom-reset"]');
         if (resetButton) resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
       },
