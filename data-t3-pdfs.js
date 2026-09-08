@@ -4,9 +4,17 @@
 // repositorio de GitHub separado (no forma parte del despliegue
 // de la app, para no aumentar el tamaño de la PWA).
 // Repo: https://github.com/elvismedia-create/Temario---Trimestre-3-Universae
+//
+// IMPORTANTE: usamos la vista "blob" de GitHub (previsualización HTML del
+// PDF en el navegador) en lugar de raw.githubusercontent.com. La URL "raw"
+// fuerza una descarga de archivo binario (application/octet-stream), lo
+// cual funciona en Mac (se guarda en Descargas) pero NO funciona dentro de
+// un PWA instalado en iPad/iPhone, que no tiene gestor de descargas propio
+// y descarta el archivo en silencio. La vista "blob" es una página HTML
+// normal con un visor de PDF embebido, que sí funciona en todos los casos.
 // ========================================================
 
-const PDF_T3_BASE = "https://raw.githubusercontent.com/elvismedia-create/Temario---Trimestre-3-Universae/main/";
+const PDF_T3_BASE = "https://github.com/elvismedia-create/Temario---Trimestre-3-Universae/blob/main/";
 
 // Mapa: bloque (pestana) -> índice de unidad (1-based, tal como aparecen
 // en el array "asignaturas" de data-config.js, donde el índice 0 es
