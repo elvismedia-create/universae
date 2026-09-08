@@ -1,6 +1,6 @@
-// v71.0 - Fix offline: query params + archivos nuevos T3 y temas estudio
-const BUILD_TIMESTAMP = '20260521-fix-offline';
-const CACHE_NAME = `universae-v71.0-${BUILD_TIMESTAMP}`;
+// v72.0 - Vercel update fix: network-first assets + compatible SW messages
+const BUILD_TIMESTAMP = '20260908-vercel-update-fix';
+const CACHE_NAME = `universae-v72.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -42,6 +42,7 @@ const DATA_ASSETS = [
   './data-ingles-professional-u6.js',
   // TRIMESTRE 3
   './data-t3-domot-ica.js',
+  './data-t3-domotica.js',
   './data-t3-distribución.js',
   './data-t3-infraestructura-telecom.js',
   './data-t3-maquinas-electricas.js',
@@ -57,6 +58,7 @@ const DATA_ASSETS = [
   './data-tema7-estudio.js',
   './data-tema-economia-u1.js',
   './data-tema1-prevencion.js',
+  './data-t3-domotica-estudio.js',
 ];
 
 const ASSETS_TO_CACHE = [
@@ -70,7 +72,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v69.0 - Offline-First...');
+  console.log('⚡ INSTALANDO Universae v72.0 - Update fix...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -112,7 +114,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v69.0 ready offline');
+          console.log('✅ Instalación completada - v72.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -123,9 +125,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v69.0: Limpieza y notificación
+// ACTIVACIÓN v72.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v69.0...');
+  console.log('✨ ACTIVANDO Universae v72.0...');
 
   e.waitUntil(
     caches.keys()
@@ -146,12 +148,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v69.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v72.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
-            type: 'SERVICE_WORKER_UPDATED',
-            version: 'v69.0',
-            message: 'Universae v69.0 activado - Modo offline mejorado'
+            type: 'FORCE_RELOAD_NOW',
+            version: 'v72.0',
+            message: 'Universae v72.0 activado - Actualización aplicada'
           });
         });
       })
@@ -161,7 +163,7 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// FETCH v69.0: Offline-first con fallbacks inteligentes
+// FETCH v72.0: Network-first para código/datos, fallback offline a caché
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
   const isHTML = e.request.url.includes('.html') || url.pathname.endsWith('/');
@@ -203,47 +205,25 @@ self.addEventListener('fetch', (e) => {
         })
     );
   }
-  // JS/CSS/Data: CACHE FIRST - Si está en caché, usa eso
+  // JS/CSS/Data: Red primero para que los deploys de Vercel se vean al instante.
   else if (isAsset) {
     e.respondWith(
-      // ignoreSearch: true → ignora ?v=timestamp al buscar en caché
-      caches.match(e.request, { ignoreSearch: true })
-        .then(response => {
-          if (response) {
-            console.log('✅ Caché hit:', url.pathname);
-            // En background, intentar actualizar
-            fetch(e.request, { cache: 'no-store' })
-              .then(res => {
-                if (res.ok) {
-                  caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
-                  console.log('🔄 Actualizado en background:', url.pathname);
-                }
-              })
-              .catch(() => {
-                // Sin error - usamos lo cacheado
-              });
-            return response;
+      fetch(e.request, { cache: 'no-store' })
+        .then(res => {
+          if (res.ok) {
+            caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
           }
-
-          // Si NO está en caché, buscar en red
-          console.log('🔍 Buscando en red:', url.pathname);
-          return fetch(e.request, { cache: 'no-store' })
-            .then(res => {
-              if (res.ok) {
-                // Cachear para próxima vez
-                caches.open(CACHE_NAME).then(cache => cache.put(e.request, res.clone()));
-                console.log('💾 Nuevo archivo cacheado:', url.pathname);
-              }
-              return res;
-            })
-            .catch(err => {
-              console.error('❌ No se pudo cargar:', url.pathname, err.message);
-              // Devolver response vacío en lugar de error
-              return new Response('console.log("Asset offline");', {
-                headers: { 'Content-Type': 'application/javascript' },
-                status: 200
-              });
+          return res;
+        })
+        .catch(err => {
+          console.warn('📱 Asset desde caché offline:', url.pathname, err.message);
+          return caches.match(e.request, { ignoreSearch: true }).then(response => {
+            if (response) return response;
+            return new Response('console.log("Asset offline");', {
+              headers: { 'Content-Type': 'application/javascript' },
+              status: 200
             });
+          });
         })
     );
   }
@@ -276,7 +256,9 @@ self.addEventListener('fetch', (e) => {
 
 // Mensajes: Comunicación bidireccional con la app
 self.addEventListener('message', (event) => {
-  const { type, data } = event.data || {};
+  const message = event.data || {};
+  const type = typeof message === 'string' ? message : message.type;
+  const data = typeof message === 'string' ? undefined : message.data;
 
   if (type === 'SKIP_WAITING') {
     self.skipWaiting();
