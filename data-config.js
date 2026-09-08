@@ -94,7 +94,7 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "2. Instalaciones de Distribución",
     asignaturas: [
-      { nombre: "⭐ SIMULACRO: Instalaciones de Distribución (35 preguntas)", data: EXAMEN_SEMESTRAL_DISTRIBUCION_DATA },
+      { nombre: "⭐ SIMULACRO: Instalaciones de Distribución (40 preguntas)", data: EXAMEN_SEMESTRAL_DISTRIBUCION_DATA },
       { nombre: "U1: Prevención de riesgos laborales y protección ambiental", data: soloOficiales(TEMA_DISTRIBUCION_U1_DATA) },
       { nombre: "U2: Configuración de los centros de transformación", data: soloOficiales(TEMA_DISTRIBUCION_U2_DATA) },
       { nombre: "U3: Operaciones de mantenimiento de centros de transformación", data: soloOficiales(TEMA_DISTRIBUCION_U3_DATA) },
@@ -109,7 +109,7 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "3. Infraestructuras de Telecomunicación",
     asignaturas: [
-      { nombre: "⭐ SIMULACRO: Infraestructuras de Telecomunicación (35 preguntas)", data: EXAMEN_SEMESTRAL_TELECOM_DATA },
+      { nombre: "⭐ SIMULACRO: Infraestructuras de Telecomunicación (40 preguntas)", data: EXAMEN_SEMESTRAL_TELECOM_DATA },
       { nombre: "U1: Televisión Terrestre. Transmisión de la señal", data: soloOficiales(TEMA_TELECOM_U1_DATA) },
       { nombre: "U2: Propagación de la señal", data: soloOficiales(TEMA_TELECOM_U2_DATA) },
       { nombre: "U3: Sistemas de recepción de TV terrestre", data: soloOficiales(TEMA_TELECOM_U3_DATA) },
@@ -124,7 +124,7 @@ const CONFIGURACION_CURSO = [
     trimestre: "T3",
     titulo_boton: "4. Máquinas Eléctricas",
     asignaturas: [
-      { nombre: "⭐ SIMULACRO: Máquinas Eléctricas (65 preguntas)", data: EXAMEN_SEMESTRAL_MAQUINAS_DATA },
+      { nombre: "⭐ SIMULACRO: Máquinas Eléctricas (40 preguntas)", data: EXAMEN_SEMESTRAL_MAQUINAS_DATA },
       { nombre: "U1: Introducción al taller de máquinas eléctricas", data: soloOficiales(TEMA_MAQUINAS_U1_DATA) },
       { nombre: "U2: Nociones de magnetismo", data: soloOficiales(TEMA_MAQUINAS_U2_DATA) },
       { nombre: "U3: Interpretación de documentación técnica en máquinas eléctricas", data: soloOficiales(TEMA_MAQUINAS_U3_DATA) },
