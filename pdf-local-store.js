@@ -375,13 +375,85 @@
     }
   }
 
-  function pointNearStroke(point, stroke) {
-    const threshold = 0.025;
-    return (stroke.points || []).some(strokePoint => {
-      const dx = point.x - strokePoint.x;
-      const dy = point.y - strokePoint.y;
-      return Math.sqrt(dx * dx + dy * dy) <= threshold;
+  function distanceToSegmentPx(point, start, end, canvas) {
+    const px = point.x * canvas.width;
+    const py = point.y * canvas.height;
+    const sx = start.x * canvas.width;
+    const sy = start.y * canvas.height;
+    const ex = end.x * canvas.width;
+    const ey = end.y * canvas.height;
+    const dx = ex - sx;
+    const dy = ey - sy;
+    const lengthSquared = dx * dx + dy * dy;
+
+    if (!lengthSquared) {
+      const pointDx = px - sx;
+      const pointDy = py - sy;
+      return Math.sqrt(pointDx * pointDx + pointDy * pointDy);
+    }
+
+    const t = Math.max(0, Math.min(1, ((px - sx) * dx + (py - sy) * dy) / lengthSquared));
+    const closestX = sx + t * dx;
+    const closestY = sy + t * dy;
+    const closestDx = px - closestX;
+    const closestDy = py - closestY;
+    return Math.sqrt(closestDx * closestDx + closestDy * closestDy);
+  }
+
+  function distanceBetweenPointsPx(point, strokePoint, canvas) {
+    const dx = (point.x - strokePoint.x) * canvas.width;
+    const dy = (point.y - strokePoint.y) * canvas.height;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getSampledStrokePoints(stroke, canvas) {
+    const points = stroke.points || [];
+    if (points.length < 2) return points;
+
+    const sampledPoints = [points[0]];
+    points.slice(1).forEach((point, index) => {
+      const previousPoint = points[index];
+      const lengthPx = distanceBetweenPointsPx(previousPoint, point, canvas);
+      const steps = Math.max(1, Math.ceil(lengthPx / 6));
+
+      for (let step = 1; step <= steps; step += 1) {
+        const t = step / steps;
+        sampledPoints.push({
+          x: previousPoint.x + (point.x - previousPoint.x) * t,
+          y: previousPoint.y + (point.y - previousPoint.y) * t
+        });
+      }
     });
+
+    return sampledPoints;
+  }
+
+  function erasePointFromStrokes(point, strokes, canvas, state) {
+    const radiusPx = Math.max(18, state.width * 1.25);
+    const remainingStrokes = [];
+
+    strokes.forEach(stroke => {
+      const points = getSampledStrokePoints(stroke, canvas);
+      let currentPart = [];
+
+      points.forEach(strokePoint => {
+        if (distanceBetweenPointsPx(point, strokePoint, canvas) <= radiusPx) {
+          if (currentPart.length >= 2) {
+            remainingStrokes.push({ ...stroke, points: currentPart });
+          }
+          currentPart = [];
+          return;
+        }
+
+        currentPart.push(strokePoint);
+      });
+
+      if (currentPart.length >= 2) {
+        remainingStrokes.push({ ...stroke, points: currentPart });
+      }
+    });
+
+    return remainingStrokes;
   }
 
   function createToolbar(info, state, actions) {
@@ -532,7 +604,7 @@
 
       const point = getPointerPoint(event, canvas);
       if (state.tool === 'eraser') {
-        annotations[pageNumber] = ensurePage().filter(stroke => !pointNearStroke(point, stroke));
+        annotations[pageNumber] = erasePointFromStrokes(point, ensurePage(), canvas, state);
         redrawAnnotations(canvas, annotations[pageNumber]);
         save();
         return;
@@ -557,7 +629,7 @@
       const point = getPointerPoint(event, canvas);
 
       if (state.tool === 'eraser') {
-        annotations[pageNumber] = ensurePage().filter(stroke => !pointNearStroke(point, stroke));
+        annotations[pageNumber] = erasePointFromStrokes(point, ensurePage(), canvas, state);
         redrawAnnotations(canvas, annotations[pageNumber]);
         save();
         return;

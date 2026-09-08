@@ -1,6 +1,6 @@
-// v78.0 - Accurate drawing coordinates after PDF zoom
-const BUILD_TIMESTAMP = '20260908-pdf-zoom-draw-fix';
-const CACHE_NAME = `universae-v78.0-${BUILD_TIMESTAMP}`;
+// v79.0 - Partial PDF eraser
+const BUILD_TIMESTAMP = '20260908-partial-eraser';
+const CACHE_NAME = `universae-v79.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -73,7 +73,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v78.0 - PDF zoom draw fix...');
+  console.log('⚡ INSTALANDO Universae v79.0 - borrador parcial PDF...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -115,7 +115,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v78.0 ready offline');
+          console.log('✅ Instalación completada - v79.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -126,9 +126,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v78.0: Limpieza y notificación
+// ACTIVACIÓN v79.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v78.0...');
+  console.log('✨ ACTIVANDO Universae v79.0...');
 
   e.waitUntil(
     caches.keys()
@@ -149,12 +149,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v78.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v79.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v78.0',
-            message: 'Universae v78.0 activado - Pintado correcto con zoom'
+            version: 'v79.0',
+            message: 'Universae v79.0 activado - Borrador parcial en PDFs'
           });
         });
       })
