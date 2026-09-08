@@ -277,7 +277,6 @@
         touch-action: pan-x pan-y;
       }
       .pdf-pages-zoom {
-        transform-origin: top center;
         width: max-content;
         min-width: 100%;
         margin: 0 auto;
@@ -335,9 +334,11 @@
 
   function getPointerPoint(event, canvas) {
     const rect = canvas.getBoundingClientRect();
+    const x = rect.width ? (event.clientX - rect.left) / rect.width : 0;
+    const y = rect.height ? (event.clientY - rect.top) / rect.height : 0;
     return {
-      x: (event.clientX - rect.left) / rect.width,
-      y: (event.clientY - rect.top) / rect.height
+      x: Math.max(0, Math.min(1, x)),
+      y: Math.max(0, Math.min(1, y))
     };
   }
 
@@ -492,6 +493,24 @@
     }, { passive: false });
   }
 
+  function applyPageZoom(zoomSurface, zoom) {
+    zoomSurface.querySelectorAll('.pdf-page-wrap').forEach(wrap => {
+      const baseWidth = Number(wrap.dataset.baseWidth);
+      const baseHeight = Number(wrap.dataset.baseHeight);
+      if (!baseWidth || !baseHeight) return;
+
+      const width = Math.round(baseWidth * zoom);
+      const height = Math.round(baseHeight * zoom);
+      wrap.style.width = `${width}px`;
+      wrap.style.height = `${height}px`;
+
+      wrap.querySelectorAll('canvas').forEach(canvas => {
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+      });
+    });
+  }
+
   function attachDrawing(canvas, pageNumber, state, annotations, key) {
     const save = () => saveAnnotations(key, annotations);
 
@@ -614,9 +633,7 @@
       },
       setZoom: value => {
         state.zoom = clampZoom(value);
-        zoomSurface.style.zoom = String(state.zoom);
-        zoomSurface.style.transform = CSS.supports('zoom', '1.1') ? '' : `scale(${state.zoom})`;
-        zoomSurface.style.marginBottom = CSS.supports('zoom', '1.1') ? '' : `${Math.round((state.zoom - 1) * zoomSurface.offsetHeight)}px`;
+        applyPageZoom(zoomSurface, state.zoom);
         const resetButton = shell.querySelector('[data-action="zoom-reset"]');
         if (resetButton) resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
       },
@@ -649,8 +666,12 @@
 
         const wrap = document.createElement('div');
         wrap.className = 'pdf-page-wrap';
-        wrap.style.width = `${Math.floor(viewport.width)}px`;
-        wrap.style.height = `${Math.floor(viewport.height)}px`;
+        const pageWidth = Math.floor(viewport.width);
+        const pageHeight = Math.floor(viewport.height);
+        wrap.dataset.baseWidth = String(pageWidth);
+        wrap.dataset.baseHeight = String(pageHeight);
+        wrap.style.width = `${pageWidth}px`;
+        wrap.style.height = `${pageHeight}px`;
 
         const pdfCanvas = document.createElement('canvas');
         const drawCanvas = document.createElement('canvas');
@@ -659,8 +680,8 @@
         [pdfCanvas, drawCanvas].forEach(canvas => {
           canvas.width = Math.floor(viewport.width * ratio);
           canvas.height = Math.floor(viewport.height * ratio);
-          canvas.style.width = `${Math.floor(viewport.width)}px`;
-          canvas.style.height = `${Math.floor(viewport.height)}px`;
+          canvas.style.width = `${pageWidth}px`;
+          canvas.style.height = `${pageHeight}px`;
         });
 
         drawCanvas.className = 'pdf-draw-layer';
