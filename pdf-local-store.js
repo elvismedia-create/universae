@@ -3,6 +3,10 @@
   const DB_VERSION = 1;
   const STORE_NAME = 'pdfs';
   const MANIFEST_KEY = 'universae_local_pdf_manifest';
+  const ANNOTATIONS_PREFIX = 'universae_pdf_annotations:';
+  const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.mjs';
+  const PDFJS_WORKER_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.mjs';
+  let pdfjsPromise = null;
 
   const TOPIC_ALIASES = {
     pestana5b: ['domotica', 'domoticas', 'domotica'],
@@ -72,6 +76,23 @@
 
   function saveManifest(manifest) {
     localStorage.setItem(MANIFEST_KEY, JSON.stringify(manifest));
+  }
+
+  function annotationKey(key) {
+    return `${ANNOTATIONS_PREFIX}${key}`;
+  }
+
+  function loadAnnotations(key) {
+    try {
+      return JSON.parse(localStorage.getItem(annotationKey(key)) || '{}');
+    } catch (error) {
+      console.warn('No se pudieron leer las anotaciones del PDF:', error);
+      return {};
+    }
+  }
+
+  function saveAnnotations(key, annotations) {
+    localStorage.setItem(annotationKey(key), JSON.stringify(annotations));
   }
 
   function pdfKey(bid, idx) {
@@ -177,15 +198,354 @@
     `;
   }
 
+  function ensureViewerStyles() {
+    if (document.getElementById('pdf-local-viewer-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'pdf-local-viewer-styles';
+    style.textContent = `
+      .pdf-viewer-shell {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #111827;
+        color: white;
+        display: flex;
+        flex-direction: column;
+      }
+      .pdf-viewer-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        background: #0f172a;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        overflow-x: auto;
+        flex-shrink: 0;
+      }
+      .pdf-viewer-title {
+        font-weight: 800;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        max-width: 260px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: auto;
+      }
+      .pdf-tool-btn, .pdf-color-btn {
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.08);
+        color: white;
+        padding: 8px 10px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .pdf-tool-btn.active {
+        background: #2563eb;
+        border-color: #60a5fa;
+      }
+      .pdf-color-btn {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+      .pdf-color-btn.active {
+        outline: 3px solid white;
+      }
+      .pdf-viewer-pages {
+        overflow: auto;
+        flex: 1;
+        padding: 18px 10px 40px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .pdf-page-wrap {
+        position: relative;
+        margin: 0 auto 18px;
+        background: white;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+      }
+      .pdf-page-wrap canvas {
+        display: block;
+      }
+      .pdf-draw-layer {
+        position: absolute;
+        inset: 0;
+        touch-action: none;
+        cursor: crosshair;
+      }
+      .pdf-viewer-loading {
+        padding: 24px;
+        text-align: center;
+        color: rgba(255,255,255,0.8);
+        font-weight: 700;
+      }
+      @media (max-width: 640px) {
+        .pdf-viewer-title {
+          max-width: 145px;
+        }
+        .pdf-tool-btn {
+          padding: 8px;
+          font-size: 0.85rem;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function loadPdfJs() {
+    if (!pdfjsPromise) {
+      pdfjsPromise = import(PDFJS_URL).then(pdfjs => {
+        pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+        return pdfjs;
+      });
+    }
+    return pdfjsPromise;
+  }
+
+  function getPointerPoint(event, canvas) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - rect.left) / rect.width,
+      y: (event.clientY - rect.top) / rect.height
+    };
+  }
+
+  function drawStroke(ctx, stroke, width, height) {
+    if (!stroke.points || stroke.points.length < 2) return;
+
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.width;
+    ctx.beginPath();
+    stroke.points.forEach((point, index) => {
+      const x = point.x * width;
+      const y = point.y * height;
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function redrawAnnotations(canvas, strokes) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    strokes.forEach(stroke => drawStroke(ctx, stroke, canvas.width, canvas.height));
+  }
+
+  function pointNearStroke(point, stroke) {
+    const threshold = 0.025;
+    return (stroke.points || []).some(strokePoint => {
+      const dx = point.x - strokePoint.x;
+      const dy = point.y - strokePoint.y;
+      return Math.sqrt(dx * dx + dy * dy) <= threshold;
+    });
+  }
+
+  function createToolbar(info, state, actions) {
+    const toolbar = document.createElement('div');
+    toolbar.className = 'pdf-viewer-toolbar';
+    toolbar.innerHTML = `
+      <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
+      <button class="pdf-tool-btn active" data-tool="pen">Pintar</button>
+      <button class="pdf-tool-btn" data-tool="eraser">Borrar</button>
+      <button class="pdf-color-btn active" data-color="rgba(255,235,59,0.50)" style="background:#fde047;" title="Amarillo"></button>
+      <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde"></button>
+      <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul"></button>
+      <button class="pdf-color-btn" data-color="rgba(239,68,68,0.38)" style="background:#ef4444;" title="Rojo"></button>
+      <button class="pdf-tool-btn" data-action="clear">Limpiar página</button>
+      <button class="pdf-tool-btn" data-action="close">Cerrar</button>
+    `;
+
+    toolbar.querySelectorAll('[data-tool]').forEach(button => {
+      button.addEventListener('click', () => {
+        state.tool = button.dataset.tool;
+        toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+
+    toolbar.querySelectorAll('[data-color]').forEach(button => {
+      button.addEventListener('click', () => {
+        state.color = button.dataset.color;
+        state.tool = 'pen';
+        toolbar.querySelectorAll('[data-color]').forEach(btn => btn.classList.remove('active'));
+        toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
+        button.classList.add('active');
+      });
+    });
+
+    toolbar.querySelector('[data-action="clear"]').addEventListener('click', actions.clearCurrentPage);
+    toolbar.querySelector('[data-action="close"]').addEventListener('click', actions.close);
+    return toolbar;
+  }
+
+  function attachDrawing(canvas, pageNumber, state, annotations, key) {
+    const save = () => saveAnnotations(key, annotations);
+
+    let activeStroke = null;
+    let pointerId = null;
+
+    function ensurePage() {
+      if (!annotations[pageNumber]) annotations[pageNumber] = [];
+      return annotations[pageNumber];
+    }
+
+    canvas.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      pointerId = event.pointerId;
+      canvas.setPointerCapture(pointerId);
+      state.currentPage = pageNumber;
+
+      const point = getPointerPoint(event, canvas);
+      if (state.tool === 'eraser') {
+        annotations[pageNumber] = ensurePage().filter(stroke => !pointNearStroke(point, stroke));
+        redrawAnnotations(canvas, annotations[pageNumber]);
+        save();
+        return;
+      }
+
+      activeStroke = {
+        color: state.color,
+        width: state.width,
+        points: [point]
+      };
+      ensurePage().push(activeStroke);
+    });
+
+    canvas.addEventListener('pointermove', event => {
+      if (event.pointerId !== pointerId) return;
+      event.preventDefault();
+      const point = getPointerPoint(event, canvas);
+
+      if (state.tool === 'eraser') {
+        annotations[pageNumber] = ensurePage().filter(stroke => !pointNearStroke(point, stroke));
+        redrawAnnotations(canvas, annotations[pageNumber]);
+        save();
+        return;
+      }
+
+      if (!activeStroke) return;
+      activeStroke.points.push(point);
+      redrawAnnotations(canvas, annotations[pageNumber]);
+    });
+
+    function finish(event) {
+      if (event.pointerId !== pointerId) return;
+      if (activeStroke && activeStroke.points.length < 2) {
+        annotations[pageNumber] = ensurePage().filter(stroke => stroke !== activeStroke);
+      }
+      activeStroke = null;
+      pointerId = null;
+      save();
+    }
+
+    canvas.addEventListener('pointerup', finish);
+    canvas.addEventListener('pointercancel', finish);
+  }
+
+  async function openAnnotatedPdfViewer(key, blob, info) {
+    ensureViewerStyles();
+
+    const shell = document.createElement('div');
+    shell.className = 'pdf-viewer-shell';
+
+    const pagesContainer = document.createElement('div');
+    pagesContainer.className = 'pdf-viewer-pages';
+    pagesContainer.innerHTML = '<div class="pdf-viewer-loading">Cargando PDF...</div>';
+
+    const annotations = loadAnnotations(key);
+    const state = {
+      tool: 'pen',
+      color: 'rgba(255,235,59,0.50)',
+      width: 18,
+      currentPage: 1
+    };
+
+    const actions = {
+      close: () => shell.remove(),
+      clearCurrentPage: () => {
+        annotations[state.currentPage] = [];
+        saveAnnotations(key, annotations);
+        const canvas = shell.querySelector(`.pdf-draw-layer[data-page="${state.currentPage}"]`);
+        if (canvas) redrawAnnotations(canvas, []);
+      }
+    };
+
+    shell.appendChild(createToolbar(info, state, actions));
+    shell.appendChild(pagesContainer);
+    document.body.appendChild(shell);
+
+    try {
+      const pdfjs = await loadPdfJs();
+      const data = await blob.arrayBuffer();
+      const pdf = await pdfjs.getDocument({ data }).promise;
+      pagesContainer.innerHTML = '';
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        const page = await pdf.getPage(pageNumber);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const availableWidth = Math.min(pagesContainer.clientWidth - 20, 980);
+        const scale = Math.max(0.7, Math.min(1.7, availableWidth / baseViewport.width));
+        const viewport = page.getViewport({ scale });
+
+        const wrap = document.createElement('div');
+        wrap.className = 'pdf-page-wrap';
+        wrap.style.width = `${Math.floor(viewport.width)}px`;
+        wrap.style.height = `${Math.floor(viewport.height)}px`;
+
+        const pdfCanvas = document.createElement('canvas');
+        const drawCanvas = document.createElement('canvas');
+        const ratio = window.devicePixelRatio || 1;
+
+        [pdfCanvas, drawCanvas].forEach(canvas => {
+          canvas.width = Math.floor(viewport.width * ratio);
+          canvas.height = Math.floor(viewport.height * ratio);
+          canvas.style.width = `${Math.floor(viewport.width)}px`;
+          canvas.style.height = `${Math.floor(viewport.height)}px`;
+        });
+
+        drawCanvas.className = 'pdf-draw-layer';
+        drawCanvas.dataset.page = String(pageNumber);
+
+        const renderContext = {
+          canvasContext: pdfCanvas.getContext('2d'),
+          viewport
+        };
+        if (ratio !== 1) renderContext.transform = [ratio, 0, 0, ratio, 0, 0];
+        await page.render(renderContext).promise;
+
+        wrap.appendChild(pdfCanvas);
+        wrap.appendChild(drawCanvas);
+        pagesContainer.appendChild(wrap);
+
+        redrawAnnotations(drawCanvas, annotations[pageNumber] || []);
+        attachDrawing(drawCanvas, String(pageNumber), state, annotations, key);
+      }
+    } catch (error) {
+      console.error('Error abriendo visor PDF:', error);
+      pagesContainer.innerHTML = `
+        <div class="pdf-viewer-loading">
+          No se pudo abrir el visor editable. Revisa la conexión e inténtalo otra vez.
+        </div>
+      `;
+      if (typeof showToast === 'function') {
+        showToast('error', 'No se pudo abrir el PDF', 'El visor necesita cargar el motor PDF la primera vez.');
+      }
+    }
+  }
+
   async function openLocalPdf(bid, idx) {
     const key = pdfKey(bid, idx);
     const blob = await getBlob(key);
     if (!blob) return false;
 
-    const url = URL.createObjectURL(blob);
-    const opened = window.open(url, '_blank');
-    if (!opened) window.location.href = url;
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    const info = getLocalPdfInfo(bid, idx) || {};
+    await openAnnotatedPdfViewer(key, blob, info);
     return true;
   }
 
