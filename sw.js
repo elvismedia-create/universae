@@ -1,6 +1,6 @@
-// v82.0 - New Universae shield logo
-const BUILD_TIMESTAMP = '20260909-shield-logo';
-const CACHE_NAME = `universae-v82.0-${BUILD_TIMESTAMP}`;
+// v83.0 - Official answer option diagrams
+const BUILD_TIMESTAMP = '20260909-option-diagrams';
+const CACHE_NAME = `universae-v83.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -71,11 +71,15 @@ const ASSETS_TO_CACHE = [
   './img/universae-shield-logo.png',
   './img/icon-192.png',
   './img/icon-512.png',
+  './img/topologia-bus-linea.svg',
+  './img/topologia-arbol.svg',
+  './img/topologia-malla.svg',
+  './img/topologia-anillo.svg',
 ];
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v82.0 - nuevo logo Universae...');
+  console.log('⚡ INSTALANDO Universae v83.0 - imagenes en respuestas oficiales...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -117,7 +121,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v82.0 ready offline');
+          console.log('✅ Instalación completada - v83.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -128,9 +132,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v82.0: Limpieza y notificación
+// ACTIVACIÓN v83.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v82.0...');
+  console.log('✨ ACTIVANDO Universae v83.0...');
 
   e.waitUntil(
     caches.keys()
@@ -151,12 +155,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v82.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v83.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v82.0',
-            message: 'Universae v82.0 activado - Nuevo logo'
+            version: 'v83.0',
+            message: 'Universae v83.0 activado - Imagenes en respuestas oficiales'
           });
         });
       })

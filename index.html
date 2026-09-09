@@ -402,6 +402,27 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
   position: relative;
   overflow: hidden;
 }
+.opcion-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+.opcion-texto {
+  line-height: 1.35;
+}
+.opcion-img {
+  width: min(100%, 220px);
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid rgba(15,23,42,0.08);
+  padding: 6px;
+}
 
 /* Hover ELIMINADO v67.24 - mejor sin hover que con bug */
 
@@ -493,6 +514,7 @@ button { -webkit-appearance: none; appearance: none; border: none; cursor: point
 
 @media (max-width: 700px) { 
   #opciones-grid { grid-template-columns: 1fr; } 
+  .opcion-img { max-height: 105px; }
   .asig-card { flex-direction: column; align-items: flex-start; gap: 15px; } 
   .asig-info { padding-right: 0; width: 100%; } 
   button { width: 100%; } 
@@ -835,7 +857,7 @@ svg, svg * {
     <div style="display:flex; align-items:center; gap:16px;">
       <img src="img/universae-shield-logo.png?v=20260909090000" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0; object-fit:contain;">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v71.9</span></h1>
+        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v72.0</span></h1>
         <p class="subtitle" style="margin:4px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
@@ -952,7 +974,7 @@ svg, svg * {
 <script src="data-ingles-professional-u6.js?v=20260427210000"></script>
 <!-- DATOS TRIMESTRE 3 -->
 <script src="data-t3-domot-ica.js?v=20260509000000"></script>
-<script src="data-t3-domotica.js?v=20260909084500"></script>
+<script src="data-t3-domotica.js?v=20260909092000"></script>
 <script src="data-t3-distribución.js?v=20260509000000"></script>
 <script src="data-t3-distribucion-oficial.js?v=20260908120339"></script>
 <script src="data-t3-infraestructura-telecom.js?v=20260509000000"></script>
@@ -979,7 +1001,7 @@ svg, svg * {
 <script src="caida-tension.js"></script>
 <script src="simbolo-master.js"></script>
 <!-- MOTOR PRINCIPAL -->
-<script src="motor.js?v=20260908120743"></script>
+<script src="motor.js?v=20260909092000"></script>
 
 <!-- Auto-actualización NUCLEAR v67.24 -->
 <script>
@@ -1840,6 +1862,14 @@ let academiaPreguntasJuego = [];
 let academiaRespuestas = {};
 let academiaTitulo = "";
 
+function renderAcademiaOpcionContenido(p, op) {
+  const imagen = p.opcionImagenes && p.opcionImagenes[op];
+  return `
+    <span class="academia-texto-op">${op}</span>
+    ${imagen ? `<img class="academia-opcion-img" src="${imagen}" alt="${op}" loading="lazy" onerror="this.style.display='none'">` : ''}
+  `;
+}
+
 function iniciarModoAcademia(data, n, titulo) {
   academiaPreguntasJuego = [...data].slice(0, n).map(p => ({
     ...p,
@@ -1878,7 +1908,7 @@ function renderAcademia() {
             <label class="academia-opcion" id="academia-opcion-${i}-${j}">
               <input type="radio" name="academia-q${i}" value="${j}" onchange="academiaSeleccionar(${i}, ${j}, this)">
               <span class="academia-letra">${String.fromCharCode(65+j)}.</span>
-              <span class="academia-texto-op">${op}</span>
+              <span class="academia-opcion-contenido">${renderAcademiaOpcionContenido(p, op)}</span>
             </label>
           `).join('')}
         </div>
@@ -2009,7 +2039,7 @@ function terminarAcademiaForzado() {
             else if (esElegida && !acerto) claseOp += " academia-op-incorrecta";
             return `<div class="${claseOp}">
               <span class="academia-letra">${String.fromCharCode(65+j)}.</span>
-              <span class="academia-texto-op">${op}</span>
+              <span class="academia-opcion-contenido">${renderAcademiaOpcionContenido(p, op)}</span>
               ${esCorrecta ? '<span style="margin-left:6px;">✔</span>' : ''}
               ${esElegida && !acerto ? '<span style="margin-left:6px;">✘</span>' : ''}
             </div>`;
@@ -2111,6 +2141,22 @@ function terminarAcademiaForzado() {
     .academia-imagen { margin: 10px 0 14px 0; text-align: center; }
     .academia-imagen img { max-width: 100%; max-height: 260px; border-radius: 10px; border: 1px solid var(--border); object-fit: contain; }
     .academia-letra { font-weight: 700; color: var(--text-light); min-width: 20px; }
+    .academia-opcion-contenido {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+    .academia-opcion-img {
+      width: min(100%, 240px);
+      max-height: 115px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid rgba(15,23,42,0.08);
+      padding: 6px;
+    }
     .academia-footer {
       position: sticky; bottom: 0;
       background: var(--card);

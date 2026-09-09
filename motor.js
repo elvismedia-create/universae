@@ -466,7 +466,7 @@ function renderPregunta() {
     ${visual}
     <div class="pregunta-box">${p.texto}</div>
     <div id="opciones-grid">
-      ${p.opciones.map((op, i) => `<div class="opcion ${respuestasUsuario[indice] === i ? 'seleccionada' : ''}" onclick="clickOpcion(${i})">${op}</div>`).join("")}
+      ${p.opciones.map((op, i) => renderOpcionHtml(p, op, i)).join("")}
     </div>
     <div class="botones-navegacion">
       <button class="btn-outline" onclick="anterior()" ${indice===0?'disabled':''}>⬅ Atrás</button>
@@ -485,6 +485,19 @@ function renderPregunta() {
       };
     }
   }, 0);
+}
+
+function renderOpcionHtml(p, op, i) {
+  const imagen = p.opcionImagenes && p.opcionImagenes[op];
+  const imagenHtml = imagen ? `<img class="opcion-img" src="${imagen}" alt="${op}" loading="lazy">` : "";
+  return `
+    <div class="opcion ${respuestasUsuario[indice] === i ? 'seleccionada' : ''}" onclick="clickOpcion(${i})">
+      <div class="opcion-contenido">
+        <span class="opcion-texto">${op}</span>
+        ${imagenHtml}
+      </div>
+    </div>
+  `;
 }
 
 /* =========================================================

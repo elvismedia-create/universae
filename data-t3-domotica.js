@@ -40,6 +40,12 @@ const TEMA_DOMOTICA_U1_DATA = [
       "En malla.",
       "En anillo."
     ],
+    opcionImagenes: {
+      "En bus o línea.": "img/topologia-bus-linea.svg",
+      "En árbol.": "img/topologia-arbol.svg",
+      "En malla.": "img/topologia-malla.svg",
+      "En anillo.": "img/topologia-anillo.svg"
+    },
     correctaTexto: "En malla.",
     explicacion: "La topología en malla ofrece mayor robustez porque los dispositivos pueden comunicarse por varios caminos."
   },
