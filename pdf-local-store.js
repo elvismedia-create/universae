@@ -237,9 +237,16 @@
         border-radius: 8px;
         background: rgba(255,255,255,0.08);
         color: white;
-        padding: 8px 10px;
+        padding: 0;
         font-weight: 700;
         white-space: nowrap;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
       }
       .pdf-tool-btn.active {
         background: #2563eb;
@@ -250,11 +257,9 @@
         border-color: #86efac;
       }
       .pdf-size-btn {
+        width: 34px;
         min-width: 34px;
-        height: 32px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        height: 34px;
       }
       .pdf-size-dot {
         display: block;
@@ -263,8 +268,8 @@
       }
       .pdf-color-btn {
         width: 32px;
+        min-width: 32px;
         height: 32px;
-        padding: 0;
       }
       .pdf-color-btn.active {
         outline: 3px solid white;
@@ -293,7 +298,7 @@
       .pdf-draw-layer {
         position: absolute;
         inset: 0;
-        touch-action: none;
+        touch-action: pan-y;
         cursor: crosshair;
       }
       .pdf-draw-layer[data-tool="pan"] {
@@ -301,6 +306,7 @@
         cursor: grab;
       }
       .pdf-draw-layer[data-tool="eraser"] {
+        touch-action: none;
         cursor: cell;
       }
       .pdf-viewer-loading {
@@ -314,7 +320,6 @@
           max-width: 145px;
         }
         .pdf-tool-btn {
-          padding: 8px;
           font-size: 0.85rem;
         }
       }
@@ -461,12 +466,12 @@
     toolbar.className = 'pdf-viewer-toolbar';
     toolbar.innerHTML = `
       <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
-      <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF">✋ Mano</button>
-      <button class="pdf-tool-btn" data-tool="pen" title="Pintar libre">✏️ Lápiz</button>
-      <button class="pdf-tool-btn" data-tool="eraser">Borrar</button>
-      <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Activar o quitar ayuda para subrayado recto">📏 Ayuda recta: OFF</button>
+      <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF" aria-label="Mano">✋</button>
+      <button class="pdf-tool-btn" data-tool="pen" title="Subrayar con lápiz" aria-label="Lápiz">✏️</button>
+      <button class="pdf-tool-btn" data-tool="eraser" title="Borrar" aria-label="Borrar">⌫</button>
+      <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Ayuda de subrayado recto" aria-label="Ayuda recta">📏</button>
       <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar">−</button>
-      <button class="pdf-tool-btn" data-action="zoom-reset" title="Restablecer zoom">100%</button>
+      <button class="pdf-tool-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">⟳</button>
       <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar">+</button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
@@ -475,8 +480,8 @@
       <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde"></button>
       <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul"></button>
       <button class="pdf-color-btn" data-color="rgba(239,68,68,0.38)" style="background:#ef4444;" title="Rojo"></button>
-      <button class="pdf-tool-btn" data-action="clear">Limpiar página</button>
-      <button class="pdf-tool-btn" data-action="close">Cerrar</button>
+      <button class="pdf-tool-btn" data-action="clear" title="Limpiar página" aria-label="Limpiar página">🧹</button>
+      <button class="pdf-tool-btn" data-action="close" title="Cerrar" aria-label="Cerrar">×</button>
     `;
 
     toolbar.querySelectorAll('[data-tool]').forEach(button => {
@@ -511,7 +516,7 @@
     straightButton.addEventListener('click', () => {
       state.straightAssist = !state.straightAssist;
       straightButton.classList.toggle('active', state.straightAssist);
-      straightButton.textContent = state.straightAssist ? '📏 Ayuda recta: ON' : '📏 Ayuda recta: OFF';
+      straightButton.title = state.straightAssist ? 'Ayuda recta activada' : 'Ayuda de subrayado recto';
       if (state.straightAssist && state.tool !== 'pen') {
         state.tool = 'pen';
         toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
@@ -599,20 +604,40 @@
     let activeStroke = null;
     let pointerId = null;
     let lineStart = null;
+    let pointerStart = null;
 
     function ensurePage() {
       if (!annotations[pageNumber]) annotations[pageNumber] = [];
       return annotations[pageNumber];
     }
 
+    function discardDraftStroke() {
+      if (activeStroke) {
+        annotations[pageNumber] = ensurePage().filter(stroke => stroke !== activeStroke);
+      }
+      activeStroke = null;
+      lineStart = null;
+      pointerId = null;
+      pointerStart = null;
+    }
+
+    function isVerticalScrollIntent(start, point, canvas) {
+      const dx = Math.abs((point.x - start.x) * canvas.width);
+      const dy = Math.abs((point.y - start.y) * canvas.height);
+      return dy > 14 && dy > dx * 1.25;
+    }
+
     canvas.addEventListener('pointerdown', event => {
       if (state.tool === 'pan') return;
-      event.preventDefault();
       pointerId = event.pointerId;
-      canvas.setPointerCapture(pointerId);
+      if (state.tool === 'eraser' || event.pointerType !== 'touch') {
+        event.preventDefault();
+        canvas.setPointerCapture(pointerId);
+      }
       state.currentPage = pageNumber;
 
       const point = getPointerPoint(event, canvas);
+      pointerStart = point;
       if (state.tool === 'eraser') {
         annotations[pageNumber] = erasePointFromStrokes(point, ensurePage(), canvas, state);
         redrawAnnotations(canvas, annotations[pageNumber]);
@@ -635,8 +660,14 @@
 
     canvas.addEventListener('pointermove', event => {
       if (event.pointerId !== pointerId) return;
-      event.preventDefault();
       const point = getPointerPoint(event, canvas);
+
+      if (state.tool === 'pen' && event.pointerType === 'touch' && pointerStart && isVerticalScrollIntent(pointerStart, point, canvas)) {
+        discardDraftStroke();
+        return;
+      }
+
+      event.preventDefault();
 
       if (state.tool === 'eraser') {
         annotations[pageNumber] = erasePointFromStrokes(point, ensurePage(), canvas, state);
@@ -677,6 +708,7 @@
       }
       activeStroke = null;
       pointerId = null;
+      pointerStart = null;
       save();
     }
 
@@ -737,7 +769,7 @@
         pagesContainer.scrollTop = Math.max(0, scrollAnchorY * zoomRatio - anchorY);
 
         const resetButton = shell.querySelector('[data-action="zoom-reset"]');
-        if (resetButton) resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
+        if (resetButton) resetButton.title = `Restablecer zoom (${Math.round(state.zoom * 100)}%)`;
       },
       clearCurrentPage: () => {
         annotations[state.currentPage] = [];
