@@ -1,6 +1,6 @@
-// v86.0 - PDF editor icon toolbar and vertical scroll
-const BUILD_TIMESTAMP = '20260909-pdf-icon-scroll';
-const CACHE_NAME = `universae-v86.0-${BUILD_TIMESTAMP}`;
+// v87.0 - PDF editor eraser icon and zoom percent
+const BUILD_TIMESTAMP = '20260909-pdf-eraser-zoom-percent';
+const CACHE_NAME = `universae-v87.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -80,7 +80,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v86.0 - editor PDF con iconos y scroll vertical...');
+  console.log('⚡ INSTALANDO Universae v87.0 - goma y porcentaje de zoom...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -122,7 +122,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v86.0 ready offline');
+          console.log('✅ Instalación completada - v87.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -133,9 +133,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v86.0: Limpieza y notificación
+// ACTIVACIÓN v87.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v86.0...');
+  console.log('✨ ACTIVANDO Universae v87.0...');
 
   e.waitUntil(
     caches.keys()
@@ -156,12 +156,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v86.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v87.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v86.0',
-            message: 'Universae v86.0 activado - Editor PDF con iconos y scroll vertical'
+            version: 'v87.0',
+            message: 'Universae v87.0 activado - Goma y porcentaje de zoom'
           });
         });
       })

@@ -256,6 +256,16 @@
         background: #16a34a;
         border-color: #86efac;
       }
+      .pdf-zoom-btn {
+        width: 54px;
+        min-width: 54px;
+        font-size: 0.82rem;
+      }
+      .pdf-eraser-icon {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
       .pdf-size-btn {
         width: 34px;
         min-width: 34px;
@@ -468,10 +478,16 @@
       <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
       <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF" aria-label="Mano">✋</button>
       <button class="pdf-tool-btn" data-tool="pen" title="Subrayar con lápiz" aria-label="Lápiz">✏️</button>
-      <button class="pdf-tool-btn" data-tool="eraser" title="Borrar" aria-label="Borrar">⌫</button>
+      <button class="pdf-tool-btn" data-tool="eraser" title="Borrar" aria-label="Borrar">
+        <svg class="pdf-eraser-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 16.5 13.5 7a2.8 2.8 0 0 1 4 0l1.5 1.5a2.8 2.8 0 0 1 0 4L11.5 20H5.8L4 18.2a1.2 1.2 0 0 1 0-1.7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="m10 10 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 20h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Ayuda de subrayado recto" aria-label="Ayuda recta">📏</button>
       <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar">−</button>
-      <button class="pdf-tool-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">⟳</button>
+      <button class="pdf-tool-btn pdf-zoom-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">100%</button>
       <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar">+</button>
       <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
       <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
@@ -769,7 +785,10 @@
         pagesContainer.scrollTop = Math.max(0, scrollAnchorY * zoomRatio - anchorY);
 
         const resetButton = shell.querySelector('[data-action="zoom-reset"]');
-        if (resetButton) resetButton.title = `Restablecer zoom (${Math.round(state.zoom * 100)}%)`;
+        if (resetButton) {
+          resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
+          resetButton.title = `Restablecer zoom (${Math.round(state.zoom * 100)}%)`;
+        }
       },
       clearCurrentPage: () => {
         annotations[state.currentPage] = [];
