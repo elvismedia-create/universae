@@ -1,6 +1,6 @@
-// v83.0 - Official answer option diagrams
-const BUILD_TIMESTAMP = '20260909-option-diagrams';
-const CACHE_NAME = `universae-v83.0-${BUILD_TIMESTAMP}`;
+// v84.0 - Official PDF option diagrams
+const BUILD_TIMESTAMP = '20260909-pdf-option-diagrams';
+const CACHE_NAME = `universae-v84.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -71,15 +71,15 @@ const ASSETS_TO_CACHE = [
   './img/universae-shield-logo.png',
   './img/icon-192.png',
   './img/icon-512.png',
-  './img/topologia-bus-linea.svg',
-  './img/topologia-arbol.svg',
-  './img/topologia-malla.svg',
-  './img/topologia-anillo.svg',
+  './img/t3-domotica-u1-topologia-bus-linea.png',
+  './img/t3-domotica-u1-topologia-arbol.png',
+  './img/t3-domotica-u1-topologia-malla.png',
+  './img/t3-domotica-u1-topologia-anillo.png',
 ];
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v83.0 - imagenes en respuestas oficiales...');
+  console.log('⚡ INSTALANDO Universae v84.0 - imagenes oficiales desde PDF...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -121,7 +121,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v83.0 ready offline');
+          console.log('✅ Instalación completada - v84.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -132,9 +132,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v83.0: Limpieza y notificación
+// ACTIVACIÓN v84.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v83.0...');
+  console.log('✨ ACTIVANDO Universae v84.0...');
 
   e.waitUntil(
     caches.keys()
@@ -155,12 +155,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v83.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v84.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v83.0',
-            message: 'Universae v83.0 activado - Imagenes en respuestas oficiales'
+            version: 'v84.0',
+            message: 'Universae v84.0 activado - Imagenes oficiales desde PDF'
           });
         });
       })
