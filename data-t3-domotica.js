@@ -1,9 +1,140 @@
 // Instalaciones Domóticas - Estructura tipo T2 (por unidades + simulacro)
-// A falta de preguntas oficiales reales de la plataforma, se usan preguntas
-// elaboradas a partir de los PDFs U1-U8 del temario, marcadas como TEST OFICIAL.
-// Cada unidad cuenta con un banco de 20 preguntas; el simulacro toma una selección de 40 (5 por unidad).
+// Las preguntas oficiales reales se colocan al inicio de cada unidad.
+// Después se mantienen las preguntas de apoyo elaboradas desde el temario para mezclar y reforzar.
 
 const TEMA_DOMOTICA_U1_DATA = [
+  // ========== TEST OFICIAL REAL U1 - 09/09/2026 (10 preguntas) ==========
+  {
+    id: 500001,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Cómo está configurado un sistema de estrella? (TEST OFICIAL)",
+    opciones: [
+      "Conexión directa de los dispositivos con el nodo central.",
+      "Cada dispositivo se conecta a un nodo de manera directa.",
+      "Disposición jerárquica donde el primer elemento es el nodo y de él cuelgan el resto de los dispositivos.",
+      "Ninguna es correcta."
+    ],
+    correctaTexto: "Cada dispositivo se conecta a un nodo de manera directa.",
+    explicacion: "En una topología en estrella, cada dispositivo se conecta directamente a un nodo central."
+  },
+  {
+    id: 500002,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Cuál es el sistema domótico más extendido? (TEST OFICIAL)",
+    opciones: [
+      "KNX",
+      "Insteon",
+      "Amazon Alexa",
+      "X10"
+    ],
+    correctaTexto: "Amazon Alexa",
+    explicacion: "Según el test oficial, Amazon Alexa es el sistema domótico más extendido."
+  },
+  {
+    id: 500003,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Cuál es la mejor topología de red? (TEST OFICIAL)",
+    opciones: [
+      "En bus o línea.",
+      "En árbol.",
+      "En malla.",
+      "En anillo."
+    ],
+    correctaTexto: "En malla.",
+    explicacion: "La topología en malla ofrece mayor robustez porque los dispositivos pueden comunicarse por varios caminos."
+  },
+  {
+    id: 500004,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Cuáles de estas acciones no puede controlar la domótica? (TEST OFICIAL)",
+    opciones: [
+      "Apertura y cierre de ventanas.",
+      "Encendido y apagado de velas.",
+      "Encendido y apagado de la televisión.",
+      "Apertura y cierre de puertas."
+    ],
+    correctaTexto: "Encendido y apagado de velas.",
+    explicacion: "La domótica puede automatizar dispositivos eléctricos o motorizados, pero no el encendido y apagado seguro de velas."
+  },
+  {
+    id: 500005,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Cuáles de estos servicios pertenecen todos a los servicios de seguridad? (TEST OFICIAL)",
+    opciones: [
+      "Alarmas de incendio y humo, alarmas de seguridad, gestión de agua.",
+      "Alarmas de intrusión, control de iluminación, control de consumos.",
+      "Alarmas de intrusión, control de acceso y videovigilancia, alarma de gas.",
+      "Ninguno de los anteriores."
+    ],
+    correctaTexto: "Alarmas de intrusión, control de acceso y videovigilancia, alarma de gas.",
+    explicacion: "Los servicios de seguridad incluyen intrusión, control de acceso, videovigilancia y alarmas técnicas como gas."
+  },
+  {
+    id: 500006,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Es caro domotizar un hogar? (TEST OFICIAL)",
+    opciones: [
+      "En absoluto, de hecho, abarata los costes.",
+      "Es muy caro, solo pueden permitirlo los grandes centros.",
+      "No hace falta gastar dinero, todo lo hace el móvil.",
+      "Si bien requiere de una inversión importante, cualquier persona de clase media se puede permitir un hogar inteligente."
+    ],
+    correctaTexto: "Si bien requiere de una inversión importante, cualquier persona de clase media se puede permitir un hogar inteligente.",
+    explicacion: "Domotizar requiere inversión, pero el test oficial indica que puede estar al alcance de una vivienda de clase media."
+  },
+  {
+    id: 500007,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Es posible controlar los servicios domóticos desde fuera de la casa? (TEST OFICIAL)",
+    opciones: [
+      "No, deben realizarse desde la consola de control.",
+      "Sí, sin necesidad de ninguna aplicación.",
+      "No, solo se pueden temporizar los dispositivos.",
+      "Sí, utilizando las aplicaciones específicas."
+    ],
+    correctaTexto: "Sí, utilizando las aplicaciones específicas.",
+    explicacion: "La telegestión permite controlar servicios domóticos desde fuera de la vivienda mediante aplicaciones específicas."
+  },
+  {
+    id: 500008,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Qué dispositivos forman parte de las alarmas de intrusión? (TEST OFICIAL)",
+    opciones: [
+      "Detectores de presencia.",
+      "Sirena interior.",
+      "Sistema conectable con central de alarmas.",
+      "Todas las anteriores."
+    ],
+    correctaTexto: "Todas las anteriores.",
+    explicacion: "Una alarma de intrusión puede incluir detectores de presencia, sirenas y conexión con central de alarmas."
+  },
+  {
+    id: 500009,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "¿Qué es la inmótica? (TEST OFICIAL)",
+    opciones: [
+      "La aplicación de la domótica en lugares o edificios residenciales.",
+      "La aplicación de la domótica en el móvil.",
+      "La aplicación de la domótica en lugares o edificios no residenciales.",
+      "Un protocolo de seguridad."
+    ],
+    correctaTexto: "La aplicación de la domótica en lugares o edificios no residenciales.",
+    explicacion: "La inmótica aplica los sistemas de automatización y gestión técnica a edificios no residenciales."
+  },
+  {
+    id: 500010,
+    tema: "U1: La domótica (TEST OFICIAL)",
+    texto: "Según AENOR, ¿cuántos puntos domóticos se han de tener para tener el nivel 2? (TEST OFICIAL)",
+    opciones: [
+      "La suma de puntos domóticos ha de ser al menos de 30 y cubrir 6 aplicaciones.",
+      "La suma de puntos domóticos ha de ser al menos de 45 y cubrir 6 aplicaciones.",
+      "Solo hay que tener 4 aplicaciones.",
+      "La suma de puntos domóticos ha de ser al menos de 13 y cubrir 3 aplicaciones."
+    ],
+    correctaTexto: "La suma de puntos domóticos ha de ser al menos de 30 y cubrir 6 aplicaciones.",
+    explicacion: "Para el nivel 2 de AENOR, la suma debe ser al menos de 30 puntos domóticos y cubrir 6 aplicaciones."
+  },
+
   { id: 500101, tema: "U1: La Domótica (TEST OFICIAL)", texto: "¿Cuál es la definición de domótica?", opciones: ["Conjunto de sistemas que automatizan las diferentes instalaciones de una vivienda", "Solo la instalación de luces inteligentes", "El control manual de electrodomésticos", "La reparación de sistemas eléctricos"], correctaTexto: "Conjunto de sistemas que automatizan las diferentes instalaciones de una vivienda", explicacion: "La domótica es el conjunto de sistemas que automatizan las diferentes instalaciones de una vivienda, proporcionando confort y eficiencia energética." },
   { id: 500102, tema: "U1: La Domótica (TEST OFICIAL)", texto: "¿Cuál es un beneficio principal de la domótica?", opciones: ["Automatización de tareas repetitivas y ahorro energético", "Aumentar el consumo de energía", "Complicar el uso de la vivienda", "Reducir la seguridad del hogar"], correctaTexto: "Automatización de tareas repetitivas y ahorro energético", explicacion: "Entre los principales beneficios de la domótica están la comodidad, seguridad, ahorro energético y facilidad de comunicaciones." },
   { id: 500103, tema: "U1: La Domótica (TEST OFICIAL)", texto: "¿Cuáles son las principales áreas de control en un sistema domótico?", opciones: ["Seguridad, eficiencia energética, control del entorno, ocio y comunicaciones", "Solo iluminación", "Solo climatización", "Solo vigilancia"], correctaTexto: "Seguridad, eficiencia energética, control del entorno, ocio y comunicaciones", explicacion: "Las áreas de actuación de la domótica incluyen seguridad, eficiencia energética, control del entorno, ocio/entretenimiento y comunicaciones." },

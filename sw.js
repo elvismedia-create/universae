@@ -1,6 +1,6 @@
-// v80.0 - Pinch zoom follows fingers
-const BUILD_TIMESTAMP = '20260908-pinch-zoom-anchor';
-const CACHE_NAME = `universae-v80.0-${BUILD_TIMESTAMP}`;
+// v81.0 - Official Domotica U1 test
+const BUILD_TIMESTAMP = '20260909-domotica-u1-oficial';
+const CACHE_NAME = `universae-v81.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -73,7 +73,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v80.0 - zoom anclado a los dedos...');
+  console.log('⚡ INSTALANDO Universae v81.0 - test oficial Domótica U1...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -115,7 +115,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v80.0 ready offline');
+          console.log('✅ Instalación completada - v81.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -126,9 +126,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v80.0: Limpieza y notificación
+// ACTIVACIÓN v81.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v80.0...');
+  console.log('✨ ACTIVANDO Universae v81.0...');
 
   e.waitUntil(
     caches.keys()
@@ -149,12 +149,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v80.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v81.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v80.0',
-            message: 'Universae v80.0 activado - Zoom centrado en los dedos'
+            version: 'v81.0',
+            message: 'Universae v81.0 activado - Test oficial Domótica U1'
           });
         });
       })
