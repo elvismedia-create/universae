@@ -1,6 +1,6 @@
-// v84.0 - Official PDF option diagrams
-const BUILD_TIMESTAMP = '20260909-pdf-option-diagrams';
-const CACHE_NAME = `universae-v84.0-${BUILD_TIMESTAMP}`;
+// v85.0 - Official Domotica U1 images
+const BUILD_TIMESTAMP = '20260909-domotica-u1-images';
+const CACHE_NAME = `universae-v85.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -72,6 +72,7 @@ const ASSETS_TO_CACHE = [
   './img/icon-192.png',
   './img/icon-512.png',
   './img/t3-domotica-u1-topologia-bus-linea.png',
+  './img/t3-domotica-u1-topologia-estrella.png',
   './img/t3-domotica-u1-topologia-arbol.png',
   './img/t3-domotica-u1-topologia-malla.png',
   './img/t3-domotica-u1-topologia-anillo.png',
@@ -79,7 +80,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v84.0 - imagenes oficiales desde PDF...');
+  console.log('⚡ INSTALANDO Universae v85.0 - imagenes oficiales Domótica U1...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -121,7 +122,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v84.0 ready offline');
+          console.log('✅ Instalación completada - v85.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -132,9 +133,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v84.0: Limpieza y notificación
+// ACTIVACIÓN v85.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v84.0...');
+  console.log('✨ ACTIVANDO Universae v85.0...');
 
   e.waitUntil(
     caches.keys()
@@ -155,12 +156,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v84.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v85.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v84.0',
-            message: 'Universae v84.0 activado - Imagenes oficiales desde PDF'
+            version: 'v85.0',
+            message: 'Universae v85.0 activado - Imagenes oficiales Domotica U1'
           });
         });
       })

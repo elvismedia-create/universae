@@ -14,6 +14,7 @@ const TEMA_DOMOTICA_U1_DATA = [
       "Disposición jerárquica donde el primer elemento es el nodo y de él cuelgan el resto de los dispositivos.",
       "Ninguna es correcta."
     ],
+    imagen: "img/t3-domotica-u1-topologia-estrella.png",
     correctaTexto: "Cada dispositivo se conecta a un nodo de manera directa.",
     explicacion: "En una topología en estrella, cada dispositivo se conecta directamente a un nodo central."
   },
