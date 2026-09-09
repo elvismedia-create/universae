@@ -1,6 +1,6 @@
-// v81.0 - Official Domotica U1 test
-const BUILD_TIMESTAMP = '20260909-domotica-u1-oficial';
-const CACHE_NAME = `universae-v81.0-${BUILD_TIMESTAMP}`;
+// v82.0 - New Universae shield logo
+const BUILD_TIMESTAMP = '20260909-shield-logo';
+const CACHE_NAME = `universae-v82.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -68,12 +68,14 @@ const ASSETS_TO_CACHE = [
   './fotometria.js',
   './caida-tension.js',
   './manifest.json',
-  './img/universae-logo.svg',
+  './img/universae-shield-logo.png',
+  './img/icon-192.png',
+  './img/icon-512.png',
 ];
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v81.0 - test oficial Domótica U1...');
+  console.log('⚡ INSTALANDO Universae v82.0 - nuevo logo Universae...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -115,7 +117,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v81.0 ready offline');
+          console.log('✅ Instalación completada - v82.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -126,9 +128,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v81.0: Limpieza y notificación
+// ACTIVACIÓN v82.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v81.0...');
+  console.log('✨ ACTIVANDO Universae v82.0...');
 
   e.waitUntil(
     caches.keys()
@@ -149,12 +151,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v81.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v82.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v81.0',
-            message: 'Universae v81.0 activado - Test oficial Domótica U1'
+            version: 'v82.0',
+            message: 'Universae v82.0 activado - Nuevo logo'
           });
         });
       })
