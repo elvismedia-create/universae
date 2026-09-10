@@ -1,6 +1,6 @@
-// v88.0 - PWA install icon and name
-const BUILD_TIMESTAMP = '20260910-pwa-icon-name';
-const CACHE_NAME = `universae-v88.0-${BUILD_TIMESTAMP}`;
+// v89.0 - Grado Medio header branding
+const BUILD_TIMESTAMP = '20260910-grado-medio-header';
+const CACHE_NAME = `universae-v89.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -80,7 +80,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v88.0 - icono y nombre de app instalable...');
+  console.log('⚡ INSTALANDO Universae v89.0 - cabecera Grado Medio...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -122,7 +122,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v88.0 ready offline');
+          console.log('✅ Instalación completada - v89.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -133,9 +133,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v88.0: Limpieza y notificación
+// ACTIVACIÓN v89.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v88.0...');
+  console.log('✨ ACTIVANDO Universae v89.0...');
 
   e.waitUntil(
     caches.keys()
@@ -156,12 +156,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v88.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v89.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v88.0',
-            message: 'Universae v88.0 activado - Icono y nombre instalable'
+            version: 'v89.0',
+            message: 'Universae v89.0 activado - Cabecera Grado Medio'
           });
         });
       })
