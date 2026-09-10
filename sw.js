@@ -1,6 +1,6 @@
-// v89.0 - Grado Medio header branding
-const BUILD_TIMESTAMP = '20260910-grado-medio-header';
-const CACHE_NAME = `universae-v89.0-${BUILD_TIMESTAMP}`;
+// v90.0 - PDFs T3 servidos desde el proyecto
+const BUILD_TIMESTAMP = '20260910-t3-project-pdfs';
+const CACHE_NAME = `universae-v90.0-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -47,6 +47,7 @@ const DATA_ASSETS = [
   './data-t3-distribución.js',
   './data-t3-infraestructura-telecom.js',
   './data-t3-maquinas-electricas.js',
+  './data-t3-pdfs.js',
   './data-t3-prevencion-riesgos-laborales.js',
   './data-t3-centros-transformacion.js',
   // TEMAS ESTUDIO
@@ -80,7 +81,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v89.0 - cabecera Grado Medio...');
+  console.log('⚡ INSTALANDO Universae v90.0 - PDFs T3 desde proyecto...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -122,7 +123,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v89.0 ready offline');
+          console.log('✅ Instalación completada - v90.0 ready offline');
           return self.skipWaiting();
         });
       })
@@ -133,9 +134,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v89.0: Limpieza y notificación
+// ACTIVACIÓN v90.0: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v89.0...');
+  console.log('✨ ACTIVANDO Universae v90.0...');
 
   e.waitUntil(
     caches.keys()
@@ -156,12 +157,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v89.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v90.0 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v89.0',
-            message: 'Universae v89.0 activado - Cabecera Grado Medio'
+            version: 'v90.0',
+            message: 'Universae v90.0 activado - PDFs T3 desde proyecto'
           });
         });
       })
