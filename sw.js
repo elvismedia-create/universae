@@ -1,6 +1,6 @@
-// v90.0 - PDFs T3 servidos desde el proyecto
-const BUILD_TIMESTAMP = '20260910-t3-project-pdfs';
-const CACHE_NAME = `universae-v90.0-${BUILD_TIMESTAMP}`;
+// v90.1 - Test oficial Domotica U2
+const BUILD_TIMESTAMP = '20260910-domotica-u2-oficial';
+const CACHE_NAME = `universae-v90.1-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -81,7 +81,7 @@ const ASSETS_TO_CACHE = [
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v90.0 - PDFs T3 desde proyecto...');
+  console.log('⚡ INSTALANDO Universae v90.1 - test oficial Domotica U2...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
@@ -123,7 +123,7 @@ self.addEventListener('install', (e) => {
             )
           );
         }).then(() => {
-          console.log('✅ Instalación completada - v90.0 ready offline');
+          console.log('✅ Instalación completada - v90.1 ready offline');
           return self.skipWaiting();
         });
       })
@@ -134,9 +134,9 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ACTIVACIÓN v90.0: Limpieza y notificación
+// ACTIVACIÓN v90.1: Limpieza y notificación
 self.addEventListener('activate', (e) => {
-  console.log('✨ ACTIVANDO Universae v90.0...');
+  console.log('✨ ACTIVANDO Universae v90.1...');
 
   e.waitUntil(
     caches.keys()
@@ -157,12 +157,12 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v90.0 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker v90.1 activo - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
             type: 'FORCE_RELOAD_NOW',
-            version: 'v90.0',
-            message: 'Universae v90.0 activado - PDFs T3 desde proyecto'
+            version: 'v90.1',
+            message: 'Universae v90.1 activado - Test oficial Domotica U2'
           });
         });
       })
