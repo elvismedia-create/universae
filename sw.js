@@ -1,6 +1,6 @@
-// v90.2 - Test oficial Domotica U3
-const BUILD_TIMESTAMP = '20260910-domotica-u3-oficial';
-const CACHE_NAME = `universae-v90.2-${BUILD_TIMESTAMP}`;
+// v90.3 - Tests oficiales Domotica U4-U8
+const BUILD_TIMESTAMP = '20260910-domotica-u4-u8-oficial';
+const CACHE_NAME = `universae-v90.3-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -77,11 +77,15 @@ const ASSETS_TO_CACHE = [
   './img/t3-domotica-u1-topologia-arbol.png',
   './img/t3-domotica-u1-topologia-malla.png',
   './img/t3-domotica-u1-topologia-anillo.png',
+  './img/t3-domotica-u4-pulsador-control.png',
+  './img/t3-domotica-u5-contador-adelante-atras.png',
+  './img/t3-domotica-u5-funcion-and.png',
+  './img/t3-domotica-u5-interruptor-escalera.png',
 ];
 
 // INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v90.2 - test oficial Domotica U3...');
+  console.log('⚡ INSTALANDO Universae v90.3 - tests oficiales Domotica U4-U8...');
   console.log('📦 Cache:', CACHE_NAME);
 
   e.waitUntil(
