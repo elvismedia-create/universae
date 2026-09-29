@@ -1,5 +1,5 @@
 // v90.4 - Correccion del test oficial KNX
-const BUILD_TIMESTAMP = '20260929-knx-oficial';
+const BUILD_TIMESTAMP = '20260929-knx-imagen';
 const CACHE_NAME = `universae-v90.4-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
