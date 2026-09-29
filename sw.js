@@ -1,6 +1,6 @@
-// v90.3 - Tests oficiales Domotica U4-U8
-const BUILD_TIMESTAMP = '20260910-domotica-u4-u8-oficial';
-const CACHE_NAME = `universae-v90.3-${BUILD_TIMESTAMP}`;
+// v90.4 - Correccion del test oficial KNX
+const BUILD_TIMESTAMP = '20260929-knx-oficial';
+const CACHE_NAME = `universae-v90.4-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
