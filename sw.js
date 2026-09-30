@@ -1,6 +1,6 @@
-// v90.10 - Visor PDF a pantalla completa con scroll independiente
-const BUILD_TIMESTAMP = '20260930-pdf-text-highlight';
-const CACHE_NAME = `universae-v90.10-${BUILD_TIMESTAMP}`;
+// v90.11 - Aviso de actualización de la app
+const BUILD_TIMESTAMP = '20260930-update-notice';
+const CACHE_NAME = `universae-v90.11-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -161,12 +161,11 @@ self.addEventListener('activate', (e) => {
       })
       .then(() => self.clients.matchAll())
       .then(clients => {
-        console.log('📲 Service Worker v90.2 activo - Clientes notificados:', clients.length);
+        console.log('📲 Service Worker actualizado - Clientes notificados:', clients.length);
         clients.forEach(client => {
           client.postMessage({
-            type: 'FORCE_RELOAD_NOW',
-            version: 'v90.2',
-            message: 'Universae v90.2 activado - Test oficial Domotica U3'
+            type: 'APP_UPDATE_READY',
+            version: CACHE_NAME
           });
         });
       })
