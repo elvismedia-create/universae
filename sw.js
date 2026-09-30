@@ -1,6 +1,6 @@
-// v90.4 - Correccion del test oficial KNX
-const BUILD_TIMESTAMP = '20260929-x10-imagen';
-const CACHE_NAME = `universae-v90.4-${BUILD_TIMESTAMP}`;
+// v90.5 - Test oficial de Distribucion U1
+const BUILD_TIMESTAMP = '20260930-distribucion-u1-oficial';
+const CACHE_NAME = `universae-v90.5-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
