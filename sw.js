@@ -1,6 +1,6 @@
-// v90.13 - App y PDFs disponibles sin conexion
-const BUILD_TIMESTAMP = '20260930-offline-pdfs';
-const CACHE_NAME = `universae-v90.13-${BUILD_TIMESTAMP}`;
+// v90.14 - Cabecera ordenada para iPad y movil
+const BUILD_TIMESTAMP = '20260930-header-layout';
+const CACHE_NAME = `universae-v90.14-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 const PDF_CACHE = 'universae-pdfs-v1';
 

@@ -97,6 +97,7 @@ body{ margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-
 .offline-download-row {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
@@ -105,9 +106,6 @@ body{ margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-
 .offline-download-row .btn-tool:disabled { opacity: 0.6; cursor: default; }
 .offline-download-row progress { width: min(180px, 100%); height: 10px; }
 #offline-pdf-status { font-size: 0.85rem; color: var(--text-light); }
-@media (max-width: 640px) {
-  .header-buttons { flex-wrap: wrap; width: 100%; }
-}
 
 /* === TARJETA PRINCIPAL === */
 .card { 
@@ -134,6 +132,53 @@ body{ margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-
 /* === CABECERA === */
 .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
 .header-buttons { display: flex; gap: 8px; }
+#pantalla-inicio .home-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+}
+.home-brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.home-brand img { width: 64px; height: 64px; flex: 0 0 64px; object-fit: contain; }
+.home-brand h1 { margin: 0; }
+.home-grade {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+  padding: 7px 14px;
+  background: #1d4ed8;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.home-grade span:first-child { font-size: 0.78rem; opacity: 0.9; }
+.home-grade span:last-child { font-size: 1rem; }
+#pantalla-inicio .header-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.home-header-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.home-header-actions .btn-tool { min-height: 40px; justify-content: center; white-space: nowrap; }
+.home-secondary-actions .btn-tool { min-width: 40px; padding: 6px 9px; }
+@media (max-width: 700px) {
+  #pantalla-inicio .home-header { grid-template-columns: 1fr; }
+  #pantalla-inicio .header-buttons { align-items: stretch; width: 100%; }
+  .home-primary-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .home-primary-actions .btn-tool { width: 100%; min-width: 0; padding: 8px 5px; font-size: 0.8rem; }
+  .home-secondary-actions .btn-tool { width: 40px; }
+}
+@media (max-width: 380px) {
+  .home-brand { gap: 10px; }
+  .home-brand img { width: 48px; height: 48px; flex-basis: 48px; }
+  .home-brand h1 { font-size: 1.45rem; }
+  .home-grade { gap: 4px; padding: 6px 8px; }
+  .home-grade span:first-child { font-size: 0.66rem; }
+  .home-grade span:last-child { font-size: 0.78rem; }
+}
 h1{ margin: 0 0 5px 0; color: var(--primary); font-size: 1.8rem; letter-spacing: -0.5px; }
 .subtitle{ color: var(--text-light); font-size: 1rem; margin: 0; }
 
@@ -904,34 +949,29 @@ svg, svg * {
 </div>
 
 <div id="pantalla-inicio" class="card active">
-  <div class="header-flex">
-    <div style="display:flex; align-items:center; gap:16px;">
-      <img src="img/universae-shield-logo.png?v=20260909090000" alt="Universae Logo" style="height:64px; width:64px; flex-shrink:0; object-fit:contain;">
+  <div class="header-flex home-header">
+    <div class="home-brand">
+      <img src="img/universae-shield-logo.png?v=20260909090000" alt="Universae Logo">
       <div>
-        <h1 style="margin:0;">Universae <span style="font-size:0.6em; background:#10b981; color:white; padding:6px 16px; border-radius:25px; font-weight:900; margin-left:8px;">v72.6</span></h1>
-        <div style="display:inline-flex; align-items:center; gap:8px; margin-top:7px; background:#1d4ed8; color:white; padding:7px 14px; border-radius:10px; font-weight:900; letter-spacing:0; box-shadow:0 6px 18px rgba(37,99,235,0.25);">
-          <span style="font-size:0.78rem; opacity:0.9;">APP</span>
-          <span style="font-size:1rem;">GRADO MEDIO</span>
+        <h1>Universae</h1>
+        <div class="home-grade">
+          <span>APP</span>
+          <span>GRADO MEDIO</span>
         </div>
-        <p class="subtitle" style="margin:6px 0 0 0;">✅ Actualizada · Apuntes integrados</p>
       </div>
     </div>
-
-
-
-    
-
-<div class="header-buttons">
-      <button class="btn-tool btn-theme" onclick="toggleTheme()">🌓</button>
-      
-      <button id="btn-turbo" class="btn-tool btn-theme" onclick="toggleTurbo()">🐢</button>
-      <button class="btn-tool" onclick="abrirGestion()">🛠️ Admin</button>
-      <button class="btn-tool" id="btn-importar-pdfs" onclick="abrirImportadorPdfs()">📄 PDFs</button>
-      <button class="btn-tool" onclick="verEstadisticas()">📊 Stats</button>
-      <button class="btn-tool btn-reset" onclick="borrarDatosGlobales()">🗑️</button>
+    <div class="header-buttons">
+      <div class="home-header-actions home-primary-actions">
+        <button class="btn-tool" onclick="abrirGestion()">🛠️ Admin</button>
+        <button class="btn-tool" id="btn-importar-pdfs" onclick="abrirImportadorPdfs()">📄 PDFs</button>
+        <button class="btn-tool" onclick="verEstadisticas()">📊 Stats</button>
+      </div>
+      <div class="home-header-actions home-secondary-actions">
+        <button class="btn-tool btn-theme" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema">🌓</button>
+        <button id="btn-turbo" class="btn-tool btn-theme" onclick="toggleTurbo()" title="Cambiar velocidad" aria-label="Cambiar velocidad">🐢</button>
+        <button class="btn-tool btn-reset" onclick="borrarDatosGlobales()" title="Borrar datos" aria-label="Borrar datos">🗑️</button>
+      </div>
     </div>
-
-
   </div>
 
   <div class="offline-download-row">
