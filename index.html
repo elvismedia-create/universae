@@ -94,6 +94,20 @@ body{ margin: 0; padding: 20px; background: var(--bg); color: var(--text); font-
   color: #1e293b;
   border-color: #cbd5e1;
 }
+.offline-download-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.offline-download-row .btn-tool { color: var(--primary); }
+.offline-download-row .btn-tool:disabled { opacity: 0.6; cursor: default; }
+.offline-download-row progress { width: min(180px, 100%); height: 10px; }
+#offline-pdf-status { font-size: 0.85rem; color: var(--text-light); }
+@media (max-width: 640px) {
+  .header-buttons { flex-wrap: wrap; width: 100%; }
+}
 
 /* === TARJETA PRINCIPAL === */
 .card { 
@@ -920,6 +934,12 @@ svg, svg * {
 
   </div>
 
+  <div class="offline-download-row">
+    <button class="btn-tool" id="btn-offline-pdfs" onclick="prepararPdfsOffline()" title="Guardar los PDFs en este dispositivo">⬇ PDFs sin conexión</button>
+    <progress id="offline-pdf-progress" max="35" value="0" hidden></progress>
+    <span id="offline-pdf-status" role="status" aria-live="polite" hidden></span>
+  </div>
+
   <!-- Selector de Trimestres (Dropdown) -->
   <div class="trimestre-selector">
     <span class="trimestre-label">📅 Trimestre:</span>
@@ -1036,7 +1056,7 @@ svg, svg * {
 <script src="data-tema-economia-u1.js?v=20260511170000"></script>
 <script src="data-t3-domotica-estudio.js?v=20260511200000"></script>
 <script src="data-config.js?v=20260514000000"></script>
-<script src="pdf-local-store.js?v=20260930-viewer-scroll"></script>
+<script src="pdf-local-store.js?v=20260930-offline-pdfs"></script>
 <!-- MÓDULOS EDUCATIVOS -->
 <script src="fotometria.js"></script>
 <script src="caida-tension.js"></script>

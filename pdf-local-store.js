@@ -4,8 +4,9 @@
   const STORE_NAME = 'pdfs';
   const MANIFEST_KEY = 'universae_local_pdf_manifest';
   const ANNOTATIONS_PREFIX = 'universae_pdf_annotations:';
-  const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.mjs';
-  const PDFJS_WORKER_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.mjs';
+  const PDFJS_URL = './vendor/pdfjs/pdf.mjs';
+  const PDFJS_WORKER_URL = './vendor/pdfjs/pdf.worker.mjs';
+  const PDF_OFFLINE_CACHE = 'universae-pdfs-v1';
   let pdfjsPromise = null;
 
   const TOPIC_ALIASES = {
@@ -1160,6 +1161,7 @@
   }
 
   async function openProjectPdf(bid, idx, url) {
+    const offlineKey = offlinePdfKey(url);
     const urlCandidates = uniqueValues([
       url,
       String(url).normalize('NFC'),
@@ -1178,6 +1180,16 @@
     }
 
     if (!response || !response.ok) throw new Error(`PDF del proyecto no encontrado: ${lastStatus}`);
+
+    if (navigator.onLine && 'caches' in window) {
+      try {
+        const cache = await caches.open(PDF_OFFLINE_CACHE);
+        await cache.put(offlineKey, response.clone());
+        refreshOfflinePdfStatus().catch(() => {});
+      } catch (error) {
+        console.warn('No se pudo guardar este PDF sin conexión:', error);
+      }
+    }
 
     const blob = await response.blob();
     const block = getBlock(bid);
@@ -1314,16 +1326,118 @@
     ensurePdfInput().click();
   }
 
+  let offlineDownloadRunning = false;
+
+  function projectPdfUrls() {
+    if (typeof PDF_T3_URLS === 'undefined') return [];
+    return [...new Set(Object.values(PDF_T3_URLS).flatMap(urls => Object.values(urls)))];
+  }
+
+  function offlinePdfKey(url) {
+    return new URL(encodeURI(url), location.href).href;
+  }
+
+  async function refreshOfflinePdfStatus(message) {
+    const button = document.getElementById('btn-offline-pdfs');
+    const status = document.getElementById('offline-pdf-status');
+    const progress = document.getElementById('offline-pdf-progress');
+    if (!button || !status || !progress) return;
+
+    const urls = projectPdfUrls();
+    if (!('caches' in window) || !urls.length) {
+      button.disabled = true;
+      status.textContent = 'La descarga sin conexión no está disponible en este navegador.';
+      status.hidden = false;
+      return;
+    }
+
+    const cache = await caches.open(PDF_OFFLINE_CACHE);
+    const matches = await Promise.all(urls.map(url => cache.match(offlinePdfKey(url))));
+    const saved = matches.filter(Boolean).length;
+    button.disabled = offlineDownloadRunning || !navigator.onLine;
+    button.textContent = saved === urls.length ? '✓ PDFs guardados' : '⬇ PDFs sin conexión';
+    progress.max = urls.length;
+    progress.value = saved;
+    progress.hidden = !offlineDownloadRunning;
+    status.textContent = message || (saved === urls.length
+      ? `${saved} PDFs listos sin conexión`
+      : !navigator.onLine
+        ? `${saved}/${urls.length} PDFs guardados. Conéctate para descargar el resto.`
+        : saved ? `${saved}/${urls.length} PDFs guardados` : '');
+    status.hidden = !status.textContent;
+  }
+
+  async function prepararPdfsOffline() {
+    if (offlineDownloadRunning) return;
+    if (!navigator.onLine) {
+      await refreshOfflinePdfStatus();
+      return;
+    }
+
+    offlineDownloadRunning = true;
+    const urls = projectPdfUrls();
+    let failed = 0;
+    let storageFull = false;
+    try {
+      const cache = await caches.open(PDF_OFFLINE_CACHE);
+      for (let index = 0; index < urls.length; index += 1) {
+        const url = urls[index];
+        const key = offlinePdfKey(url);
+        await refreshOfflinePdfStatus(`Guardando PDFs: ${index + 1}/${urls.length}`);
+        if (await cache.match(key)) continue;
+
+        try {
+          let response = null;
+          for (const candidate of uniqueValues([url, url.normalize('NFC'), url.normalize('NFD')])) {
+            const result = await fetch(encodeURI(candidate), { cache: 'no-store' });
+            if (result.ok && result.headers.get('content-type')?.includes('pdf')) {
+              response = result;
+              break;
+            }
+          }
+          if (!response) throw new Error(`PDF no disponible: ${url}`);
+          await cache.put(key, response);
+        } catch (error) {
+          console.warn('No se pudo guardar el PDF:', url, error);
+          failed += 1;
+          if (error.name === 'QuotaExceededError') {
+            storageFull = true;
+            break;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error preparando PDFs sin conexión:', error);
+      failed += 1;
+      storageFull = error.name === 'QuotaExceededError';
+    } finally {
+      offlineDownloadRunning = false;
+      await refreshOfflinePdfStatus(storageFull ? 'Sin espacio suficiente para guardar todos los PDFs.' : '');
+      if (typeof showToast === 'function') {
+        showToast(failed ? 'error' : 'success', failed ? 'Descarga incompleta' : 'PDFs guardados',
+          storageFull ? 'Libera espacio en el iPad y vuelve a intentarlo.'
+            : failed ? `No se pudieron guardar ${failed} PDFs. Vuelve a intentarlo con internet.`
+              : 'Ya puedes abrir los PDFs sin conexión.');
+      }
+    }
+  }
+
+  window.addEventListener('online', () => refreshOfflinePdfStatus());
+  window.addEventListener('offline', () => refreshOfflinePdfStatus());
+  refreshOfflinePdfStatus().catch(error => console.warn('Estado offline no disponible:', error));
+
   window.PDF_LOCAL_STORE = {
     getLocalPdfInfo,
     getPdfButtonHtml,
     importLocalPdfs,
     identifyPdf,
     abrirPdfTema,
-    abrirImportadorPdfs
+    abrirImportadorPdfs,
+    prepararPdfsOffline
   };
 
   window.getPdfButtonHtml = getPdfButtonHtml;
   window.abrirPdfTema = abrirPdfTema;
   window.abrirImportadorPdfs = abrirImportadorPdfs;
+  window.prepararPdfsOffline = prepararPdfsOffline;
 })();

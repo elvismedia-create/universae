@@ -1,7 +1,8 @@
-// v90.12 - Icono de la app en iPad
-const BUILD_TIMESTAMP = '20260930-ipad-icon';
-const CACHE_NAME = `universae-v90.12-${BUILD_TIMESTAMP}`;
+// v90.13 - App y PDFs disponibles sin conexion
+const BUILD_TIMESTAMP = '20260930-offline-pdfs';
+const CACHE_NAME = `universae-v90.13-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
+const PDF_CACHE = 'universae-pdfs-v1';
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
 const CRITICAL_ASSETS = [
@@ -9,6 +10,8 @@ const CRITICAL_ASSETS = [
   './index.html',
   './motor.js',
   './pdf-local-store.js',
+  './vendor/pdfjs/pdf.mjs',
+  './vendor/pdfjs/pdf.worker.mjs',
   './img/icon-180.png',
   './data-config.js',
   './simbolo-master.js',
@@ -46,8 +49,11 @@ const DATA_ASSETS = [
   './data-t3-domot-ica.js',
   './data-t3-domotica.js',
   './data-t3-distribución.js',
+  './data-t3-distribucion-oficial.js',
   './data-t3-infraestructura-telecom.js',
+  './data-t3-telecomunicaciones-oficial.js',
   './data-t3-maquinas-electricas.js',
+  './data-t3-maquinas-electricas-oficial.js',
   './data-t3-pdfs.js',
   './data-t3-prevencion-riesgos-laborales.js',
   './data-t3-centros-transformacion.js',
@@ -79,64 +85,54 @@ const ASSETS_TO_CACHE = [
   './img/t3-domotica-u1-topologia-malla.png',
   './img/t3-domotica-u1-topologia-anillo.png',
   './img/t3-domotica-u4-pulsador-control.png',
+  './img/t3-domotica-u3-simbolo-oficial.png',
+  './img/t3-domotica-u4-pulsador-control-completo.png',
   './img/t3-domotica-u5-contador-adelante-atras.png',
   './img/t3-domotica-u5-funcion-and.png',
   './img/t3-domotica-u5-interruptor-escalera.png',
+  './img/transformador.png',
+  './img/conmutador.png',
+  './img/telerruptor.png',
+  './img/pelacables.png',
+  './img/t4_medicion_cuadro.jpg',
+  './img/t4_pinza.jpg',
+  './img/t4_multimetro.jpg',
+  './img/t4_buscapolos.jpg',
+  './img/t4_vatimetro.jpg',
+  './img/t4_esquema_medida.jpg',
+  './img/t4_shunt.jpg',
+  './img/t4_luxometro.jpg',
+  './img/t4_megohmetro.jpg',
+  './img/t4_efecto_joule.jpg',
+  './img/amplificador.jpeg',
+  './img/regulador.jpg',
+  './img/plc.webp',
+  './img/termopar.jpg',
+  './img/fotocelula.jpg',
+  './img/sensor.jpeg',
+  './img/memoria.png',
+  './img/fusible.jpeg',
+  './img/rele_termico.jpeg',
+  './img/pararrayos.jpeg',
+  './img/limitador.jpeg',
+  './img/t3_simb_contador.jpg',
+  './img/t3_simb_interruptor.jpg',
+  './img/t3_simb_enchufe.jpg',
 ];
 
-// INSTALACIÓN v69.0: Cache offline-first mejorado
 self.addEventListener('install', (e) => {
-  console.log('⚡ INSTALANDO Universae v90.3 - tests oficiales Domotica U4-U8...');
-  console.log('📦 Cache:', CACHE_NAME);
-
-  e.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('🔴 Cacheando ARCHIVOS CRÍTICOS primero...');
-
-        // 1. Cachear críticos primero (debe funcionar offline)
-        return Promise.all(
-          CRITICAL_ASSETS.map(url => {
-            return fetch(url, { cache: 'no-store' })
-              .then(res => {
-                if (res.ok) {
-                  cache.put(url, res.clone());
-                  console.log('✅ Crítico cacheado:', url);
-                  return true;
-                } else {
-                  console.warn('⚠️ Crítico falló (status ' + res.status + '):', url);
-                  return false;
-                }
-              })
-              .catch(err => {
-                console.error('❌ Error crítico:', url, err.message);
-                return false;
-              });
-          })
-        ).then(results => {
-          const allOk = results.every(r => r);
-          if (!allOk) {
-            console.error('⚠️ ADVERTENCIA: Algunos archivos críticos no se cachearon');
-          }
-
-          // 2. Cachear datos (menos prioritario)
-          console.log('🟡 Cacheando DATOS...');
-          return Promise.allSettled(
-            DATA_ASSETS.map(url =>
-              fetch(url, { cache: 'no-store' })
-                .then(res => res.ok ? cache.put(url, res) : Promise.reject(url))
-            )
-          );
-        }).then(() => {
-          console.log('✅ Instalación completada - v90.2 ready offline');
-          return self.skipWaiting();
-        });
-      })
-      .catch(err => {
-        console.error('❌ Error fatal en instalación:', err);
-        return self.skipWaiting();
-      })
-  );
+  e.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const assets = [...new Set(ASSETS_TO_CACHE)];
+    for (let index = 0; index < assets.length; index += 12) {
+      await Promise.all(assets.slice(index, index + 12).map(async url => {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`No se pudo guardar ${url}: ${response.status}`);
+        await cache.put(url, response);
+      }));
+    }
+    await self.skipWaiting();
+  })());
 });
 
 // ACTIVACIÓN v90.2: Limpieza y notificación
@@ -149,7 +145,7 @@ self.addEventListener('activate', (e) => {
         console.log('📋 Cachés encontrados:', keyList);
         return Promise.all(
           keyList.map(key => {
-            if (key !== CACHE_NAME && key !== OFFLINE_CACHE) {
+            if (key !== CACHE_NAME && key !== OFFLINE_CACHE && key !== PDF_CACHE) {
               console.log('🗑️ Eliminando caché antiguo:', key);
               return caches.delete(key);
             }
@@ -180,7 +176,7 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
   const isHTML = e.request.url.includes('.html') || url.pathname.endsWith('/');
-  const isAsset = /\.(js|css|json|woff|woff2|ttf)$/i.test(url.pathname);
+  const isAsset = /\.(js|mjs|css|json|woff|woff2|ttf)$/i.test(url.pathname);
   const isImage = /\.(png|jpg|jpeg|gif|svg|webp|ico)$/i.test(url.pathname);
 
   // HTML: Intentar red primero, fallback a caché
@@ -257,6 +253,15 @@ self.addEventListener('fetch', (e) => {
             { headers: { 'Content-Type': 'image/png' } }
           );
         })
+    );
+  }
+  // Los PDFs descargados por el usuario se conservan entre versiones de la app.
+  else if (/\.pdf$/i.test(url.pathname)) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).catch(async () => {
+        const cached = await caches.open(PDF_CACHE).then(cache => cache.match(e.request, { ignoreSearch: true }));
+        return cached || new Response('PDF no guardado para uso sin conexion', { status: 503 });
+      })
     );
   }
   // Otros: Network first
