@@ -1,6 +1,6 @@
-// v90.11 - Aviso de actualización de la app
-const BUILD_TIMESTAMP = '20260930-update-notice';
-const CACHE_NAME = `universae-v90.11-${BUILD_TIMESTAMP}`;
+// v90.12 - Icono de la app en iPad
+const BUILD_TIMESTAMP = '20260930-ipad-icon';
+const CACHE_NAME = `universae-v90.12-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
@@ -9,6 +9,7 @@ const CRITICAL_ASSETS = [
   './index.html',
   './motor.js',
   './pdf-local-store.js',
+  './img/icon-180.png',
   './data-config.js',
   './simbolo-master.js',
 ];
