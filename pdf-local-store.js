@@ -317,7 +317,7 @@
         font-weight: 800;
         font-size: 0.9rem;
         white-space: nowrap;
-        max-width: 260px;
+        max-width: 220px;
         overflow: hidden;
         text-overflow: ellipsis;
         margin-right: auto;
@@ -342,10 +342,6 @@
         background: #2563eb;
         border-color: #60a5fa;
       }
-      .pdf-toggle-btn.active {
-        background: #16a34a;
-        border-color: #86efac;
-      }
       .pdf-zoom-btn {
         width: 54px;
         min-width: 54px;
@@ -361,11 +357,9 @@
         min-width: 34px;
         height: 34px;
       }
-      .pdf-size-dot {
-        display: block;
-        border-radius: 999px;
-        background: currentColor;
-      }
+      .pdf-size-dot { display: block; border-radius: 999px; background: currentColor; }
+      .pdf-pen-settings[hidden] { display: none; }
+      .pdf-pen-settings { display: flex; align-items: center; gap: 4px; }
       .pdf-color-btn {
         width: 32px;
         min-width: 32px;
@@ -374,6 +368,8 @@
       .pdf-color-btn.active {
         outline: 3px solid white;
       }
+      .pdf-color-btn { border-radius: 50%; }
+      .pdf-color-btn[hidden] { display: none; }
       .pdf-viewer-pages {
         overflow: auto;
         flex: 1;
@@ -400,15 +396,47 @@
         inset: 0;
         touch-action: pan-y;
         cursor: crosshair;
-      }
-      .pdf-draw-layer[data-tool="pan"] {
         pointer-events: none;
-        cursor: grab;
       }
+      .pdf-draw-layer[data-tool="pen"] { pointer-events: auto; }
       .pdf-draw-layer[data-tool="eraser"] {
+        pointer-events: auto;
         touch-action: none;
         cursor: cell;
       }
+      .pdf-text-layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        line-height: 1;
+        text-align: initial;
+        transform-origin: 0 0;
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .pdf-text-layer[data-tool="highlight"] {
+        pointer-events: auto;
+        touch-action: none;
+        user-select: text;
+        -webkit-user-select: text;
+        cursor: text;
+      }
+      .pdf-text-layer :is(span, br) {
+        color: transparent;
+        position: absolute;
+        white-space: pre;
+        transform-origin: 0 0;
+      }
+      .pdf-text-layer[data-tool="highlight"] span {
+        user-select: text;
+        -webkit-user-select: text;
+        cursor: text;
+      }
+      .pdf-text-layer ::selection { background: rgba(45, 107, 204, 0.35); }
       .pdf-viewer-loading {
         padding: 24px;
         text-align: center;
@@ -416,12 +444,23 @@
         font-weight: 700;
       }
       @media (max-width: 640px) {
+        .pdf-viewer-toolbar {
+          flex-wrap: wrap;
+          overflow-x: visible;
+          gap: 6px;
+          padding: 8px;
+        }
         .pdf-viewer-title {
-          max-width: 145px;
+          max-width: 120px;
+          min-width: 0;
+          flex: 1 1 60px;
         }
-        .pdf-tool-btn {
-          font-size: 0.85rem;
-        }
+        .pdf-viewer-toolbar [data-tool] { order: 0; }
+        .pdf-viewer-toolbar [data-action="close"] { order: 1; margin-left: auto; }
+        .pdf-viewer-toolbar :is(.pdf-pen-settings, .pdf-color-btn, .pdf-zoom-btn) { order: 2; }
+        .pdf-viewer-toolbar [data-action="zoom-in"],
+        .pdf-viewer-toolbar [data-action="zoom-out"] { display: none; }
+        .pdf-tool-btn { font-size: 0.85rem; }
       }
     `;
     document.head.appendChild(style);
@@ -448,6 +487,16 @@
   }
 
   function drawStroke(ctx, stroke, width, height) {
+    if (stroke.type === 'highlight') {
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillStyle = stroke.color;
+      (stroke.rects || []).forEach(rect => {
+        ctx.fillRect(rect.x * width, rect.y * height, rect.width * width, rect.height * height);
+      });
+      ctx.restore();
+      return;
+    }
     if (!stroke.points || stroke.points.length < 2) return;
 
     ctx.save();
@@ -471,13 +520,6 @@
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     strokes.forEach(stroke => drawStroke(ctx, stroke, canvas.width, canvas.height));
-  }
-
-  function redrawWithPreview(canvas, strokes, previewStroke) {
-    redrawAnnotations(canvas, strokes);
-    if (previewStroke) {
-      drawStroke(canvas.getContext('2d'), previewStroke, canvas.width, canvas.height);
-    }
   }
 
   function distanceToSegmentPx(point, start, end, canvas) {
@@ -538,6 +580,25 @@
     const remainingStrokes = [];
 
     strokes.forEach(stroke => {
+      if (stroke.type === 'highlight') {
+        const gap = radiusPx / canvas.width;
+        const remainingRects = [];
+        (stroke.rects || []).forEach(rect => {
+          const withinLine = point.y >= rect.y - radiusPx / canvas.height &&
+            point.y <= rect.y + rect.height + radiusPx / canvas.height;
+          if (!withinLine || point.x < rect.x - gap || point.x > rect.x + rect.width + gap) {
+            remainingRects.push(rect);
+            return;
+          }
+          const leftWidth = Math.max(0, point.x - gap - rect.x);
+          const rightX = Math.min(rect.x + rect.width, point.x + gap);
+          const rightWidth = rect.x + rect.width - rightX;
+          if (leftWidth > 0.003) remainingRects.push({ ...rect, width: leftWidth });
+          if (rightWidth > 0.003) remainingRects.push({ ...rect, x: rightX, width: rightWidth });
+        });
+        if (remainingRects.length) remainingStrokes.push({ ...stroke, rects: remainingRects });
+        return;
+      }
       const points = getSampledStrokePoints(stroke, canvas);
       let currentPart = [];
 
@@ -567,7 +628,8 @@
     toolbar.innerHTML = `
       <div class="pdf-viewer-title">${info.topic || info.name || 'PDF'}</div>
       <button class="pdf-tool-btn active" data-tool="pan" title="Moverse por el PDF" aria-label="Mano">✋</button>
-      <button class="pdf-tool-btn" data-tool="pen" title="Subrayar con lápiz" aria-label="Lápiz">✏️</button>
+      <button class="pdf-tool-btn" data-tool="pen" title="Dibujar con lápiz" aria-label="Lápiz">✏️</button>
+      <button class="pdf-tool-btn" data-tool="highlight" title="Seleccionar texto para subrayar" aria-label="Subrayador">🖍️</button>
       <button class="pdf-tool-btn" data-tool="eraser" title="Borrar" aria-label="Borrar">
         <svg class="pdf-eraser-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 16.5 13.5 7a2.8 2.8 0 0 1 4 0l1.5 1.5a2.8 2.8 0 0 1 0 4L11.5 20H5.8L4 18.2a1.2 1.2 0 0 1 0-1.7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
@@ -575,26 +637,36 @@
           <path d="M12 20h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
-      <button class="pdf-tool-btn pdf-toggle-btn" data-action="straight" title="Ayuda de subrayado recto" aria-label="Ayuda recta">📏</button>
-      <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar">−</button>
-      <button class="pdf-tool-btn pdf-zoom-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">100%</button>
-      <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar">+</button>
-      <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
-      <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
-      <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
+      <span class="pdf-pen-settings" hidden>
+        <button class="pdf-tool-btn pdf-size-btn" data-width="8" title="Punta fina"><span class="pdf-size-dot" style="width:6px;height:6px;"></span></button>
+        <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
+        <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
+      </span>
       <button class="pdf-color-btn active" data-color="rgba(255,235,59,0.50)" style="background:#fde047;" title="Amarillo"></button>
       <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde"></button>
       <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul"></button>
       <button class="pdf-color-btn" data-color="rgba(239,68,68,0.38)" style="background:#ef4444;" title="Rojo"></button>
-      <button class="pdf-tool-btn" data-action="clear" title="Limpiar página" aria-label="Limpiar página">🧹</button>
+      <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar" aria-label="Alejar">−</button>
+      <button class="pdf-tool-btn pdf-zoom-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">100%</button>
+      <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar" aria-label="Acercar">+</button>
       <button class="pdf-tool-btn" data-action="close" title="Cerrar" aria-label="Cerrar">×</button>
     `;
+
+    const updateSettings = () => {
+      toolbar.querySelector('.pdf-pen-settings').hidden = state.tool !== 'pen';
+      toolbar.querySelectorAll('[data-color]').forEach(btn => {
+        btn.hidden = state.tool === 'pan' || state.tool === 'eraser';
+      });
+    };
+    updateSettings();
 
     toolbar.querySelectorAll('[data-tool]').forEach(button => {
       button.addEventListener('click', () => {
         state.tool = button.dataset.tool;
         toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
+        window.getSelection()?.removeAllRanges();
+        updateSettings();
         actions.updateToolState();
       });
     });
@@ -610,27 +682,11 @@
     toolbar.querySelectorAll('[data-color]').forEach(button => {
       button.addEventListener('click', () => {
         state.color = button.dataset.color;
-        state.tool = 'pen';
         toolbar.querySelectorAll('[data-color]').forEach(btn => btn.classList.remove('active'));
-        toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
         button.classList.add('active');
-        actions.updateToolState();
       });
     });
 
-    const straightButton = toolbar.querySelector('[data-action="straight"]');
-    straightButton.addEventListener('click', () => {
-      state.straightAssist = !state.straightAssist;
-      straightButton.classList.toggle('active', state.straightAssist);
-      straightButton.title = state.straightAssist ? 'Ayuda recta activada' : 'Ayuda de subrayado recto';
-      if (state.straightAssist && state.tool !== 'pen') {
-        state.tool = 'pen';
-        toolbar.querySelectorAll('[data-tool]').forEach(btn => btn.classList.toggle('active', btn.dataset.tool === 'pen'));
-        actions.updateToolState();
-      }
-    });
-
-    toolbar.querySelector('[data-action="clear"]').addEventListener('click', actions.clearCurrentPage);
     toolbar.querySelector('[data-action="close"]').addEventListener('click', actions.close);
     toolbar.querySelector('[data-action="zoom-in"]').addEventListener('click', () => actions.setZoom(state.zoom + 0.15, actions.getViewportCenter()));
     toolbar.querySelector('[data-action="zoom-out"]').addEventListener('click', () => actions.setZoom(state.zoom - 0.15, actions.getViewportCenter()));
@@ -701,6 +757,8 @@
         canvas.style.width = `${width}px`;
         canvas.style.height = `${height}px`;
       });
+      const textLayer = wrap.querySelector('.pdf-text-layer');
+      if (textLayer) textLayer.style.transform = `scale(${zoom})`;
     });
   }
 
@@ -709,7 +767,6 @@
 
     let activeStroke = null;
     let pointerId = null;
-    let lineStart = null;
     let pointerStart = null;
 
     function ensurePage() {
@@ -722,7 +779,6 @@
         annotations[pageNumber] = ensurePage().filter(stroke => stroke !== activeStroke);
       }
       activeStroke = null;
-      lineStart = null;
       pointerId = null;
       pointerStart = null;
     }
@@ -734,7 +790,7 @@
     }
 
     canvas.addEventListener('pointerdown', event => {
-      if (state.tool === 'pan') return;
+      if (state.tool !== 'pen' && state.tool !== 'eraser') return;
       pointerId = event.pointerId;
       if (state.tool === 'eraser' || event.pointerType !== 'touch') {
         event.preventDefault();
@@ -748,11 +804,6 @@
         annotations[pageNumber] = erasePointFromStrokes(point, ensurePage(), canvas, state);
         redrawAnnotations(canvas, annotations[pageNumber]);
         save();
-        return;
-      }
-
-      if (state.tool === 'pen' && state.straightAssist) {
-        lineStart = point;
         return;
       }
 
@@ -782,16 +833,6 @@
         return;
       }
 
-      if (state.tool === 'pen' && state.straightAssist && lineStart) {
-        const preview = {
-          color: state.color,
-          width: state.width,
-          points: [lineStart, point]
-        };
-        redrawWithPreview(canvas, ensurePage(), preview);
-        return;
-      }
-
       if (!activeStroke) return;
       activeStroke.points.push(point);
       redrawAnnotations(canvas, annotations[pageNumber]);
@@ -799,16 +840,6 @@
 
     function finish(event) {
       if (event.pointerId !== pointerId) return;
-      if (state.tool === 'pen' && state.straightAssist && lineStart) {
-        const end = getPointerPoint(event, canvas);
-        ensurePage().push({
-          color: state.color,
-          width: state.width,
-          points: [lineStart, end]
-        });
-        lineStart = null;
-        redrawAnnotations(canvas, annotations[pageNumber]);
-      }
       if (activeStroke && activeStroke.points.length < 2) {
         annotations[pageNumber] = ensurePage().filter(stroke => stroke !== activeStroke);
       }
@@ -820,6 +851,120 @@
 
     canvas.addEventListener('pointerup', finish);
     canvas.addEventListener('pointercancel', finish);
+  }
+
+  function attachTextHighlighter(shell, pagesContainer, state, annotations, key) {
+    let touchStart = null;
+    let touchPointerId = null;
+
+    function caretAt(x, y) {
+      if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y);
+      const position = document.caretPositionFromPoint?.(x, y);
+      if (!position) return null;
+      const range = document.createRange();
+      range.setStart(position.offsetNode, position.offset);
+      range.collapse(true);
+      return range;
+    }
+
+    function updateTouchSelection(event) {
+      if (!touchStart || event.pointerId !== touchPointerId) return;
+      const end = caretAt(event.clientX, event.clientY);
+      if (!end || !end.startContainer.parentElement?.closest('.pdf-text-layer')) return;
+      const range = document.createRange();
+      const startFirst = touchStart.compareBoundaryPoints(Range.START_TO_START, end) <= 0;
+      if (startFirst) {
+        range.setStart(touchStart.startContainer, touchStart.startOffset);
+        range.setEnd(end.startContainer, end.startOffset);
+      } else {
+        range.setStart(end.startContainer, end.startOffset);
+        range.setEnd(touchStart.startContainer, touchStart.startOffset);
+      }
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    function saveSelection() {
+      if (state.tool !== 'highlight') return;
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || !selection.toString().trim()) return;
+      const anchor = selection.anchorNode?.parentElement?.closest('.pdf-text-layer');
+      const focus = selection.focusNode?.parentElement?.closest('.pdf-text-layer');
+      if (!anchor || !focus || !shell.contains(anchor) || !shell.contains(focus)) return;
+
+      const selectedRects = [...selection.getRangeAt(0).getClientRects()];
+      let saved = false;
+      shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
+        const pageRect = canvas.getBoundingClientRect();
+        const rects = selectedRects.map(rect => {
+          const left = Math.max(rect.left, pageRect.left);
+          const right = Math.min(rect.right, pageRect.right);
+          const top = Math.max(rect.top, pageRect.top);
+          const bottom = Math.min(rect.bottom, pageRect.bottom);
+          if (right - left < 2 || bottom - top < 2) return null;
+          return {
+            x: (left - pageRect.left) / pageRect.width,
+            y: (top - pageRect.top) / pageRect.height,
+            width: (right - left) / pageRect.width,
+            height: (bottom - top) / pageRect.height
+          };
+        }).filter(Boolean);
+        if (!rects.length) return;
+
+        const pageNumber = canvas.dataset.page;
+        if (!annotations[pageNumber]) annotations[pageNumber] = [];
+        annotations[pageNumber].push({ type: 'highlight', color: state.color, rects });
+        redrawAnnotations(canvas, annotations[pageNumber]);
+        state.currentPage = Number(pageNumber);
+        saved = true;
+      });
+
+      if (saved) {
+        saveAnnotations(key, annotations);
+        selection.removeAllRanges();
+      }
+    }
+
+    pagesContainer.addEventListener('pointerup', event => {
+      if (state.tool !== 'highlight') return;
+      if (event.pointerType === 'touch') {
+        updateTouchSelection(event);
+        saveSelection();
+        touchStart = null;
+        touchPointerId = null;
+      } else {
+        requestAnimationFrame(saveSelection);
+      }
+    });
+
+    pagesContainer.addEventListener('pointerdown', event => {
+      if (state.tool !== 'highlight' || event.pointerType !== 'touch') return;
+      if (!event.isPrimary) {
+        touchStart = null;
+        touchPointerId = null;
+        window.getSelection()?.removeAllRanges();
+        return;
+      }
+      const layer = event.target.closest('.pdf-text-layer');
+      if (!layer) return;
+      touchStart = caretAt(event.clientX, event.clientY);
+      touchPointerId = event.pointerId;
+      layer.setPointerCapture(event.pointerId);
+    });
+
+    pagesContainer.addEventListener('pointermove', event => {
+      if (state.tool !== 'highlight' || event.pointerType !== 'touch' || event.pointerId !== touchPointerId) return;
+      event.preventDefault();
+      updateTouchSelection(event);
+    });
+
+    pagesContainer.addEventListener('pointercancel', event => {
+      if (event.pointerId !== touchPointerId) return;
+      touchStart = null;
+      touchPointerId = null;
+      window.getSelection()?.removeAllRanges();
+    });
   }
 
   async function openAnnotatedPdfViewer(key, blob, info) {
@@ -839,7 +984,6 @@
       tool: 'pan',
       color: 'rgba(255,235,59,0.50)',
       width: 18,
-      straightAssist: false,
       zoom: 1,
       currentPage: 1
     };
@@ -849,6 +993,9 @@
       updateToolState: () => {
         shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
           canvas.dataset.tool = state.tool;
+        });
+        shell.querySelectorAll('.pdf-text-layer').forEach(layer => {
+          layer.dataset.tool = state.tool;
         });
       },
       getViewportCenter: () => {
@@ -879,12 +1026,6 @@
           resetButton.textContent = `${Math.round(state.zoom * 100)}%`;
           resetButton.title = `Restablecer zoom (${Math.round(state.zoom * 100)}%)`;
         }
-      },
-      clearCurrentPage: () => {
-        annotations[state.currentPage] = [];
-        saveAnnotations(key, annotations);
-        const canvas = shell.querySelector(`.pdf-draw-layer[data-page="${state.currentPage}"]`);
-        if (canvas) redrawAnnotations(canvas, []);
       }
     };
 
@@ -892,6 +1033,7 @@
     shell.appendChild(pagesContainer);
     document.body.appendChild(shell);
     attachPinchZoom(pagesContainer, zoomSurface, state, actions);
+    attachTextHighlighter(shell, pagesContainer, state, annotations, key);
 
     try {
       const pdfjs = await loadPdfJs();
@@ -904,7 +1046,7 @@
         const page = await pdf.getPage(pageNumber);
         const baseViewport = page.getViewport({ scale: 1 });
         const availableWidth = Math.min(pagesContainer.clientWidth - 20, 980);
-        const scale = Math.max(0.7, Math.min(1.7, availableWidth / baseViewport.width));
+        const scale = Math.max(0.3, Math.min(1.7, availableWidth / baseViewport.width));
         const viewport = page.getViewport({ scale });
 
         const wrap = document.createElement('div');
@@ -918,6 +1060,7 @@
 
         const pdfCanvas = document.createElement('canvas');
         const drawCanvas = document.createElement('canvas');
+        const textLayer = document.createElement('div');
         const ratio = window.devicePixelRatio || 1;
 
         [pdfCanvas, drawCanvas].forEach(canvas => {
@@ -930,6 +1073,11 @@
         drawCanvas.className = 'pdf-draw-layer';
         drawCanvas.dataset.page = String(pageNumber);
         drawCanvas.dataset.tool = state.tool;
+        textLayer.className = 'pdf-text-layer textLayer';
+        textLayer.dataset.tool = state.tool;
+        textLayer.style.width = `${pageWidth}px`;
+        textLayer.style.height = `${pageHeight}px`;
+        textLayer.style.setProperty('--scale-factor', String(viewport.scale));
 
         const renderContext = {
           canvasContext: pdfCanvas.getContext('2d'),
@@ -940,10 +1088,21 @@
 
         wrap.appendChild(pdfCanvas);
         wrap.appendChild(drawCanvas);
+        wrap.appendChild(textLayer);
         zoomSurface.appendChild(wrap);
 
         redrawAnnotations(drawCanvas, annotations[pageNumber] || []);
         attachDrawing(drawCanvas, String(pageNumber), state, annotations, key);
+        try {
+          await new pdfjs.TextLayer({
+            textContentSource: page.streamTextContent(),
+            container: textLayer,
+            viewport
+          }).render();
+        } catch (error) {
+          console.warn('No se pudo activar la selección de texto en esta página:', error);
+          textLayer.remove();
+        }
       }
     } catch (error) {
       console.error('Error abriendo visor PDF:', error);

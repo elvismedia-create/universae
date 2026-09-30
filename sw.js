@@ -1,6 +1,6 @@
-// v90.7 - Funciones IA en Vercel
-const BUILD_TIMESTAMP = '20260930-vercel-ia';
-const CACHE_NAME = `universae-v90.7-${BUILD_TIMESTAMP}`;
+// v90.8 - Subrayado de texto en PDFs
+const BUILD_TIMESTAMP = '20260930-pdf-text-highlight';
+const CACHE_NAME = `universae-v90.8-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
