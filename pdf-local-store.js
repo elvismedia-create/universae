@@ -302,6 +302,11 @@
         color: white;
         display: flex;
         flex-direction: column;
+        width: 100%;
+        height: 100dvh;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        overflow: hidden;
       }
       .pdf-viewer-toolbar {
         display: flex;
@@ -373,9 +378,11 @@
       .pdf-viewer-pages {
         overflow: auto;
         flex: 1;
+        min-height: 0;
         padding: 18px 10px 40px;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x pan-y;
+        overscroll-behavior: contain;
       }
       .pdf-pages-zoom {
         width: max-content;
@@ -420,7 +427,7 @@
       }
       .pdf-text-layer[data-tool="highlight"] {
         pointer-events: auto;
-        touch-action: none;
+        touch-action: pan-y;
         user-select: text;
         -webkit-user-select: text;
         cursor: text;
@@ -971,6 +978,25 @@
   async function openAnnotatedPdfViewer(key, blob, info) {
     ensureViewerStyles();
 
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const bodyStyle = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow
+    };
+    const rootOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    Object.assign(document.body.style, {
+      position: 'fixed',
+      top: `${-scrollY}px`,
+      left: `${-scrollX}px`,
+      width: '100%',
+      overflow: 'hidden'
+    });
+
     const shell = document.createElement('div');
     shell.className = 'pdf-viewer-shell';
 
@@ -990,7 +1016,12 @@
     };
 
     const actions = {
-      close: () => shell.remove(),
+      close: () => {
+        shell.remove();
+        Object.assign(document.body.style, bodyStyle);
+        document.documentElement.style.overflow = rootOverflow;
+        window.scrollTo(scrollX, scrollY);
+      },
       updateToolState: () => {
         shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
           canvas.dataset.tool = state.tool;
