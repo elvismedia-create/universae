@@ -854,8 +854,8 @@
   }
 
   function attachTextHighlighter(shell, pagesContainer, state, annotations, key) {
-    let touchStart = null;
-    let touchPointerId = null;
+    let dragStart = null;
+    let dragPointerId = null;
 
     function caretAt(x, y) {
       if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y);
@@ -867,18 +867,18 @@
       return range;
     }
 
-    function updateTouchSelection(event) {
-      if (!touchStart || event.pointerId !== touchPointerId) return;
+    function updateDragSelection(event) {
+      if (!dragStart || event.pointerId !== dragPointerId) return;
       const end = caretAt(event.clientX, event.clientY);
       if (!end || !end.startContainer.parentElement?.closest('.pdf-text-layer')) return;
       const range = document.createRange();
-      const startFirst = touchStart.compareBoundaryPoints(Range.START_TO_START, end) <= 0;
+      const startFirst = dragStart.compareBoundaryPoints(Range.START_TO_START, end) <= 0;
       if (startFirst) {
-        range.setStart(touchStart.startContainer, touchStart.startOffset);
+        range.setStart(dragStart.startContainer, dragStart.startOffset);
         range.setEnd(end.startContainer, end.startOffset);
       } else {
         range.setStart(end.startContainer, end.startOffset);
-        range.setEnd(touchStart.startContainer, touchStart.startOffset);
+        range.setEnd(dragStart.startContainer, dragStart.startOffset);
       }
       const selection = window.getSelection();
       selection.removeAllRanges();
@@ -928,41 +928,42 @@
 
     pagesContainer.addEventListener('pointerup', event => {
       if (state.tool !== 'highlight') return;
-      if (event.pointerType === 'touch') {
-        updateTouchSelection(event);
+      if (event.pointerType === 'touch' || event.pointerType === 'pen') {
+        updateDragSelection(event);
         saveSelection();
-        touchStart = null;
-        touchPointerId = null;
+        dragStart = null;
+        dragPointerId = null;
       } else {
         requestAnimationFrame(saveSelection);
       }
     });
 
     pagesContainer.addEventListener('pointerdown', event => {
-      if (state.tool !== 'highlight' || event.pointerType !== 'touch') return;
+      if (state.tool !== 'highlight' || !['touch', 'pen'].includes(event.pointerType)) return;
       if (!event.isPrimary) {
-        touchStart = null;
-        touchPointerId = null;
+        dragStart = null;
+        dragPointerId = null;
         window.getSelection()?.removeAllRanges();
         return;
       }
       const layer = event.target.closest('.pdf-text-layer');
       if (!layer) return;
-      touchStart = caretAt(event.clientX, event.clientY);
-      touchPointerId = event.pointerId;
+      event.preventDefault();
+      dragStart = caretAt(event.clientX, event.clientY);
+      dragPointerId = event.pointerId;
       layer.setPointerCapture(event.pointerId);
     });
 
     pagesContainer.addEventListener('pointermove', event => {
-      if (state.tool !== 'highlight' || event.pointerType !== 'touch' || event.pointerId !== touchPointerId) return;
+      if (state.tool !== 'highlight' || !['touch', 'pen'].includes(event.pointerType) || event.pointerId !== dragPointerId) return;
       event.preventDefault();
-      updateTouchSelection(event);
+      updateDragSelection(event);
     });
 
     pagesContainer.addEventListener('pointercancel', event => {
-      if (event.pointerId !== touchPointerId) return;
-      touchStart = null;
-      touchPointerId = null;
+      if (event.pointerId !== dragPointerId) return;
+      dragStart = null;
+      dragPointerId = null;
       window.getSelection()?.removeAllRanges();
     });
   }

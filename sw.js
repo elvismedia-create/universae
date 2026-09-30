@@ -1,6 +1,6 @@
-// v90.8 - Subrayado de texto en PDFs
+// v90.9 - Subrayado de texto con lapiz tactil
 const BUILD_TIMESTAMP = '20260930-pdf-text-highlight';
-const CACHE_NAME = `universae-v90.8-${BUILD_TIMESTAMP}`;
+const CACHE_NAME = `universae-v90.9-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 
 // ARCHIVOS CRÍTICOS - DEBEN estar en caché siempre
