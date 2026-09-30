@@ -1885,8 +1885,7 @@ async function generarPreguntasIA(tema, cantidad = 10) {
     
     console.log('📝 Ejemplos de preguntas encontrados:', preguntasEjemplo.length);
 
-    // Llamar a la función de Netlify
-    const response = await fetch('/.netlify/functions/generar-preguntas', {
+    const response = await fetch('/api/generar-preguntas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1921,15 +1920,18 @@ async function generarPreguntasIA(tema, cantidad = 10) {
       let detalle = errorText;
       
       // Diagnóstico específico v67.24
-      if (response.status === 401 || errorText.includes('API key') || errorText.includes('Unauthorized')) {
-        titulo = '🔑 API key no configurada';
-        detalle = 'Ve a Netlify → Site configuration → Environment variables → Agrega ANTHROPIC_API_KEY';
+      if (data.code === 'ANTHROPIC_API_KEY_MISSING') {
+        titulo = 'Clave de IA pendiente';
+        detalle = 'Configura ANTHROPIC_API_KEY en Vercel: proyecto universae → Settings → Environment Variables (Production).';
+      } else if (response.status === 401 || errorText.includes('Unauthorized')) {
+        titulo = 'Clave de IA no válida';
+        detalle = 'Revisa ANTHROPIC_API_KEY en Vercel: proyecto universae → Settings → Environment Variables.';
       } else if (response.status === 429 || errorText.includes('quota') || errorText.includes('rate limit')) {
         titulo = '💳 Sin créditos API';
         detalle = 'Tu API key se quedó sin créditos. Recarga en console.anthropic.com';
       } else if (response.status === 500 || response.status === 502 || response.status === 503) {
         titulo = '🔥 Error del servidor';
-        detalle = 'Netlify Functions falló. Espera 1 minuto o verifica que se desplegaron correctamente.';
+        detalle = 'La función de Vercel ha fallado. Inténtalo de nuevo más tarde.';
       } else if (errorText.includes('timeout')) {
         titulo = '⏱️ Tiempo agotado';
         detalle = 'La generación tardó demasiado. Intenta con menos preguntas (5 en vez de 10).';
@@ -2017,7 +2019,7 @@ async function generarExplicacionProfunda(pregunta, tema, respuestaCorrecta, exp
     document.body.insertAdjacentHTML('beforeend', loadingHtml);
 
     // Llamar a la función
-    const response = await fetch('/.netlify/functions/explicacion-profunda', {
+    const response = await fetch('/api/explicacion-profunda', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2041,15 +2043,18 @@ async function generarExplicacionProfunda(pregunta, tema, respuestaCorrecta, exp
       let detalle = errorText;
       
       // Diagnóstico específico v67.24
-      if (response.status === 401 || errorText.includes('API key') || errorText.includes('Unauthorized')) {
-        titulo = '🔑 API key no configurada';
-        detalle = 'Ve a Netlify → Site configuration → Environment variables → Agrega ANTHROPIC_API_KEY';
+      if (data.code === 'ANTHROPIC_API_KEY_MISSING') {
+        titulo = 'Clave de IA pendiente';
+        detalle = 'Configura ANTHROPIC_API_KEY en Vercel: proyecto universae → Settings → Environment Variables (Production).';
+      } else if (response.status === 401 || errorText.includes('Unauthorized')) {
+        titulo = 'Clave de IA no válida';
+        detalle = 'Revisa ANTHROPIC_API_KEY en Vercel: proyecto universae → Settings → Environment Variables.';
       } else if (response.status === 429 || errorText.includes('quota') || errorText.includes('rate limit')) {
         titulo = '💳 Sin créditos API';
         detalle = 'Tu API key se quedó sin créditos. Recarga en console.anthropic.com';
       } else if (response.status === 500 || response.status === 502 || response.status === 503) {
         titulo = '🔥 Error del servidor';
-        detalle = 'Netlify Functions falló. Espera 1 minuto o verifica Deploy logs.';
+        detalle = 'La función de Vercel ha fallado. Inténtalo de nuevo más tarde.';
       } else if (errorText.includes('timeout')) {
         titulo = '⏱️ Tiempo agotado';
         detalle = 'La generación tardó demasiado. Intenta de nuevo en 30 segundos.';
@@ -2084,7 +2089,7 @@ async function generarExplicacionProfunda(pregunta, tema, respuestaCorrecta, exp
       titulo = 'Sin internet';
       detalle = 'Verifica tu conexión WiFi o datos móviles.';
     } else if (error.message && error.message.includes('fetch')) {
-      detalle = 'No se pudo conectar con Netlify Functions. Verifica que estén desplegadas.';
+      detalle = 'No se pudo conectar con la función de Vercel.';
     }
     
     showToast('error', titulo, detalle);
