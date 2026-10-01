@@ -583,9 +583,9 @@
       <button class="pdf-tool-btn" data-tool="highlight" title="Seleccionar texto para subrayar" aria-label="Subrayador">🖍️</button>
       <button class="pdf-tool-btn" data-tool="eraser" title="Borrar" aria-label="Borrar">
         <svg class="pdf-eraser-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 16.5 13.5 7a2.8 2.8 0 0 1 4 0l1.5 1.5a2.8 2.8 0 0 1 0 4L11.5 20H5.8L4 18.2a1.2 1.2 0 0 1 0-1.7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          <path d="m10 10 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M12 20h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="m3.3 14.4 8.9-9a2.4 2.4 0 0 1 3.4 0l4.1 4.1a2.4 2.4 0 0 1 0 3.4L11.6 21H8.2l-4.9-4.9a1.2 1.2 0 0 1 0-1.7Z" fill="#f472b6" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="m7.2 10.5 6.3 6.3-4.2 4.2H8.2l-4.9-4.9a1.2 1.2 0 0 1 0-1.7Z" fill="white"/>
+          <path d="m7.2 10.5 6.3 6.3" fill="none" stroke="#9d174d" stroke-width="1.2"/>
         </svg>
       </button>
       <span class="pdf-pen-settings" hidden>

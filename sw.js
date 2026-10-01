@@ -1,6 +1,6 @@
 // v90.15 - Test oficial de Distribucion U4
-const BUILD_TIMESTAMP = '20261001-highlight-lines';
-const CACHE_NAME = `universae-v90.19-${BUILD_TIMESTAMP}`;
+const BUILD_TIMESTAMP = '20261001-eraser-icon';
+const CACHE_NAME = `universae-v90.20-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 const PDF_CACHE = 'universae-pdfs-v1';
 
