@@ -1,6 +1,6 @@
-// v90.14 - Cabecera ordenada para iPad y movil
-const BUILD_TIMESTAMP = '20260930-header-layout';
-const CACHE_NAME = `universae-v90.14-${BUILD_TIMESTAMP}`;
+// v90.15 - Test oficial de Distribucion U4
+const BUILD_TIMESTAMP = '20261001-distribucion-u4';
+const CACHE_NAME = `universae-v90.15-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 const PDF_CACHE = 'universae-pdfs-v1';
 

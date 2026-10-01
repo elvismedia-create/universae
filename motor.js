@@ -297,13 +297,18 @@ function jugar(modo, idx, bid, limit) {
     
     if (!db[asig.nombre]) db[asig.nombre] = { active: [], master_index: 0, stats: {}, dom: [] };
     const estado = db[asig.nombre];
+    const firstOfficialU4Run = bid === 'pestana6' && idx === 4 && !estado.oficial_u4_20261001;
+    if (firstOfficialU4Run) {
+      estado.master_index = 0;
+      estado.oficial_u4_20261001 = true;
+    }
 
     estado.active = estado.active.filter(id => asig.data.some(p => p.id === id));
     estado.dom = estado.dom.filter(id => asig.data.some(p => p.id === id));
     estado.active = estado.active.filter(id => !estado.dom.includes(id) && !failsGlobal.includes(id));
 
     let seleccion = [];
-    const fallosAsig = failsGlobal.filter(id => asig.data.some(p => p.id === id));
+    const fallosAsig = firstOfficialU4Run ? [] : failsGlobal.filter(id => asig.data.some(p => p.id === id));
     seleccion.push(...fallosAsig.slice(0, 4));
     
     let intentos = 0;
@@ -333,7 +338,7 @@ function jugar(modo, idx, bid, limit) {
     const preguntasIAStorage = JSON.parse(localStorage.getItem("mastertest_ia_preguntas")) || [];
     const preguntasIATema = preguntasIAStorage.filter(p => p.tema === asig.nombre);
     
-    if (preguntasIATema.length > 0) {
+    if (preguntasIATema.length > 0 && !firstOfficialU4Run) {
       console.log(`🤖 Preguntas IA disponibles para ${asig.nombre}: ${preguntasIATema.length}`);
       
       // Separar preguntas normales e IA
