@@ -830,21 +830,36 @@
 
     function dragRects(clientX) {
       const pageRect = drag.canvas.getBoundingClientRect();
-      const left = Math.max(pageRect.left, Math.min(drag.x, clientX));
-      const right = Math.min(pageRect.right, Math.max(drag.x, clientX));
+      const lineLeft = Math.min(...drag.lineRects.map(rect => rect.left));
+      const lineRight = Math.max(...drag.lineRects.map(rect => rect.right));
+      const left = Math.max(pageRect.left, lineLeft, Math.min(drag.x, clientX));
+      const right = Math.min(pageRect.right, lineRight, Math.max(drag.x, clientX));
       if (right - left < 3) return [];
 
-      return drag.lineRects.map(rect => {
-        const x = Math.max(left, rect.left);
-        const end = Math.min(right, rect.right);
-        if (end - x < 2) return null;
-        return {
-          x: (x - pageRect.left) / pageRect.width,
-          y: (rect.top - pageRect.top) / pageRect.height,
-          width: (end - x) / pageRect.width,
-          height: rect.height / pageRect.height
-        };
-      }).filter(Boolean);
+      return [{
+        x: (left - pageRect.left) / pageRect.width,
+        y: (drag.lineRect.top - pageRect.top) / pageRect.height,
+        width: (right - left) / pageRect.width,
+        height: drag.lineRect.height / pageRect.height
+      }];
+    }
+
+    function mergeLineRects(rects) {
+      const lines = [];
+      rects.sort((a, b) => a.y - b.y || a.x - b.x).forEach(rect => {
+        const line = lines.find(item => Math.abs((item.y + item.height / 2) - (rect.y + rect.height / 2)) <= Math.min(item.height, rect.height) * 0.4);
+        if (!line) {
+          lines.push({ ...rect });
+          return;
+        }
+        const right = Math.max(line.x + line.width, rect.x + rect.width);
+        const bottom = Math.max(line.y + line.height, rect.y + rect.height);
+        line.x = Math.min(line.x, rect.x);
+        line.y = Math.min(line.y, rect.y);
+        line.width = right - line.x;
+        line.height = bottom - line.y;
+      });
+      return lines;
     }
 
     function redrawDrag(rects) {
@@ -880,7 +895,7 @@
       let saved = false;
       shell.querySelectorAll('.pdf-draw-layer').forEach(canvas => {
         const pageRect = canvas.getBoundingClientRect();
-        const rects = selectedRects.map(rect => {
+        const rects = mergeLineRects(selectedRects.map(rect => {
           const left = Math.max(rect.left, pageRect.left);
           const right = Math.min(rect.right, pageRect.right);
           const top = Math.max(rect.top, pageRect.top);
@@ -892,7 +907,7 @@
             width: (right - left) / pageRect.width,
             height: (bottom - top) / pageRect.height
           };
-        }).filter(Boolean);
+        }).filter(Boolean));
         if (!rects.length) return;
 
         const pageNumber = canvas.dataset.page;
@@ -931,7 +946,7 @@
         .filter(rect => Math.abs(rect.top + rect.height / 2 - lineY) <= Math.max(8, startRect.height * 0.55));
       if (event.pointerType === 'pen') event.preventDefault();
       window.getSelection()?.removeAllRanges();
-      drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY, canvas, lineRects };
+      drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY, canvas, lineRects, lineRect: startRect };
     });
 
     shell.addEventListener('pointermove', event => {
