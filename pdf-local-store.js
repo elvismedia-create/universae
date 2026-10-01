@@ -555,79 +555,22 @@
     return Math.sqrt(closestDx * closestDx + closestDy * closestDy);
   }
 
-  function distanceBetweenPointsPx(point, strokePoint, canvas) {
-    const dx = (point.x - strokePoint.x) * canvas.width;
-    const dy = (point.y - strokePoint.y) * canvas.height;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-
-  function getSampledStrokePoints(stroke, canvas) {
-    const points = stroke.points || [];
-    if (points.length < 2) return points;
-
-    const sampledPoints = [points[0]];
-    points.slice(1).forEach((point, index) => {
-      const previousPoint = points[index];
-      const lengthPx = distanceBetweenPointsPx(previousPoint, point, canvas);
-      const steps = Math.max(1, Math.ceil(lengthPx / 6));
-
-      for (let step = 1; step <= steps; step += 1) {
-        const t = step / steps;
-        sampledPoints.push({
-          x: previousPoint.x + (point.x - previousPoint.x) * t,
-          y: previousPoint.y + (point.y - previousPoint.y) * t
-        });
-      }
-    });
-
-    return sampledPoints;
-  }
-
   function erasePointFromStrokes(point, strokes, canvas, state) {
     const radiusPx = Math.max(18, state.width * 1.25);
-    const remainingStrokes = [];
-
-    strokes.forEach(stroke => {
+    return strokes.filter(stroke => {
       if (stroke.type === 'highlight') {
-        const gap = radiusPx / canvas.width;
-        const remainingRects = [];
-        (stroke.rects || []).forEach(rect => {
-          const withinLine = point.y >= rect.y - radiusPx / canvas.height &&
-            point.y <= rect.y + rect.height + radiusPx / canvas.height;
-          if (!withinLine || point.x < rect.x - gap || point.x > rect.x + rect.width + gap) {
-            remainingRects.push(rect);
-            return;
-          }
-          const leftWidth = Math.max(0, point.x - gap - rect.x);
-          const rightX = Math.min(rect.x + rect.width, point.x + gap);
-          const rightWidth = rect.x + rect.width - rightX;
-          if (leftWidth > 0.003) remainingRects.push({ ...rect, width: leftWidth });
-          if (rightWidth > 0.003) remainingRects.push({ ...rect, x: rightX, width: rightWidth });
-        });
-        if (remainingRects.length) remainingStrokes.push({ ...stroke, rects: remainingRects });
-        return;
+        return !(stroke.rects || []).some(rect =>
+          point.x >= rect.x - radiusPx / canvas.width &&
+          point.x <= rect.x + rect.width + radiusPx / canvas.width &&
+          point.y >= rect.y - radiusPx / canvas.height &&
+          point.y <= rect.y + rect.height + radiusPx / canvas.height
+        );
       }
-      const points = getSampledStrokePoints(stroke, canvas);
-      let currentPart = [];
-
-      points.forEach(strokePoint => {
-        if (distanceBetweenPointsPx(point, strokePoint, canvas) <= radiusPx) {
-          if (currentPart.length >= 2) {
-            remainingStrokes.push({ ...stroke, points: currentPart });
-          }
-          currentPart = [];
-          return;
-        }
-
-        currentPart.push(strokePoint);
-      });
-
-      if (currentPart.length >= 2) {
-        remainingStrokes.push({ ...stroke, points: currentPart });
-      }
+      const points = stroke.points || [];
+      return !points.slice(1).some((end, index) =>
+        distanceToSegmentPx(point, points[index], end, canvas) <= radiusPx + (stroke.width || 0) / 2
+      );
     });
-
-    return remainingStrokes;
   }
 
   function createToolbar(info, state, actions) {
