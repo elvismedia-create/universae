@@ -593,10 +593,14 @@
         <button class="pdf-tool-btn pdf-size-btn active" data-width="18" title="Punta media"><span class="pdf-size-dot" style="width:12px;height:12px;"></span></button>
         <button class="pdf-tool-btn pdf-size-btn" data-width="30" title="Punta gorda"><span class="pdf-size-dot" style="width:18px;height:18px;"></span></button>
       </span>
-      <button class="pdf-color-btn active" data-color="rgba(255,235,59,0.50)" style="background:#fde047;" title="Amarillo"></button>
-      <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde"></button>
-      <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul"></button>
-      <button class="pdf-color-btn" data-color="rgba(239,68,68,0.38)" style="background:#ef4444;" title="Rojo"></button>
+      <button class="pdf-color-btn active" data-color="rgba(255,235,59,0.50)" style="background:#fde047;" title="Amarillo intenso" aria-label="Amarillo intenso"></button>
+      <button class="pdf-color-btn" data-color="rgba(255,235,59,0.20)" style="background:#fef9c3;" title="Amarillo suave" aria-label="Amarillo suave"></button>
+      <button class="pdf-color-btn" data-color="rgba(34,197,94,0.38)" style="background:#22c55e;" title="Verde intenso" aria-label="Verde intenso"></button>
+      <button class="pdf-color-btn" data-color="rgba(34,197,94,0.18)" style="background:#bbf7d0;" title="Verde suave" aria-label="Verde suave"></button>
+      <button class="pdf-color-btn" data-color="rgba(59,130,246,0.38)" style="background:#3b82f6;" title="Azul intenso" aria-label="Azul intenso"></button>
+      <button class="pdf-color-btn" data-color="rgba(59,130,246,0.18)" style="background:#bfdbfe;" title="Azul suave" aria-label="Azul suave"></button>
+      <button class="pdf-color-btn" data-color="rgba(239,68,68,0.38)" style="background:#ef4444;" title="Rojo intenso" aria-label="Rojo intenso"></button>
+      <button class="pdf-color-btn" data-color="rgba(239,68,68,0.18)" style="background:#fecaca;" title="Rojo suave" aria-label="Rojo suave"></button>
       <button class="pdf-tool-btn" data-action="zoom-out" title="Alejar" aria-label="Alejar">−</button>
       <button class="pdf-tool-btn pdf-zoom-btn" data-action="zoom-reset" title="Restablecer zoom" aria-label="Restablecer zoom">100%</button>
       <button class="pdf-tool-btn" data-action="zoom-in" title="Acercar" aria-label="Acercar">+</button>
