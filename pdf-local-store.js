@@ -862,35 +862,63 @@
   }
 
   function attachTextHighlighter(shell, pagesContainer, state, annotations, key) {
-    let dragStart = null;
-    let dragPointerId = null;
+    let drag = null;
 
-    function caretAt(x, y) {
-      if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y);
-      const position = document.caretPositionFromPoint?.(x, y);
-      if (!position) return null;
-      const range = document.createRange();
-      range.setStart(position.offsetNode, position.offset);
-      range.collapse(true);
-      return range;
+    function findTextSpan(layer, x, y) {
+      let closest = null;
+      let closestDistance = Infinity;
+      layer.querySelectorAll('span').forEach(span => {
+        if (!span.textContent.trim()) return;
+        const rect = span.getBoundingClientRect();
+        const dx = Math.max(rect.left - x, x - rect.right, 0);
+        const dy = Math.max(rect.top - y, y - rect.bottom, 0);
+        const distance = dx + dy;
+        if (dx <= 8 && dy <= 8 && distance < closestDistance) {
+          closest = rect;
+          closestDistance = distance;
+        }
+      });
+      return closest;
     }
 
-    function updateDragSelection(event) {
-      if (!dragStart || event.pointerId !== dragPointerId) return;
-      const end = caretAt(event.clientX, event.clientY);
-      if (!end || !end.startContainer.parentElement?.closest('.pdf-text-layer')) return;
-      const range = document.createRange();
-      const startFirst = dragStart.compareBoundaryPoints(Range.START_TO_START, end) <= 0;
-      if (startFirst) {
-        range.setStart(dragStart.startContainer, dragStart.startOffset);
-        range.setEnd(end.startContainer, end.startOffset);
-      } else {
-        range.setStart(end.startContainer, end.startOffset);
-        range.setEnd(dragStart.startContainer, dragStart.startOffset);
+    function dragRects(clientX) {
+      const pageRect = drag.canvas.getBoundingClientRect();
+      const left = Math.max(pageRect.left, Math.min(drag.x, clientX));
+      const right = Math.min(pageRect.right, Math.max(drag.x, clientX));
+      if (right - left < 3) return [];
+
+      return drag.lineRects.map(rect => {
+        const x = Math.max(left, rect.left);
+        const end = Math.min(right, rect.right);
+        if (end - x < 2) return null;
+        return {
+          x: (x - pageRect.left) / pageRect.width,
+          y: (rect.top - pageRect.top) / pageRect.height,
+          width: (end - x) / pageRect.width,
+          height: rect.height / pageRect.height
+        };
+      }).filter(Boolean);
+    }
+
+    function redrawDrag(rects) {
+      const saved = annotations[drag.canvas.dataset.page] || [];
+      const strokes = rects.length ? [...saved, { type: 'highlight', color: state.color, rects }] : saved;
+      redrawAnnotations(drag.canvas, strokes);
+    }
+
+    function finishDrag(event, save) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const rects = save ? dragRects(event.clientX) : [];
+      const canvas = drag.canvas;
+      if (rects.length) {
+        const pageNumber = canvas.dataset.page;
+        if (!annotations[pageNumber]) annotations[pageNumber] = [];
+        annotations[pageNumber].push({ type: 'highlight', color: state.color, rects });
+        state.currentPage = Number(pageNumber);
+        saveAnnotations(key, annotations);
       }
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
+      drag = null;
+      redrawAnnotations(canvas, annotations[canvas.dataset.page] || []);
     }
 
     function saveSelection() {
@@ -935,45 +963,43 @@
     }
 
     pagesContainer.addEventListener('pointerup', event => {
-      if (state.tool !== 'highlight') return;
-      if (event.pointerType === 'touch' || event.pointerType === 'pen') {
-        updateDragSelection(event);
-        saveSelection();
-        dragStart = null;
-        dragPointerId = null;
-      } else {
-        requestAnimationFrame(saveSelection);
-      }
+      if (state.tool === 'highlight' && event.pointerType === 'mouse') requestAnimationFrame(saveSelection);
     });
 
     pagesContainer.addEventListener('pointerdown', event => {
       if (state.tool !== 'highlight' || !['touch', 'pen'].includes(event.pointerType)) return;
       if (!event.isPrimary) {
-        dragStart = null;
-        dragPointerId = null;
-        window.getSelection()?.removeAllRanges();
+        if (drag) finishDrag({ pointerId: drag.pointerId }, false);
         return;
       }
       const layer = event.target.closest('.pdf-text-layer');
       if (!layer) return;
-      event.preventDefault();
-      dragStart = caretAt(event.clientX, event.clientY);
-      dragPointerId = event.pointerId;
-      layer.setPointerCapture(event.pointerId);
-    });
-
-    pagesContainer.addEventListener('pointermove', event => {
-      if (state.tool !== 'highlight' || !['touch', 'pen'].includes(event.pointerType) || event.pointerId !== dragPointerId) return;
-      event.preventDefault();
-      updateDragSelection(event);
-    });
-
-    pagesContainer.addEventListener('pointercancel', event => {
-      if (event.pointerId !== dragPointerId) return;
-      dragStart = null;
-      dragPointerId = null;
+      const startRect = findTextSpan(layer, event.clientX, event.clientY);
+      if (!startRect) return;
+      const canvas = layer.parentElement.querySelector('.pdf-draw-layer');
+      const lineY = startRect.top + startRect.height / 2;
+      const lineRects = [...layer.querySelectorAll('span')]
+        .filter(span => span.textContent.trim())
+        .map(span => span.getBoundingClientRect())
+        .filter(rect => Math.abs(rect.top + rect.height / 2 - lineY) <= Math.max(8, startRect.height * 0.55));
+      if (event.pointerType === 'pen') event.preventDefault();
       window.getSelection()?.removeAllRanges();
+      drag = { pointerId: event.pointerId, pointerType: event.pointerType, x: event.clientX, y: event.clientY, canvas, lineRects };
     });
+
+    shell.addEventListener('pointermove', event => {
+      if (state.tool !== 'highlight' || !drag || event.pointerId !== drag.pointerId) return;
+      if (drag.pointerType === 'touch' && Math.abs(event.clientY - drag.y) > 12 &&
+          Math.abs(event.clientY - drag.y) > Math.abs(event.clientX - drag.x) * 1.25) {
+        finishDrag(event, false);
+        return;
+      }
+      event.preventDefault();
+      redrawDrag(dragRects(event.clientX));
+    });
+
+    shell.addEventListener('pointerup', event => finishDrag(event, state.tool === 'highlight'));
+    shell.addEventListener('pointercancel', event => finishDrag(event, false));
   }
 
   async function openAnnotatedPdfViewer(key, blob, info) {
