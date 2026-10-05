@@ -297,7 +297,8 @@ function jugar(modo, idx, bid, limit) {
     
     if (!db[asig.nombre]) db[asig.nombre] = { active: [], master_index: 0, stats: {}, dom: [] };
     const estado = db[asig.nombre];
-    const firstOfficialRun = (bid === 'pestana7' && idx === 1 && !estado.oficial_u1_telecom_20261005) || (bid === 'pestana6' && (
+    const telecomOfficialKey = bid === 'pestana7' && idx >= 1 && idx <= 7 ? `oficial_u${idx}_telecom_20261005` : null;
+    const firstOfficialRun = (telecomOfficialKey && !estado[telecomOfficialKey]) || (bid === 'pestana6' && (
       (idx === 4 && !estado.oficial_u4_20261001) ||
       (idx === 5 && !estado.oficial_u5_20261002) ||
       (idx === 6 && !estado.oficial_u6_20261002) ||
@@ -305,11 +306,13 @@ function jugar(modo, idx, bid, limit) {
     ));
     if (firstOfficialRun) {
       estado.master_index = 0;
-      if (idx === 4) estado.oficial_u4_20261001 = true;
-      if (idx === 5) estado.oficial_u5_20261002 = true;
-      if (idx === 6) estado.oficial_u6_20261002 = true;
-      if (idx === 7) estado.oficial_u7_20261002 = true;
-      if (bid === 'pestana7' && idx === 1) estado.oficial_u1_telecom_20261005 = true;
+      if (bid === 'pestana6') {
+        if (idx === 4) estado.oficial_u4_20261001 = true;
+        if (idx === 5) estado.oficial_u5_20261002 = true;
+        if (idx === 6) estado.oficial_u6_20261002 = true;
+        if (idx === 7) estado.oficial_u7_20261002 = true;
+      }
+      if (telecomOfficialKey) estado[telecomOfficialKey] = true;
     }
 
     estado.active = estado.active.filter(id => asig.data.some(p => p.id === id));
@@ -531,10 +534,14 @@ function toggleFavorito(id) {
 /* =========================================================
    4. INTERACCIÓN (CHECK RESPUESTA)
    ========================================================= */
+function esRespuestaCorrecta(p, respuesta) {
+  return respuesta === p.correctaTexto || (p.correctasAlternativas || []).includes(respuesta);
+}
+
 function clickOpcion(i) {
   if (respuestasUsuario[indice] !== null) return;
   const p = preguntasJuego[indice];
-  const esCorrecta = p.opciones[i] === p.correctaTexto;
+  const esCorrecta = esRespuestaCorrecta(p, p.opciones[i]);
 
   if (esCorrecta) {
       rachaActual++;
@@ -587,7 +594,7 @@ function finalizar() {
   preguntasJuego.forEach((p, i) => {
     const respIdx = respuestasUsuario[i];
     const respTexto = respIdx !== null ? p.opciones[respIdx] : "---";
-    const esCorrecta = (respTexto === p.correctaTexto);
+    const esCorrecta = esRespuestaCorrecta(p, respTexto);
 
     if (esCorrecta) { 
         aciertos++; 
@@ -675,10 +682,10 @@ function finalizar() {
       preguntasJuego.forEach((p, i) => {
         const respIdx = respuestasUsuario[i];
         const respTexto = respIdx !== null ? p.opciones[respIdx] : "---";
-        const esCorrecta = (respTexto === p.correctaTexto);
+        const esCorrecta = esRespuestaCorrecta(p, respTexto);
         const color = esCorrecta ? "var(--success)" : "var(--danger)";
         const feedback = esCorrecta 
-           ? `<div style="color:var(--success);">✅ <b>${p.correctaTexto}</b></div>` 
+           ? `<div style="color:var(--success);">✅ <b>${respTexto}</b></div>`
            : `<div style="color:var(--danger);">❌ <b>${respTexto}</b></div><div style="color:var(--success); margin-top:5px;">💡 Era: <b>${p.correctaTexto}</b></div>`;
 
         // Panel de explicación mejorada
@@ -887,7 +894,7 @@ function iniciarTestSemestralDistribucion(n) {
     iniciarModoAcademia(EXAMEN_SEMESTRAL_DISTRIBUCION_DATA, n, "⭐ Simulacro Semestral - Instalaciones de Distribución");
 }
 function iniciarTestSemestralTelecom(n) {
-    iniciarModoAcademia(EXAMEN_SEMESTRAL_TELECOM_DATA, n, "⭐ Simulacro Semestral - Infraestructuras de Telecomunicación");
+    iniciarModoAcademia(EXAMEN_SEMESTRAL_TELECOM_DATA, n, "⭐ Simulacro Semestral - Infraestructuras comunes de telecomunicación en viviendas y edificios");
 }
 function iniciarTestSemestralMaquinas(n) {
     iniciarModoAcademia(EXAMEN_SEMESTRAL_MAQUINAS_DATA, n, "⭐ Simulacro Semestral - Máquinas Eléctricas");

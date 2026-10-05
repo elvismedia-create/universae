@@ -107,9 +107,9 @@ const CONFIGURACION_CURSO = [
   {
     bloque: "pestana7",
     trimestre: "T3",
-    titulo_boton: "3. Infraestructuras de Telecomunicación",
+    titulo_boton: "3. Infraestructuras comunes de telecomunicación en viviendas y edificios",
     asignaturas: [
-      { nombre: "⭐ SIMULACRO: Infraestructuras de Telecomunicación (40 preguntas)", data: EXAMEN_SEMESTRAL_TELECOM_DATA },
+      { nombre: "⭐ SIMULACRO: Infraestructuras de Telecomunicación (40 preguntas)", nombreVisible: "⭐ SIMULACRO: Infraestructuras comunes de telecomunicación en viviendas y edificios (40 preguntas)", data: EXAMEN_SEMESTRAL_TELECOM_DATA },
       { nombre: "U1: Televisión Terrestre. Transmisión de la señal", data: soloOficiales(TEMA_TELECOM_U1_DATA) },
       { nombre: "U2: Propagación de la señal", data: soloOficiales(TEMA_TELECOM_U2_DATA) },
       { nombre: "U3: Sistemas de recepción de TV terrestre", data: soloOficiales(TEMA_TELECOM_U3_DATA) },

@@ -1079,7 +1079,7 @@ svg, svg * {
 <script src="data-t3-distribución.js?v=20260509000000"></script>
 <script src="data-t3-distribucion-oficial.js?v=20261002-u5-u7-oficial"></script>
 <script src="data-t3-infraestructura-telecom.js?v=20260509000000"></script>
-<script src="data-t3-telecomunicaciones-oficial.js?v=20261005-u1-oficial"></script>
+<script src="data-t3-telecomunicaciones-oficial.js?v=20261005-u1-u7-oficial"></script>
 <script src="data-t3-maquinas-electricas-oficial.js?v=20260908120339"></script>
 <script src="data-t3-maquinas-electricas.js?v=20260509000000"></script>
 <script src="data-t3-pdfs.js?v=20260910114000"></script>
@@ -1095,14 +1095,14 @@ svg, svg * {
 <script src="data-tema7-estudio.js?v=20260511170000"></script>
 <script src="data-tema-economia-u1.js?v=20260511170000"></script>
 <script src="data-t3-domotica-estudio.js?v=20260511200000"></script>
-<script src="data-config.js?v=20260514000000"></script>
+<script src="data-config.js?v=20261005-telecom-name"></script>
 <script src="pdf-local-store.js?v=20261001-eraser-icon"></script>
 <!-- MÓDULOS EDUCATIVOS -->
 <script src="fotometria.js"></script>
 <script src="caida-tension.js"></script>
 <script src="simbolo-master.js"></script>
 <!-- MOTOR PRINCIPAL -->
-<script src="motor.js?v=20261005-telecom-u1"></script>
+<script src="motor.js?v=20261005-telecom-u1-u7"></script>
 
 <script>
 /* === LOGICA UI INDEX (FRANJA DE 4 + BOTONES A LA DERECHA) === */
@@ -1276,7 +1276,7 @@ function filtrarBloque(bid) {
     
     card.innerHTML = `
       <div class="asig-info">
-        <div class="asig-title">${asig.nombre}</div>
+        <div class="asig-title">${asig.nombreVisible || asig.nombre}</div>
         <div class="asig-meta"><span style="display:flex; align-items:center; gap:5px; margin-right:10px;">${iconStatus} ${textoDominadas}</span><div style="display:flex; align-items:center;">${htmlBadges}</div></div>
         <div class="barra-fondo"><div class="barra-relleno ${porcentaje >= 100 ? 'full' : ''}" style="width:${porcentaje}%"></div></div>
         <div style="font-size:0.75rem; text-align:right; margin-top:5px; color:var(--text-light); font-weight:600;">${Math.round(porcentaje)}% Completado</div>
@@ -1383,7 +1383,7 @@ function filtrarBloque(bid) {
       cardSemestralTelecom.style.borderLeft = "4px solid #16a34a";
       cardSemestralTelecom.innerHTML = `
         <div class="simulacro-header">
-          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Infraestructuras de Telecomunicación</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
+          <div><h3 class="simulacro-title">⭐ Simulacro Semestral - Infraestructuras comunes de telecomunicación en viviendas y edificios</h3><p class="simulacro-subtitle">Academia (Cronómetro incluido)</p></div>
           <div style="font-size: 2.5rem; opacity: 0.1;">📡</div>
         </div>
         <div class="simulacro-grid">
@@ -1709,7 +1709,7 @@ function filtrarBloque(bid) {
       if (!sim.preguntas || !sim.respuestas) return;
       sim.preguntas.forEach((p, i) => {
         const respUsuario = sim.respuestas[i];
-        const acerto = respUsuario !== undefined && p.opciones[respUsuario] === p.correctaTexto;
+        const acerto = respUsuario !== undefined && esRespuestaCorrecta(p, p.opciones[respUsuario]);
         const key = String(p.id || p.texto.substring(0, 40));
         if (!acerto) {
           if (!banco[key]) banco[key] = { pregunta: p, fallos: 0, aciertosConsecutivos: 0 };
@@ -1975,7 +1975,7 @@ function terminarAcademiaForzado() {
     const respUsuario = academiaRespuestas[i];
     const correctaTexto = p.correctaTexto;
     const correctaIdx = p.opciones.findIndex(op => op === correctaTexto);
-    const acerto = respUsuario !== undefined && p.opciones[respUsuario] === correctaTexto;
+    const acerto = respUsuario !== undefined && esRespuestaCorrecta(p, p.opciones[respUsuario]);
     if (acerto) correctas++;
 
     const sinContestar = respUsuario === undefined;
@@ -1991,7 +1991,7 @@ function terminarAcademiaForzado() {
         ${p.imagen ? `<div class="academia-imagen"><img src="${p.imagen}" alt="Imagen pregunta ${i+1}" onerror="this.style.display='none'"></div>` : ''}
         <div class="academia-opciones academia-readonly">
           ${p.opciones.map((op, j) => {
-            const esCorrecta = op === correctaTexto;
+            const esCorrecta = esRespuestaCorrecta(p, op);
             const esElegida = j === respUsuario;
             let claseOp = "academia-opcion";
             if (esCorrecta) claseOp += " academia-op-correcta";
@@ -2030,7 +2030,7 @@ function terminarAcademiaForzado() {
     const bancoFallos = JSON.parse(localStorage.getItem("academia_banco_fallos") || "{}");
     academiaPreguntasJuego.forEach((p, i) => {
       const respUsuario = academiaRespuestas[i];
-      const acerto = respUsuario !== undefined && p.opciones[respUsuario] === p.correctaTexto;
+      const acerto = respUsuario !== undefined && esRespuestaCorrecta(p, p.opciones[respUsuario]);
       const key = String(p.id || p.texto.substring(0, 40));
       if (!acerto) {
         if (!bancoFallos[key]) bancoFallos[key] = { pregunta: p, fallos: 0, aciertosConsecutivos: 0 };
