@@ -1,6 +1,6 @@
-// v90.21 - Tests oficiales de Distribucion U5-U7
-const BUILD_TIMESTAMP = '20261002-distribucion-u5-u7';
-const CACHE_NAME = `universae-v90.21-${BUILD_TIMESTAMP}`;
+// v90.22 - Test oficial de Telecomunicaciones U1
+const BUILD_TIMESTAMP = '20261005-telecom-u1';
+const CACHE_NAME = `universae-v90.22-${BUILD_TIMESTAMP}`;
 const OFFLINE_CACHE = `universae-offline-v70.0`;
 const PDF_CACHE = 'universae-pdfs-v1';
 

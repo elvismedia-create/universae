@@ -297,18 +297,19 @@ function jugar(modo, idx, bid, limit) {
     
     if (!db[asig.nombre]) db[asig.nombre] = { active: [], master_index: 0, stats: {}, dom: [] };
     const estado = db[asig.nombre];
-    const firstOfficialRun = bid === 'pestana6' && (
+    const firstOfficialRun = (bid === 'pestana7' && idx === 1 && !estado.oficial_u1_telecom_20261005) || (bid === 'pestana6' && (
       (idx === 4 && !estado.oficial_u4_20261001) ||
       (idx === 5 && !estado.oficial_u5_20261002) ||
       (idx === 6 && !estado.oficial_u6_20261002) ||
       (idx === 7 && !estado.oficial_u7_20261002)
-    );
+    ));
     if (firstOfficialRun) {
       estado.master_index = 0;
       if (idx === 4) estado.oficial_u4_20261001 = true;
       if (idx === 5) estado.oficial_u5_20261002 = true;
       if (idx === 6) estado.oficial_u6_20261002 = true;
       if (idx === 7) estado.oficial_u7_20261002 = true;
+      if (bid === 'pestana7' && idx === 1) estado.oficial_u1_telecom_20261005 = true;
     }
 
     estado.active = estado.active.filter(id => asig.data.some(p => p.id === id));
